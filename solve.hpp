@@ -5,7 +5,7 @@
 
 #include "types/Task.hpp"
 #include "types/Solution.hpp"
-#include "types/Settings.hpp"
+#include "types/SolverSettings.hpp"
 
 #include "geometry/is_inside.hpp"
 
@@ -14,7 +14,7 @@
 #include "find_path.hpp"
 
 
-Solution solve(const Task& task) {
+Solution solve(const Task& task, const SolverSettings& stgs) {
     Solution sln;
 
     // Проверка, что начальная и конечная точки НЕ находятся внутри многоугольника.
@@ -28,8 +28,6 @@ Solution solve(const Task& task) {
             return {.is_fail = true};
         }
     }
-
-    Settings stgs;
 
     // Генерация множества точек, НЕ находящихся внутри многоугольников.
     auto [points, squares] = generate_points(task, stgs);

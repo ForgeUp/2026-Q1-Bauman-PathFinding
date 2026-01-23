@@ -24,7 +24,11 @@ int main() {
     };
     auto task = generate_task(cfg);
     
-    auto sln = solve(task);
+    SolverSettings stgs = {
+        .squares_per_side = 10,
+        .attempts_count = 5
+    };
+    auto sln = solve(task, stgs);
 
     to_file("data/area.gp", std::format("x_min={}\nx_max={}\ny_min={}\ny_max={}\n", task.area.x_min, task.area.x_max, task.area.y_min, task.area.y_max));
     to_file("data/polygons.txt", task.area.rocks);

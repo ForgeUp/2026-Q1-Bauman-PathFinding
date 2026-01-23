@@ -5,13 +5,13 @@
 
 #include "types/Segment.hpp"
 #include "types/Task.hpp"
-#include "types/Settings.hpp"
+#include "types/SolverSettings.hpp"
 
 using square_idx = std::pair<int64_t,int64_t>;
 
 
 // Генерация дорог БЕЗ проверки пересечения с препятствиями.
-std::vector<Segment> generate_lazy_roads(const Task& task, std::map<square_idx,Point> squares, const Settings& stgs) {
+std::vector<Segment> generate_lazy_roads(const Task& task, std::map<square_idx,Point> squares, const SolverSettings& stgs) {
     std::vector<Segment> roads;
 
     // Перебираем ячейки с левой нижней и пытаемся соединить точки в соседних ячейках.

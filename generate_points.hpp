@@ -6,7 +6,7 @@
 
 #include "types/Task.hpp"
 #include "types/Solution.hpp"
-#include "types/Settings.hpp"
+#include "types/SolverSettings.hpp"
 #include "types/Segment.hpp"
 
 #include "math/in_range.hpp"
@@ -19,7 +19,7 @@ using square_idx = std::pair<int64_t,int64_t>;
 
 
 // Генерация множества точек, НЕ находящихся внутри многоугольников.
-auto generate_points(const Task& task, const Settings& stgs) {
+auto generate_points(const Task& task, const SolverSettings& stgs) {
     std::random_device rd;
     std::mt19937 gen(rd());
 
