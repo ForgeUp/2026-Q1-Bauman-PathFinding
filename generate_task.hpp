@@ -8,24 +8,11 @@
 using std::numbers::pi;
 
 #include "types/Rock.hpp"
-#include "types/Task.hpp"
+#include "types/Area.hpp"
+#include "types/GeneratorConfig.hpp"
 
 #include "random/from_range.hpp"
 
-
-struct GeneratorConfig {
-    double x_min{0};
-    double x_max{100};
-    double y_min{0};
-    double y_max{100};
-
-    double polygon_density{0.05};
-    int polygon_max_vertices{3};
-    double polygon_min_radius{2};
-    double polygon_max_radius{8};
-
-    double border_margin{5};
-};
 
 Rock generate_polygon(const GeneratorConfig& cfg, std::mt19937& gen) {
     Rock rock;
@@ -69,16 +56,16 @@ Task generate_task(const GeneratorConfig& cfg) {
 
     task.start = {
         random::from_range(cfg.x_min + cfg.border_margin,
-                     cfg.x_max - cfg.border_margin, gen),
+                           cfg.x_max - cfg.border_margin, gen),
         random::from_range(cfg.y_min + cfg.border_margin,
-                     cfg.y_max - cfg.border_margin, gen)
+                           cfg.y_max - cfg.border_margin, gen)
     };
 
     task.end = {
         random::from_range(cfg.x_min + cfg.border_margin,
-                     cfg.x_max - cfg.border_margin, gen),
+                           cfg.x_max - cfg.border_margin, gen),
         random::from_range(cfg.y_min + cfg.border_margin,
-                     cfg.y_max - cfg.border_margin, gen)
+                           cfg.y_max - cfg.border_margin, gen)
     };
 
     for (int i = 0; i < polygonCount; ++i) {
