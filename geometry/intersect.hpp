@@ -1,9 +1,8 @@
 #pragma once
 
-
-
 #include "types/Segment.hpp"
 #include "types/Rock.hpp"
+#include "types/Area.hpp"
 
 #include "is_inside.hpp"
 #include "on_segment.hpp"
@@ -51,6 +50,16 @@ bool intersect(const Segment& seg, const Rock& rock) {
     // Проверка, что отрезок целиком внутри.
     if (geometry::is_inside(seg.p1, rock)) return true;
 
+    return false;
+}
+
+// Проверка пересечения отрезка и всех препятствий внутри.
+bool intersect(const Segment& s, const Area& area) {
+    for (const auto& rock : area.rocks) {
+        if (geometry::intersect(s, rock)) {
+            return true;
+        }
+    }
     return false;
 }
 
