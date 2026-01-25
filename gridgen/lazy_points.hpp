@@ -15,11 +15,14 @@
 
 #include "geometry/is_inside.hpp"
 
+
+
+namespace gridgen {
+
 using square_idx = std::pair<int64_t,int64_t>;
 
-
-// Генерация множества точек, НЕ находящихся внутри многоугольников.
-auto generate_points(const Task& task, const SolverSettings& stgs) {
+// Генерация множества точек без проверки коллизии.
+auto lazy_points(const Task& task, const SolverSettings& stgs) {
     std::random_device rd;
     std::mt19937 gen(rd());
 
@@ -52,21 +55,10 @@ auto generate_points(const Task& task, const SolverSettings& stgs) {
                 math::in_range(task.start.x, x_l, x_r) && math::in_range(task.start.y, y_l, y_r) ? task.start :
                 math::in_range(task.end.x  , x_l, x_r) && math::in_range(task.end.y  , y_l, y_r) ? task.end :
                 Point {
-                    .x = random::from_range(x_l, x_r, gen),
-                    .y = random::from_range(y_l, y_r, gen)
+                    random::from_range(x_l, x_r, gen),
+                    random::from_range(y_l, y_r, gen)
                 }
             );
-
-            // Пытаемся установить точку внутри ячейки, которая НЕ находилась бы внутри многоугольника.
-            bool is_placable = false;
-            for (int64_t ac = 0; ac < stgs.attempts_count; ++ac) {
-                if (geometry::is_inside(p, task.area.rocks)) continue;
-                is_placable = true;
-                break;
-            }
-
-            // Если точку не удалось установить, ячейка считается недоступной.
-            if (!is_placable) continue;
 
             // Добавляем ячейку и точку.
             squares[{i,j}] = p;
@@ -75,4 +67,6 @@ auto generate_points(const Task& task, const SolverSettings& stgs) {
     }
 
     return std::pair(points, squares);
+}
+
 }
