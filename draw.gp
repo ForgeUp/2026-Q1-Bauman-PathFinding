@@ -1,6 +1,10 @@
 
 # Настройки.
 load "data/area.gp"
+
+# Особы пунктир
+set dashtype 8 (2,10) 
+
 # Место для вывода.
 if (exists("filename")) {
     set terminal pngcairo size 800,600 enhanced font "Arial,12"
@@ -37,10 +41,12 @@ plot \
     polygons       using 1:2 with filledcurves fc "royalblue" notitle, \
     grids          using 1:2 with linespoints lw 2 pt 7 lc "purple" title "Grid", \
     examined_roads using 1:2 with lines       lw 2      lc "gold" title "Examined roads", \
-    invalid_roads  using 1:2 with lines       lw 2      lc "red" title "Invalid roads", \
     path           using 1:2 with linespoints lw 2 pt 7 lc "green" title "Path", \
+    invalid_roads  using 1:2 with lines       lw 2 dt 8 lc "red" title "Invalid roads", \
+    '+' using (x_start):(y_start) with points ps 2 pt 7 lc "green" title "Start point", \
+    '+' using (x_end)  :(y_end)   with points ps 2 pt 7 lc "dark-green" title "End point", \
     # polylines using 1:2 with lines lw 2 lc "blue" notitle, \
 
 if (!exists("filename")) {
-pause -1
+    pause -1
 }
