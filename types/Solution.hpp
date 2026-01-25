@@ -3,13 +3,13 @@
 #include <vector>
 
 #include "types/Point.hpp"
-#include "types/Segment.hpp"
+#include "types/Graph.hpp"
 
 
 struct Solution {
     std::vector<Point> path;
-    std::vector<Segment> grid;
-    std::vector<Segment> examined_roads;
-    std::vector<Segment> invalid_roads;
+    Graph grid;
+    Graph examined;
+    Graph invalid;
     bool is_fail{false};
 };
