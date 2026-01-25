@@ -9,12 +9,15 @@ using std::numbers::pi;
 
 #include "types/Rock.hpp"
 #include "types/Area.hpp"
+#include "types/Task.hpp"
 #include "types/GeneratorConfig.hpp"
 
 #include "random/from_range.hpp"
 
 
-Rock generate_polygon(const GeneratorConfig& cfg, std::mt19937& gen) {
+namespace taskgen {
+
+Rock polygon(const GeneratorConfig& cfg, std::mt19937& gen) {
     Rock rock;
 
     int vertices  = random::from_range(3, cfg.polygon_max_vertices, gen);
@@ -37,7 +40,7 @@ Rock generate_polygon(const GeneratorConfig& cfg, std::mt19937& gen) {
     return rock;
 }
 
-Task generate_task(const GeneratorConfig& cfg) {
+Task task(const GeneratorConfig& cfg) {
     std::random_device rd;
     std::mt19937 gen(rd());
 
@@ -69,9 +72,10 @@ Task generate_task(const GeneratorConfig& cfg) {
     };
 
     for (int i = 0; i < polygonCount; ++i) {
-        task.area.rocks.push_back(generate_polygon(cfg, gen));
+        task.area.rocks.push_back(polygon(cfg, gen));
     }
 
     return task;
 }
 
+}
