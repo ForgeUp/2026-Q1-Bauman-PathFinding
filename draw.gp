@@ -1,6 +1,11 @@
 
 # Настройки.
 load "data/area.gp"
+# Место для вывода.
+if (exists("filename")) {
+    set terminal pngcairo size 800,600 enhanced font "Arial,12"
+    set output filename
+}
 
 # Входные файлы.
 polygons       = 'data/polygons.txt'
@@ -36,4 +41,6 @@ plot \
     path           using 1:2 with linespoints lw 2 pt 7 lc "green" title "Path", \
     # polylines using 1:2 with lines lw 2 lc "blue" notitle, \
 
+if (!exists("filename")) {
 pause -1
+}
