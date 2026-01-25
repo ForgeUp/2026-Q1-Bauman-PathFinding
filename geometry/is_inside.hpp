@@ -37,4 +37,11 @@ bool is_inside(const Point& p, const std::vector<Rock>& rs) {
     return false;
 }
 
+bool is_inside(const std::vector<Point>& ps, const std::vector<Rock>& rs) {
+    for (auto& p : ps) {
+        if (is_inside(p, rs)) return true;
+    }
+    return false;
+}
+
 }
