@@ -11,6 +11,8 @@ struct Point {
     double x{0};
     double y{0};
 
+    bool is_rand{true};
+
     Point() = default;
     Point(double x_, double y_) : x{math::trunc(x_)}, y{math::trunc(y_)} {}
 

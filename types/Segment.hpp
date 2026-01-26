@@ -7,6 +7,10 @@ struct Segment {
     Point p1{};
     Point p2{};
 
+    bool is_vert_rand() const {
+        return p1.is_rand && p2.is_rand;
+    }
+
     friend std::ostream& operator<<(std::ostream& os, const Segment& s) {
         os << s.p1 << s.p2 << '\n';
         return os;
