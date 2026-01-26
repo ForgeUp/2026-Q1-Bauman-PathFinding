@@ -6,31 +6,27 @@
 #include "types/Point.hpp"
 #include "types/Graph.hpp"
 
-#include "types/Task.hpp"
-#include "types/Solution.hpp"
-#include "types/SolverSettings.hpp"
-
 #include "random/from_range.hpp"
 
 
 namespace gridgen {
 
 // Генерация множества точек без проверки коллизии.
-Graph lazy_points(const Task& task, const SolverSettings& stgs) {
+Graph lazy_points(int32_t nodes_count, const Point& min, const Point& max) {
     std::random_device rd;
     std::mt19937 gen(rd());
 
     Graph points;
 
     // Количество прямоугольников вдоль осей для размещения точек.
-    int32_t cells_per_side = std::sqrt(stgs.initial_nodes_count);
+    int32_t cells_per_side = std::sqrt(nodes_count);
 
     // Остаток точек, которые будут распределены случайным образом, если вдоль оси не помещается целое число квадратов.
-    int32_t remain_points_count = std::max(stgs.initial_nodes_count - cells_per_side * cells_per_side, 0);
+    int32_t remain_points_count = std::max(nodes_count - cells_per_side * cells_per_side, 0);
 
     // Размеры ячейки.
-    double dx = (task.area.x_max - task.area.x_min) / cells_per_side;
-    double dy = (task.area.y_max - task.area.y_min) / cells_per_side;
+    double dx = (max.x - min.x) / cells_per_side;
+    double dy = (max.y - min.y) / cells_per_side;
 
     // Границы ячейки.
     double y_l{-dy}, y_r{0};
@@ -55,15 +51,12 @@ Graph lazy_points(const Task& task, const SolverSettings& stgs) {
     // Распределение оставшихся точек.
     for (int32_t i = 0; i < remain_points_count; ++i) {
         Point p (
-            random::from_range(task.area.x_min, task.area.x_max, gen),
-            random::from_range(task.area.y_min, task.area.y_max, gen)
+            random::from_range(min.x, max.x, gen),
+            random::from_range(min.y, max.y, gen)
         );
 
         points.add(p);
     }
-
-    points.add(task.start);
-    points.add(task.end);
 
     return points;
 }
