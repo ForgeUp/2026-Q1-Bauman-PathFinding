@@ -7,7 +7,7 @@ set dashtype 8 (2,10)
 
 # Место для вывода.
 if (exists("filename")) {
-    set terminal pngcairo size 800,600 enhanced font "Arial,12"
+    set terminal pngcairo size 2000,1500 enhanced font "Arial,12"
     set output filename
 }
 
