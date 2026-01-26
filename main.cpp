@@ -26,7 +26,9 @@ int main() {
     
     SolverSettings stgs = {
         .initial_nodes_count = 500,
-        .connection_radius = 7
+        .connection_radius = 10,
+        .enhance_nodes_count = 100,
+        .enhance_attempts_limit = 5
     };
     auto sln = solve(task, stgs);
 
