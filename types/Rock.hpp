@@ -9,8 +9,8 @@ struct Rock {
     std::vector<Point> points;
 
     friend std::ostream& operator<<(std::ostream& os, const Rock& r) {
-        for (auto& [x, y] : r.points) {
-            os << x << ' ' << y << '\n';
+        for (auto& p : r.points) {
+            os << p.x << ' ' << p.y << '\n';
         }
         os << '\n';
         return os;
