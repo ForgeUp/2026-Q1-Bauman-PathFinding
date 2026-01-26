@@ -21,10 +21,12 @@ int main() {
         .border_margin = 5,
     };
     auto task = taskgen::task(cfg);
+    task.start = Point(0,0);
+    task.end   = Point(100,100);
     
     SolverSettings stgs = {
-        .squares_per_side = 10,
-        .attempts_count = 5
+        .initial_nodes_count = 500,
+        .connection_radius = 7
     };
     auto sln = solve(task, stgs);
 

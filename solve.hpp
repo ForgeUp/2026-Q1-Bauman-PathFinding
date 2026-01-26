@@ -19,10 +19,10 @@
 Solution solve(const Task& task, const SolverSettings& stgs) {
     Solution sln;
 
-    std::vector<Point> path;
-    Graph grid;     // Граф, в котором выполняется поиск пути.
-    Graph examined; // Граф рассмотренных в процессе поиска пути дорог и вершин.
-    Graph invalid;  // Подграф, отброшенный из-за коллизии.
+    std::vector<Point>& path = sln.path;
+    Graph& grid     = sln.grid;     // Граф, в котором выполняется поиск пути.
+    Graph& examined = sln.examined; // Граф рассмотренных в процессе поиска пути дорог и вершин.
+    Graph& invalid  = sln.invalid;  // Подграф, отброшенный из-за коллизии.
     
     // Проверка, что начальная и конечная точки НЕ находятся внутри многоугольника.
     for (auto& r : task.area.rocks) {
@@ -37,10 +37,10 @@ Solution solve(const Task& task, const SolverSettings& stgs) {
     }
 
     // Генерация множества точек БЕЗ проверки коллизии.
-    auto [points, squares] = gridgen::lazy_points(task, stgs);
+    Graph points = gridgen::lazy_points(task, stgs);
     
     // Генерация дорог БЕЗ проверки коллизии.
-    grid = gridgen::lazy_roads(task, squares, stgs);
+    grid = gridgen::lazy_roads(task, points, stgs);
     
     bool is_found = false;
     while (!is_found) {
@@ -54,13 +54,6 @@ Solution solve(const Task& task, const SolverSettings& stgs) {
         if (res.is_unreachable) {
             // [TODO] Реализовать дополнением новыми вершинами и повтор алгоритма в случае неудачи.
             std::cout << "Fail: Can't find the path" << '\n';
-            sln = {
-                .path = path,
-                .grid = grid,
-                .examined = examined,
-                .invalid = invalid,
-                .is_fail = true
-            };
             draw(task, sln);
             return sln;
         }
@@ -85,13 +78,6 @@ Solution solve(const Task& task, const SolverSettings& stgs) {
                 }
                 grid.remove(p);
             }
-            sln = {
-                .path = path,
-                .grid = grid,
-                .examined = examined,
-                .invalid = invalid,
-                .is_fail = true
-            };
             draw(task, sln);
             continue;
         }
@@ -113,13 +99,6 @@ Solution solve(const Task& task, const SolverSettings& stgs) {
                 invalid.add(e);
                 grid.remove(e);
             }
-            sln = {
-                .path = path,
-                .grid = grid,
-                .examined = examined,
-                .invalid = invalid,
-                .is_fail = true
-            };
             draw(task, sln);
             continue;
         }
@@ -128,13 +107,7 @@ Solution solve(const Task& task, const SolverSettings& stgs) {
         is_found = true;
     }
 
-    sln = {
-        .path = path,
-        .grid = grid,
-        .examined = examined,
-        .invalid = invalid,
-        .is_fail = true
-    };
+    sln.is_fail = false;
     draw(task, sln);
     return sln;
 }
