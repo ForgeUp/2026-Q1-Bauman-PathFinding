@@ -14,20 +14,21 @@ int main() {
         .y_min = 0,
         .y_max = 100,
         
-        .polygon_density = 0.005,
+        .polygon_density = 0.05,
         .polygon_max_vertices = 4,
-        .polygon_min_radius = 2,
-        .polygon_max_radius = 6,
+        .polygon_min_radius = 1,
+        .polygon_max_radius = 3,
         .border_margin = 5,
     };
     auto task = taskgen::task(cfg);
-    task.start = Point(0,0);
-    task.end   = Point(100,100);
+    task.start = Point(10,10);
+    task.end   = Point(90,90);
     
     SolverSettings stgs = {
         .initial_nodes_count = 500,
         .connection_radius = 10,
-        .enhance_nodes_count = 100,
+        .enhance_rand_nodes_count = 50,
+        .enhance_seed_nodes_count = 50,
         .enhance_attempts_limit = 5
     };
     auto sln = solve(task, stgs);

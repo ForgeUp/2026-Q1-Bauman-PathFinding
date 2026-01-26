@@ -9,6 +9,9 @@
 
 #include "geometry/is_inside.hpp"
 
+#include "random/from_range.hpp"
+#include "random/from_norm.hpp"
+
 #include "gridgen/lazy_points.hpp"
 #include "gridgen/lazy_roads.hpp"
 #include "pathfind/lazy.hpp"
@@ -28,6 +31,7 @@ Solution solve(const Task& task, const SolverSettings& stgs) {
     Graph& invalid  = sln.invalid;  // Подграф, отброшенный из-за коллизии.
 
     Graph invalid_all;              // Подграф невалидных рёбер за все итерации основного цикла.
+    Graph invalid_all_rand;         // Подграф невалидных рёбер за все итерации основного цикла, построенных на точках, сгенерированных случайно в пределах всей арены.
 
     int32_t attempts = 0;
     
@@ -56,8 +60,31 @@ Solution solve(const Task& task, const SolverSettings& stgs) {
     auto enchance_graph = [&]() -> bool {
         if (!res.is_unreachable) return false;
         
-        Graph enhance_points = gridgen::lazy_points(stgs.enhance_nodes_count, corner_min, corner_max);
-        grid.join(enhance_points);
+        // Генерация случайных точек в пределах всей арены.
+        Graph enhance_rand_points = gridgen::lazy_points(stgs.enhance_rand_nodes_count, corner_min, corner_max);
+        grid.join(enhance_rand_points);
+
+        // Генерация случайных точек вокруг отброшенных рёбер.
+        double prob = std::min(1.0, static_cast<double>(invalid_all_rand.edges_count) / stgs.enhance_rand_nodes_count);
+        for (const auto& p1 : invalid_all_rand.verts) {
+            for (const auto& p2 : invalid_all_rand.adj[p1]) {
+                Segment s(p1,p2);
+
+                static thread_local std::mt19937 rng{std::random_device{}()};
+
+                if (random::from_range(0.0, 1.0, rng) < prob) continue;
+
+                Point q (
+                    random::from_norm((p1.x + p2.x) / 2, stgs.connection_radius, rng),
+                    random::from_norm((p1.y + p2.y) / 2, stgs.connection_radius, rng)
+                );
+                q.is_rand = false;
+
+                grid.add(q);
+            }
+        }
+
+        // Соединение рёбрами новых точек с уже имеющимися.
         grid = gridgen::lazy_roads(grid, stgs.connection_radius);
         
         // Удаление рёбер, коллизия с которыми уже была установлена.
@@ -92,8 +119,10 @@ Solution solve(const Task& task, const SolverSettings& stgs) {
         // Невалидные вершины (вместе с инцидентными рёбрами) удаляются из маршрутной карты.
         for (auto& p : collided_points) { // Запись удалённых вершин и рёбер.
             for (auto& q : grid.adj[p]) {
-                invalid.add(p, q);
-                invalid_all.add(p, q);
+                Segment s(p,q);
+                invalid.add(s);
+                invalid_all.add(s);
+                if (s.is_vert_rand()) invalid_all_rand.add(s);
             }
             grid.remove(p);
         }
@@ -124,6 +153,7 @@ Solution solve(const Task& task, const SolverSettings& stgs) {
         for (auto& e : collided_edges) {
             invalid.add(e);
             invalid_all.add(e);
+            if (e.is_vert_rand()) invalid_all_rand.add(e);
             grid.remove(e);
         }
 
