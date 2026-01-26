@@ -17,17 +17,6 @@
 
 
 Solution solve(const Task& task, const SolverSettings& stgs) {
-    // Проверка, что начальная и конечная точки НЕ находятся внутри многоугольника.
-    for (auto& r : task.area.rocks) {
-        if (geometry::is_inside(task.start, r)) {
-            std::cout << "Fail: Start point is inside of polygon" << '\n';
-            return {.is_fail = true};
-        }
-        if (geometry::is_inside(task.end, r)) {
-            std::cout << "Fail: End point is inside of polygon" << '\n';
-            return {.is_fail = true};
-        }
-    }
 
 // Используемые переменные.
 

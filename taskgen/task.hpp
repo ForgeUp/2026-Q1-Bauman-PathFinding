@@ -14,6 +14,8 @@ using std::numbers::pi;
 
 #include "random/from_range.hpp"
 
+#include "geometry/is_inside.hpp"
+
 
 namespace taskgen {
 
@@ -71,8 +73,17 @@ Task task(const GeneratorConfig& cfg) {
                            cfg.y_max - cfg.border_margin, gen)
     };
 
+    // Генерация препятствий.
     for (int i = 0; i < polygonCount; ++i) {
-        task.area.rocks.push_back(polygon(cfg, gen));
+        auto r = polygon(cfg, gen);
+
+        // Проверка, что начальная и конечная точки НЕ находятся внутри многоугольника.
+        if (geometry::is_inside(task.start, r) || geometry::is_inside(task.end, r)) {
+            i--;
+            continue;
+        }
+
+        task.area.rocks.push_back(r);
     }
 
     return task;
