@@ -20,6 +20,9 @@ public:
     // Матрица смежности.
     std::map<Point,std::set<Point>> adj;
 
+    // Количество рёбер.
+    int32_t edges_count{0};
+
 public:
 // Вершины.
     void add(const Point& p) {
@@ -33,6 +36,7 @@ public:
         verts.erase(p);
         for (auto& q : adj[p]) {
             adj[q].erase(p);
+            edges_count--;
         }
         adj.erase(p);
     }
@@ -54,6 +58,7 @@ public:
         if (adj[p1].contains(p2)) return;
         adj[p1].insert(p2);
         adj[p2].insert(p1);
+        edges_count++;
     }
 
     void add(const Segment& s) {
@@ -64,7 +69,8 @@ public:
         if (!verts.contains(p1) || !verts.contains(p2)) return;
         if (!adj[p1].contains(p2)) return;
         adj[p1].erase(p2);
-        adj[p2].erase(p1);        
+        adj[p2].erase(p1);
+        edges_count--;
     }
 
     void remove(const Segment& s) {
@@ -88,8 +94,10 @@ public:
         }
         for (const auto& [p, neighbours] : other.adj) {
             for (const auto& q : neighbours) {
+                if (ths.adj[p].contains(q)) continue;
                 ths.adj[p].insert(q);
                 ths.adj[q].insert(p);
+                edges_count++;
             }
         }
     }
