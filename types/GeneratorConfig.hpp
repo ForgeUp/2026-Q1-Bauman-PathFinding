@@ -1,11 +1,17 @@
 #pragma once
 
+#include "types/Point.hpp"
+
 
 struct GeneratorConfig {
     double x_min{0};
     double x_max{100};
     double y_min{0};
     double y_max{100};
+
+    bool rand_home_points{false};
+    Point start = Point(10.0, 10.0);
+    Point end   = Point(90.0, 90.0);
 
     double polygon_density{0.05};
     int polygon_max_vertices{3};

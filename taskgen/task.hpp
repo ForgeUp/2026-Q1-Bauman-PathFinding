@@ -59,14 +59,19 @@ Task task(const GeneratorConfig& cfg) {
 
     int polygonCount = static_cast<int>(areaSize * cfg.polygon_density);
 
-    task.start = {
+    if (!cfg.rand_home_points) {
+        task.start = cfg.start;
+        task.end   = cfg.end;
+    }
+
+    if (cfg.rand_home_points) task.start = {
         random::from_range(cfg.x_min + cfg.border_margin,
                            cfg.x_max - cfg.border_margin, gen),
         random::from_range(cfg.y_min + cfg.border_margin,
                            cfg.y_max - cfg.border_margin, gen)
     };
 
-    task.end = {
+    if (cfg.rand_home_points) task.end = {
         random::from_range(cfg.x_min + cfg.border_margin,
                            cfg.x_max - cfg.border_margin, gen),
         random::from_range(cfg.y_min + cfg.border_margin,

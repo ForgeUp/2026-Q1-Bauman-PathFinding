@@ -13,6 +13,10 @@ int main() {
         .x_max = 100,
         .y_min = 0,
         .y_max = 100,
+
+        .rand_home_points = false,
+        .start = Point(10.0, 10.0),
+        .end   = Point(90.0, 90.0),
         
         .polygon_density = 0.05,
         .polygon_max_vertices = 4,
@@ -21,12 +25,10 @@ int main() {
         .border_margin = 5,
     };
     auto task = taskgen::task(cfg);
-    task.start = Point(10,10);
-    task.end   = Point(90,90);
     
     SolverSettings stgs = {
-        .initial_nodes_count = 500,
-        .connection_radius = 10,
+        .initial_nodes_count = 1000,
+        .connection_radius = 7,
         .enhance_rand_nodes_count = 50,
         .enhance_seed_nodes_count = 50,
         .enhance_attempts_limit = 5
