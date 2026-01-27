@@ -11,7 +11,7 @@
 #include "to_file.hpp"
 
 
-void draw(const Task& task, const Solution& sln) {
+void draw(const Task& task, const Solution& sln, const std::string& name = "") {
     static int32_t i = 0;
     static bool clear_dir = false;
     constexpr const char* foldername{"data/result"};
@@ -28,6 +28,6 @@ void draw(const Task& task, const Solution& sln) {
     to_file("data/path.txt", sln.path);
     to_file("data/invalid_roads.txt", sln.invalid);
     
-    std::string cmd = std::format("gnuplot -e \"filename='{}/{}.png'\" draw.gp", foldername, i++);
+    std::string cmd = std::format("gnuplot -e \"filename='{}/{}_{}.png'\" draw.gp", foldername, i++, name);
     system(cmd.c_str());
 }

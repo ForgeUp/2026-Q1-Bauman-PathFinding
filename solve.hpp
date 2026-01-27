@@ -52,8 +52,6 @@ Solution solve(const Task& task, const SolverSettings& stgs) {
         if (!res.is_unreachable) return false;
         if (attempts < stgs.enhance_attempts_limit) return false;
 
-        draw(task, sln);
-
         return true;
     };
 
@@ -94,6 +92,8 @@ Solution solve(const Task& task, const SolverSettings& stgs) {
             }
         }
 
+        draw(task, sln, "point_enhancement");
+
         attempts++;
         return true;
     };
@@ -127,7 +127,7 @@ Solution solve(const Task& task, const SolverSettings& stgs) {
             grid.remove(p);
         }
 
-        draw(task, sln);
+        draw(task, sln, "point_collision");
         
         return true;
     };
@@ -157,12 +157,14 @@ Solution solve(const Task& task, const SolverSettings& stgs) {
             grid.remove(e);
         }
 
-        draw(task, sln);
+        draw(task, sln, "edge_collision");
     
         return true;
     };
 
 // Реализация алгоритма Lazy PRM.
+
+    draw(task, sln, "initial");
 
     // Генерация множества точек БЕЗ проверки коллизии.
     Graph points = gridgen::lazy_points(stgs.initial_nodes_count, corner_min, corner_max);
@@ -201,7 +203,7 @@ Solution solve(const Task& task, const SolverSettings& stgs) {
     }
 
     sln.is_fail = !is_found;
-    draw(task, sln);
+    draw(task, sln, "final");
 
     return sln;
 }
