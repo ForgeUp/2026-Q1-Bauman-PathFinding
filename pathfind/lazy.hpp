@@ -19,7 +19,7 @@
 namespace pathfind {
 
 struct Result {
-    std::vector<Point> path;
+    Graph path;
     Graph examined;
     Graph invalid;
     bool is_unreachable{false};
@@ -27,13 +27,25 @@ struct Result {
 
 using Node = Point;
 
-std::vector<Node> trace_path(const Node& start, const Node& end, std::map<Node, Node>& cameFrom) {
-    std::vector<Node> path;
-    for (Node p = end; cameFrom.contains(p); p = cameFrom[p]) {
-        path.push_back(p);
+Graph trace_path(const Node& start, const Node& end, std::map<Node, Node>& cameFrom) {
+    Graph path;
+
+    if (start == end) {
+        path.add(start);
+        return path;
     }
-    path.push_back(start);
-    std::reverse(path.begin(), path.end());
+
+    if (!cameFrom.contains(end)) return path;
+    Node prev{end}, curr{cameFrom[end]};
+
+    while (curr != start) {
+        path.add(prev, curr);
+
+        if (!cameFrom.contains(end)) return path;
+        prev = std::exchange(curr, cameFrom[curr]);
+    }
+    path.add(prev, curr);
+    
     return path;
 }
 

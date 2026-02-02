@@ -25,7 +25,7 @@ Solution solve(const Task& task, const SolverSettings& stgs) {
 
     Solution sln;
 
-    std::vector<Point>& path = sln.path;
+    Graph& path     = sln.path;
     Graph& grid     = sln.grid;     // Граф, в котором выполняется поиск пути.
     Graph& examined = sln.examined; // Подграф рассмотренных в процессе поиска пути дорог и вершин.
     Graph& invalid  = sln.invalid;  // Подграф, отброшенный из-за коллизии.
@@ -103,7 +103,7 @@ Solution solve(const Task& task, const SolverSettings& stgs) {
         std::set<Point> collided_points;
 
         // Проверка, что нет коллизий между вершинами пути и препятствиями.
-        for (auto& p : path) {
+        for (auto& p : path.verts) {
             for (auto& r : task.area.rocks) {
                 if (!geometry::is_inside(p, r)) continue;
                 has_collided_points = true;
@@ -137,9 +137,7 @@ Solution solve(const Task& task, const SolverSettings& stgs) {
         std::set<Segment> collided_edges;
 
         // Проверка, что нет коллизий между рёбрами пути и препятствиями.
-        for (int32_t i = 1; i < path.size(); ++i) {
-            const Segment s{path[i-1],path[i]};
-
+        for (const auto& s : path.edges()) {
             if (!geometry::intersect(s, task.area)) continue;
             has_collided_edges = true;
             collided_edges.insert(s);

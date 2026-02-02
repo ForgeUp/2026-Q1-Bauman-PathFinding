@@ -7,7 +7,7 @@
 
 
 struct Solution {
-    std::vector<Point> path;
+    Graph path;
     Graph grid;
     Graph examined;
     Graph invalid;
