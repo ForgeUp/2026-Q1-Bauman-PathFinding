@@ -12,6 +12,7 @@ struct Point {
     double y{0};
 
     bool is_rand{true};
+    bool mutable is_checked_collsn{false};
 
     Point() = default;
     Point(double x_, double y_) : x{math::trunc(x_)}, y{math::trunc(y_)} {}

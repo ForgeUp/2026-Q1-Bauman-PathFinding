@@ -104,6 +104,9 @@ Solution solve(const Task& task, const SolverSettings& stgs) {
 
         // Проверка, что нет коллизий между вершинами пути и препятствиями.
         for (auto& p : path.verts) {
+            if (p.is_checked_collsn) continue; // Пропускаем вершины, для которых уже была проверена коллизия.
+            
+            p.is_checked_collsn = true;
             for (auto& r : task.area.rocks) {
                 if (!geometry::is_inside(p, r)) continue;
                 has_collided_points = true;
