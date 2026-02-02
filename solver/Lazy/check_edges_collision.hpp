@@ -1,0 +1,41 @@
+#pragma once
+
+#include <set>
+
+#include "Lazy.hpp"
+
+#include "types/Point.hpp"
+#include "types/Segment.hpp"
+#include "types/Graph.hpp"
+
+#include "geometry/intersect.hpp"
+
+
+bool Lazy::check_edges_collision() {
+    bool has_collided_edges = false;
+    std::set<Segment> collided_edges;
+
+    // Проверка, что нет коллизий между рёбрами пути и препятствиями.
+    for (const auto& s : path.edges()) {
+        if (!geometry::intersect(s, task.area)) continue;
+        has_collided_edges = true;
+        collided_edges.insert(s);
+    }
+
+    // Если коллизей не обнаружено, блок завершается.
+    if (!has_collided_edges) return false;
+    // Иначе.
+
+    // Невалидные рёбра удаляются из маршрутной карты.
+    for (auto& e : collided_edges) {
+        invalid.add(e);
+        invalid_all.add(e);
+        if (e.is_vert_rand()) invalid_all_rand.add(e);
+        grid.remove(e);
+    }
+
+    // draw(task, sln, "edge_collision");
+
+    // Путь ищется заново.
+    return true;
+}

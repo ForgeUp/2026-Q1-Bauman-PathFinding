@@ -1,6 +1,6 @@
 
 #include "taskgen/task.hpp"
-#include "solve.hpp"
+#include "solver/solver.hpp"
 #include "draw.hpp"
 
 
@@ -30,7 +30,9 @@ int main() {
         .enhance_seed_nodes_count = 50,
         .enhance_attempts_limit = 5
     };
-    auto sln = solve(task, stgs);
+    auto solver = solver::lazy(task, stgs);
+    
+    auto sln = solver.run();
 
     draw(task, sln, "result");
 
