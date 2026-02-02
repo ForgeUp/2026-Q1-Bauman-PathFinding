@@ -170,11 +170,8 @@ public:
 public:
     friend std::ostream& operator<<(std::ostream& os, const Graph& g_) {
         Graph& g = const_cast<Graph&>(g_); // [TODO] Исправить этот костыль.
-        for (const auto& p : g.verts) {
-            for (const auto& q : g.adj[p]) {
-                if (p < q) continue;
-                os << Segment(p,q) << '\n';
-            }
+        for (const auto& s : g.edges()) {
+            os << s << '\n';
         }
         return os;
     }
