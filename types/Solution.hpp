@@ -9,6 +9,7 @@
 struct Solution {
     Graph path;
     Graph grid;
+    Graph enhance;
     Graph examined;
     Graph invalid;
     bool is_fail{false};
