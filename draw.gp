@@ -12,12 +12,12 @@ if (exists("filename")) {
 }
 
 # Входные файлы.
-polygons       = 'data/polygons.txt'
-# polylines = 'data/polylines.txt'
-grids          = 'data/grid.txt'
-examined_roads = 'data/examined_roads.txt'
-invalid_roads  = 'data/invalid_roads.txt'
-path           = 'data/path.txt'
+polygons = 'data/polygons.txt'
+grids    = 'data/grid.txt'
+enhance  = 'data/enhance.txt'
+examined = 'data/examined.txt'
+invalid  = 'data/invalid.txt'
+path     = 'data/path.txt'
 
 # Размеры поля.
 set xrange [x_min-5:x_max+5]
@@ -38,14 +38,14 @@ do for [i=1:4] {
 
 # Отрисовка карты.
 plot \
-    grids          using 1:2 with linespoints lw 1 ps 0.5 pt 7 lc "purple" title "Grid", \
-    polygons       using 1:2 with filledcurves fc "royalblue" notitle, \
-    examined_roads using 1:2 with lines       lw 2      lc "gold" title "Examined roads", \
-    path           using 1:2 with linespoints lw 2 pt 7 lc "green" title "Path", \
-    invalid_roads  using 1:2 with lines       lw 2 dt 8 lc "red" title "Invalid roads", \
-    '+' using (x_start):(y_start) with points ps 2 pt 7 lc "green" title "Start point", \
-    '+' using (x_end)  :(y_end)   with points ps 2 pt 7 lc "dark-green" title "End point", \
-    # polylines using 1:2 with lines lw 2 lc "blue" notitle, \
+    grids          using 1:2 with linespoints lw 1 ps 0.5 pt 7 lc "purple"     title "Grid", \
+    polygons       using 1:2 with filledcurves                 fc "royalblue"  notitle, \
+    examined       using 1:2 with lines       lw 2             lc "gold"       title "Examined roads", \
+    enhance        using 1:2 with points      lw 2 dt 8   pt 7 lc "dark-pink"  title "Enhancement", \
+    path           using 1:2 with linespoints lw 2        pt 7 lc "green"      title "Path", \
+    invalid        using 1:2 with lines       lw 2 dt 8        lc "red"        title "Invalid roads", \
+    '+' using (x_start):(y_start) with points      ps 2   pt 7 lc "green"      title "Start point", \
+    '+' using (x_end)  :(y_end)   with points      ps 2   pt 7 lc "dark-green" title "End point", \
 
 if (!exists("filename")) {
     pause -1
