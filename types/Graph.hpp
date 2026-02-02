@@ -103,6 +103,71 @@ public:
     }
 
 public:
+// Итератор для перебора рёбер графа.
+    class EdgeIterator {
+        using OuterIt = std::map<Point, std::set<Point>>::const_iterator;
+        using InnerIt = std::set<Point>::const_iterator;
+
+        const Graph* g{};
+        OuterIt oit;
+        InnerIt iit;
+
+        void advance_to_valid() {
+            while (oit != g->adj.end()) {
+                while (iit != oit->second.end()) {
+                    if (oit->first < *iit) return;
+                    ++iit;
+                }
+                ++oit;
+                if (oit != g->adj.end())
+                    iit = oit->second.begin();
+            }
+        }
+
+    public:
+        EdgeIterator(const Graph* g_, bool end = false) : g(g_) {
+            if (end || g->adj.empty()) {
+                oit = g->adj.end();
+                return;
+            }
+            oit = g->adj.begin();
+            iit = oit->second.begin();
+            advance_to_valid();
+        }
+
+        Segment operator*() const {
+            return Segment{oit->first, *iit};
+        }
+
+        EdgeIterator& operator++() {
+            ++iit;
+            advance_to_valid();
+            return *this;
+        }
+
+        bool operator==(const EdgeIterator& other) const {
+            return oit == other.oit &&
+                   (oit == g->adj.end() || iit == other.iit);
+        }
+
+        bool operator!=(const EdgeIterator& other) const {
+            return !(*this == other);
+        }
+    };
+
+    class EdgeRange {
+        const Graph* g;
+    public:
+        explicit EdgeRange(const Graph* g_) : g(g_) {}
+        EdgeIterator begin() const { return EdgeIterator(g); }
+        EdgeIterator end()   const { return EdgeIterator(g, true); }
+    };
+
+    EdgeRange edges() const {
+        return EdgeRange(this);
+    }
+
+public:
     friend std::ostream& operator<<(std::ostream& os, const Graph& g_) {
         Graph& g = const_cast<Graph&>(g_); // [TODO] Исправить этот костыль.
         for (const auto& p : g.verts) {
