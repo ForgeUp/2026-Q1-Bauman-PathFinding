@@ -53,6 +53,22 @@ bool intersect(const Segment& seg, const Rock& rock) {
     return false;
 }
 
+// Проверка пересечения двух препятствий.
+bool intersect(const Rock& r1, const Rock& r2) {
+    int64_t n = r1.points.size();
+
+    // Цикл по всем рёбрам.
+    for (int64_t i = 0; i < n; ++i) {
+        Segment edge{
+            r1.points[i],
+            r1.points[(i + 1) % n]
+        };
+        if (geometry::intersect(edge, r2)) return true;
+    }
+
+    return false;
+}
+
 // Проверка пересечения отрезка и всех препятствий внутри.
 bool intersect(const Segment& s, const Area& area) {
     for (const auto& rock : area.rocks) {
