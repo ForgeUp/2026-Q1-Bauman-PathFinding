@@ -3,12 +3,14 @@
 #include "BaseSolver.hpp"
 
 #include "Lazy/Lazy.hpp"
+#include "LazyInitialClusterOffset/LazyInitialClusterOffset.hpp"
 #include "LazyNaiveGridSealing/LazyNaiveGridSealing.hpp"
 #include "LazyInitialOffset/LazyInitialOffset.hpp"
 
 
 namespace solver {
-    using lazy = BaseSolver<Lazy>; 
+    using lazy = BaseSolver<Lazy>;
     using lazy_naive = BaseSolver<LazyNaiveGridSealing>;
     using lazy_naive_with_offset = BaseSolver<LazyInitialOffset>;
+    using lazy_naive_with_cluster_offset = BaseSolver<LazyInitialClusterOffset>;
 }
