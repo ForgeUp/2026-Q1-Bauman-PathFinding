@@ -8,6 +8,8 @@
 #include "gridgen/lazy_points.hpp"
 #include "gridgen/lazy_roads.hpp"
 
+#include "draw.hpp"
+
 
 // Генерация маршрутной сети без проверки коллизии с препятствиями.
 void Lazy::generate_initial_grid() {
@@ -16,4 +18,6 @@ void Lazy::generate_initial_grid() {
     points.add(task.end);
     
     grid = gridgen::lazy_roads(points, stgs.connection_radius);
+    
+    draw(task, sln, "initial_grid");
 }
