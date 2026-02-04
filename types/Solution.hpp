@@ -12,5 +12,6 @@ struct Solution {
     Graph enhance;
     Graph examined;
     Graph invalid;
+    Graph invalid_all;
     bool is_fail{false};
 };

@@ -36,7 +36,7 @@ Solution BaseSolver<Impl>::run() {
     generate_initial_grid();
     
     while (repeat && !is_found) {
-        
+
         find_path();
 
         // Завершение алгоритма, если в очередной раз не удалось найти путь и иссякло число попыток для поиска.
@@ -61,6 +61,8 @@ Solution BaseSolver<Impl>::run() {
 
     sln.is_fail = !is_found;
     // draw(task, sln, "final");
+
+    draw(task, {.invalid_all = invalid_all}, "invalid_all");
 
     return sln;
 }
