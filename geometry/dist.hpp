@@ -8,7 +8,7 @@
 namespace geometry {
 
 double dist(const Point& a, const Point& b) {
-    return std::sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
+    return std::hypot(a.x - b.x, a.y - b.y);
 }
 
 }
