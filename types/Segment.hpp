@@ -1,11 +1,17 @@
 #pragma once
 
+#include <cmath>
+
 #include "types/Point.hpp"
 
 
-struct Segment {
-    Point p1{};
-    Point p2{};
+    struct Segment {
+        Point p1{};
+        Point p2{};
+
+    double size() const {
+        return std::hypot(p2.x - p1.x, p2.y - p1.y);
+    }
 
     bool is_vert_rand() const {
         return p1.is_rand && p2.is_rand;
@@ -28,4 +34,4 @@ struct Segment {
         return l2 < r2;
     }
 
-};
+    };
