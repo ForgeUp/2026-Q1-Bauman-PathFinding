@@ -9,4 +9,12 @@ bool eq(double r, double l, double eps = 1e-12) {
     return std::fabs(r - l) < eps;
 }
 
+bool ge(double r, double l, double eps = 1e-12) {
+    return r > l || eq(r, l, eps);
+}
+
+bool le(double r, double l, double eps = 1e-12) {
+    return r < l || eq(r, l, eps);
+}
+
 }
