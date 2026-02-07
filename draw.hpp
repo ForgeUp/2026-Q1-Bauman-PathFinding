@@ -29,6 +29,8 @@ void draw(const Task& task, const Solution& sln, const std::string& name = "") {
     to_file("data/invalid.txt", sln.invalid);
     to_file("data/invalid_all.txt", sln.invalid_all);
     to_file("data/path.txt", sln.path);
+    to_file("data/qtree.txt", sln.qtree);
+    to_file("data/qtree_colors.txt", sln.qtree.colors());
     
     std::string cmd = std::format("gnuplot -e \"filename='{}/{}_{}.png'\" draw.gp", foldername, i++, name);
     system(cmd.c_str());
