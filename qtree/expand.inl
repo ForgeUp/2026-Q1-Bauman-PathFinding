@@ -12,6 +12,8 @@ void Qtree::expand(Box* box) {
     b.q3 = create_box({b.x_min, b.y_min}, {b.x_mid, b.y_mid});
     b.q4 = create_box({b.x_mid, b.y_min}, {b.x_max, b.y_mid});
     
+    if (b.type == Type::Busy) b.q1->type = b.q2->type = b.q3->type = b.q4->type = Type::Busy;
+
     b.is_leaf = false;
     b.type = Type::Inner;
 }
