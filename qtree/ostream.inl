@@ -37,13 +37,13 @@ std::ostream& operator<<(std::ostream& os, const Qtree::Colors& colors) {
 
         if (b == nullptr) continue;
         if (b->is_leaf) {
-            if (b->type == Qtree::Type::Undefined) continue;
+            if (b->type != colors.select) continue;
 
             os << b->x_max << ' ' << b->y_max << '\n'
-                << b->x_min << ' ' << b->y_max << '\n'
-                << b->x_min << ' ' << b->y_min << '\n'
-                << b->x_max << ' ' << b->y_min << '\n'
-                << '\n';
+               << b->x_min << ' ' << b->y_max << '\n'
+               << b->x_min << ' ' << b->y_min << '\n'
+               << b->x_max << ' ' << b->y_min << '\n'
+               << '\n';
                 
             continue;
         }

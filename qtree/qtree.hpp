@@ -12,8 +12,10 @@ private:
     class Colors;
     class Box;
 
+public:
     enum Type { Undefined, Free, Mix, Busy, Inner };
-    
+
+private:
     struct Box {
         double x_min{0}, x_mid{0}, x_max{0}, y_min{0}, y_mid{0}, y_max{0};
         bool is_leaf{true};
@@ -70,15 +72,16 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const Qtree& qtree);
     friend std::ostream& operator<<(std::ostream& os, const Colors& colors);
     
-    Colors colors() const {
-        return Colors(*this);
+    Colors colors(Type select) const {
+        return Colors(*this, select);
     }
 
     class Colors {
     private:
         const Qtree& qtree;
+        Type select{Type::Undefined};
     public:
-        Colors(const Qtree& qtree_) : qtree(qtree_) {}
+        Colors(const Qtree& qtree_, Type select_) : qtree(qtree_), select(select_) {}
 
         friend std::ostream& operator<<(std::ostream& os, const Colors& colors);
     };
