@@ -1,5 +1,7 @@
 #pragma once
 
+#include <algorithm>
+
 #include "types/Point.hpp"
 #include "types/Segment.hpp"
 
@@ -75,12 +77,12 @@ auto clip(const Segment& s, const Point& min, const Point& max) {
     return Result{
         .segment = {
             Point(
-                x1 + (x2 - x1) * u1,
-                y1 + (y2 - y1) * u1
+                std::clamp(x1 + (x2 - x1) * u1, min.x, max.x),
+                std::clamp(y1 + (y2 - y1) * u1, min.y, max.y)
             ),
             Point(
-                x1 + (x2 - x1) * u2,
-                y1 + (y2 - y1) * u2
+                std::clamp(x1 + (x2 - x1) * u2, min.x, max.x),
+                std::clamp(y1 + (y2 - y1) * u2, min.y, max.y)
             )
         },
         .is_success = true
