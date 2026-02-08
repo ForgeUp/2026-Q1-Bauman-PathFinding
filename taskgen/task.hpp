@@ -42,7 +42,7 @@ Rock polygon(const GeneratorConfig& cfg, std::mt19937& gen) {
     return rock;
 }
 
-Task task(const GeneratorConfig& cfg) {
+Task task(GeneratorConfig& cfg) {
     std::random_device rd;
     std::mt19937 gen(rd());
 
@@ -59,24 +59,22 @@ Task task(const GeneratorConfig& cfg) {
 
     int polygonCount = static_cast<int>(areaSize * cfg.polygon_density);
 
-    if (!cfg.rand_home_points) {
-        task.start = cfg.start;
-        task.end   = cfg.end;
-    }
-
-    if (cfg.rand_home_points) task.start = {
+    if (cfg.rand_home_points) cfg.start = {
         random::from_range(cfg.x_min + cfg.border_margin,
                            cfg.x_max - cfg.border_margin, gen),
         random::from_range(cfg.y_min + cfg.border_margin,
                            cfg.y_max - cfg.border_margin, gen)
     };
 
-    if (cfg.rand_home_points) task.end = {
+    if (cfg.rand_home_points) cfg.end = {
         random::from_range(cfg.x_min + cfg.border_margin,
                            cfg.x_max - cfg.border_margin, gen),
         random::from_range(cfg.y_min + cfg.border_margin,
                            cfg.y_max - cfg.border_margin, gen)
     };
+
+    task.start = cfg.start;
+    task.end   = cfg.end;
 
     // Генерация препятствий.
     for (int i = 0; i < polygonCount; ++i) {
