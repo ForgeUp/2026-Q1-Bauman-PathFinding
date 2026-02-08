@@ -34,10 +34,8 @@ int main() {
     //     Rock{{Point(20, 70), Point(80, 70), Point(50, 20)}}
     // };
     for (const auto& r : task.area.rocks) {
-        for (const auto& s : r.edges()) {
-            qtree.add(s);
-        }
+        qtree.add(r);
     }
-
+    
     draw(task, {.qtree = qtree}, "qtree");
 }
