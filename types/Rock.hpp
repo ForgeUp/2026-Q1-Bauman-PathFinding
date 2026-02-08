@@ -15,6 +15,8 @@ public:
         using iterator_category = std::forward_iterator_tag;
         using value_type        = Segment;
         using difference_type   = std::ptrdiff_t;
+        using reference         = value_type;
+        using pointer           = void;
 
         EdgeIterator(const Rock& r_, std::size_t i) : r(r_), index(i) {}
 
