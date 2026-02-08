@@ -59,6 +59,7 @@ public:
 public:
     bool collision(const Point& p);
     void add(const Segment& s);
+    void add(const Rock& r);
 
 private:
     Box* locate(const Point& p, Box* from);
@@ -68,6 +69,8 @@ private:
 
     void expand(Box* box);
     Box* upscale(Box* b, const Point& p);
+
+    void rasterize(const Segment& s);
 
 public:
     friend std::ostream& operator<<(std::ostream& os, const Qtree& qtree);
@@ -90,6 +93,7 @@ public:
 
 
 #include "add.inl"
+#include "add_rock.inl"
 #include "box.inl"
 #include "collision.inl"
 #include "expand.inl"
@@ -97,5 +101,6 @@ public:
 #include "is_nearby.inl"
 #include "locate.inl"
 #include "ostream.inl"
+#include "rasterize.inl"
 #include "qtree.inl"
 #include "upscale.inl"
