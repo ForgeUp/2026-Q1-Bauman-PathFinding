@@ -44,12 +44,13 @@ private:
 private:
     Box* root{nullptr};
     double min_box_size_point = 0.5;
+    Point min, max;
 
 public:
     Qtree() = default;
-    Qtree(const Point& min, const Point& max) : root{create_box(min, max)} {}
+    Qtree(const Point& min_, const Point& max_) : root{create_box(min_, max_)}, min{min_}, max{max_} {}
 
-    Qtree(const Qtree& other) : root(copy_box(other.root)), min_box_size_point(other.min_box_size_point) {}
+    Qtree(const Qtree& other) : root(copy_box(other.root)), min_box_size_point(other.min_box_size_point), min{other.min}, max{other.max} {}
 
     Qtree& operator=(const Qtree& other);
 
