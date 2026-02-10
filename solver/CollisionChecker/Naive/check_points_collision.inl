@@ -2,7 +2,7 @@
 
 #include <set>
 
-#include "Lazy.hpp"
+#include "Naive.hpp"
 
 #include "types/Point.hpp"
 #include "types/Graph.hpp"
@@ -10,7 +10,7 @@
 #include "geometry/is_inside.hpp"
 
 
-bool Lazy::check_points_collision() {
+bool CollisionChecker::Naive::check_points_collision() {
     bool has_collided_points = false;
     std::set<Point> collided_points;
 

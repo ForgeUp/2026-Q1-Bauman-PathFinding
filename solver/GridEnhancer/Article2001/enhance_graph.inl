@@ -4,7 +4,7 @@
 #include <numeric>
 #include <random>
 
-#include "Lazy.hpp"
+#include "Article2001.hpp"
 
 #include "random/from_range.hpp"
 #include "random/from_norm.hpp"
@@ -13,7 +13,7 @@
 #include "gridgen/lazy_roads.hpp"
 
 
-bool Lazy::enhance_graph() {
+bool GridEnhancer::Article2001::enhance_graph() {
     if (!is_path_not_found) return false;
     
     static thread_local std::mt19937 rng{std::random_device{}()};

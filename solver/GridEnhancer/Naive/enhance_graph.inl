@@ -2,14 +2,14 @@
 
 #include <cmath>
 
-#include "LazyNaiveGridSealing.hpp"
+#include "Naive.hpp"
 
 #include "gridgen/lazy_points.hpp"
 #include "gridgen/lazy_roads.hpp"
 
 
 // Усиление графа путём уплотнения сетки случайными точками с удвоения количества на каждом шаге.
-bool LazyNaiveGridSealing::enhance_graph() {
+bool GridEnhancer::Naive::enhance_graph() {
     if (!is_path_not_found) return false;
 
     // Генерация случайных точек в пределах всей арены.

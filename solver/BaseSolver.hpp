@@ -1,5 +1,7 @@
 #pragma once
 
+#include "VarsBase.hpp"
+
 #include "types/Task.hpp"
 #include "types/Solution.hpp"
 #include "types/SolverSettings.hpp"
@@ -7,10 +9,30 @@
 #include "draw.hpp"
 
 
-template <typename Impl>
-class BaseSolver : public Impl {
+template <typename... Bases>
+class Compose :
+    virtual public VarsBase,
+    public Bases...
+{
 public:
-    BaseSolver(const Task& task_, const SolverSettings& stgs_) : Impl(task_, stgs_) {}
+    Compose(const Task& task, const SolverSettings& stgs) :
+        VarsBase(task, stgs),
+        Bases(task, stgs)...
+    {}
+};
+
+
+template <typename Impl>
+class BaseSolver : 
+    virtual public VarsBase,
+    public Impl
+{
+public:
+    BaseSolver(const Task& task, const SolverSettings& stgs) :
+        VarsBase(task, stgs),
+        Impl(task, stgs)
+    {}
+
     Solution run();
 
 protected:
@@ -22,10 +44,11 @@ protected:
     using Impl::invalid_all;
     using Impl::generate_initial_grid;
     using Impl::find_path;
-    using Impl::check_enchancement_limit;
     using Impl::enhance_graph;
     using Impl::check_points_collision;
     using Impl::check_edges_collision;
+
+    bool check_enchancement_limit();
 };
 
 
@@ -65,4 +88,13 @@ Solution BaseSolver<Impl>::run() {
     draw(task, {.invalid_all = invalid_all}, "invalid_all");
 
     return sln;
+}
+
+
+template <typename Impl>
+bool BaseSolver<Impl>::check_enchancement_limit() {
+    if (!is_path_not_found) return false;
+    if (attempts < stgs.enhance_attempts_limit) return false;
+
+    return true;
 }

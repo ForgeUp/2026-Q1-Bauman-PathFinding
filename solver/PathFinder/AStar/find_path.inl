@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Lazy.hpp"
+#include "Astar.hpp"
 
 #include "pathfind/lazy.hpp"
 
 
-void Lazy::find_path() {
+void PathFinder::AStar::find_path() {
     auto res = pathfind::lazy(task, grid);
 
     path     = res.path;

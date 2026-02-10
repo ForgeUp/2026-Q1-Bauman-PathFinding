@@ -1,6 +1,6 @@
 
 #include "taskgen/task.hpp"
-#include "solver/solver.hpp"
+#include "solver/Solver/Article2001.hpp"
 #include "draw.hpp"
 
 
@@ -24,14 +24,14 @@ int main() {
     auto task = taskgen::task(cfg);
     
     SolverSettings stgs = {
-        .initial_nodes_count = 1000,
-        .connection_radius = 7,
-        .enhance_rand_nodes_count = 50,
-        .enhance_seed_nodes_count = 50,
-        .enhance_attempts_limit = 5
+        .initial_nodes_count = 100,
+        .connection_radius = 10,
+        .enhance_rand_nodes_count = 100,
+        .enhance_seed_nodes_count = 0,
+        .enhance_attempts_limit = 10
     };
-    auto solver = solver::lazy(task, stgs);
-    
+    auto solver = solver::Article2001(task, stgs);
+
     auto sln = solver.run();
 
     draw(task, sln, "result");

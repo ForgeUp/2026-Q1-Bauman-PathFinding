@@ -2,7 +2,7 @@
 
 #include <set>
 
-#include "Lazy.hpp"
+#include "Naive.hpp"
 
 #include "types/Point.hpp"
 #include "types/Segment.hpp"
@@ -11,7 +11,7 @@
 #include "geometry/intersect.hpp"
 
 
-bool Lazy::check_edges_collision() {
+bool CollisionChecker::Naive::check_edges_collision() {
     bool has_collided_edges = false;
     std::set<Segment> collided_edges;
 
