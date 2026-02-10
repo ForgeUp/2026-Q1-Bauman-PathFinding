@@ -58,7 +58,6 @@ public:
 
 public:
     bool collision(const Point& p);
-    void add(const Segment& s);
     void add(const Rock& r);
 
 private:
@@ -92,7 +91,6 @@ public:
 };
 
 
-#include "add.inl"
 #include "add_rock.inl"
 #include "box.inl"
 #include "collision.inl"
