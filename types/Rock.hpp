@@ -23,8 +23,16 @@ public:
         Segment operator*() const {
             std::size_t n = r.points.size();
             return Segment{
-                r.points[index],
+                r.points[(index + 0) % n],
                 r.points[(index + 1) % n]
+            };
+        }
+
+        Segment operator[](std::size_t idx) const {
+            std::size_t n = r.points.size();
+            return Segment{
+                r.points[(idx + 0) % n],
+                r.points[(idx + 1) % n]
             };
         }
 
