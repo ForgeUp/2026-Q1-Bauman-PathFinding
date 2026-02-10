@@ -1,6 +1,8 @@
 #pragma once
 
-#include <vector>
+#include <list>
+#include <set>
+#include <map>
 
 #include "types/Point.hpp"
 #include "types/Segment.hpp"
@@ -15,6 +17,10 @@ private:
 public:
     enum Type { Undefined, Free, Mix, Busy, Inner };
 
+    using obstacle_t = Rock;
+    using ObstID     = std::list<obstacle_t>::pointer;
+    using SegIdx     = int32_t;
+
 private:
     struct Box {
         double x_min{0}, x_mid{0}, x_max{0}, y_min{0}, y_mid{0}, y_max{0};
@@ -22,8 +28,7 @@ private:
         Type type{Type::Undefined};
         Box *q1{nullptr}, *q2{nullptr}, *q3{nullptr}, *q4{nullptr};
 
-        std::vector<const Segment*> segments;
-        std::vector<Rock> rocks;
+        std::map<ObstID,std::set<SegIdx>> collisions;
 
         bool is_inside(const Point& p);
         bool is_inside_q1(const Point& p);
@@ -43,8 +48,11 @@ private:
 
 private:
     Box* root{nullptr};
-    double min_box_size_point = 0.5;
     Point min, max;
+    
+    std::list<obstacle_t> obstacles;
+
+    double min_box_size_point = 0.5;
 
 public:
     Qtree() = default;
@@ -69,7 +77,7 @@ private:
     void expand(Box* box);
     Box* upscale(Box* b, const Point& p);
 
-    void rasterize(const Segment& s);
+    void rasterize(const Segment& s, SegIdx idx, ObstID r);
 
 public:
     friend std::ostream& operator<<(std::ostream& os, const Qtree& qtree);

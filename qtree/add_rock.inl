@@ -17,13 +17,19 @@
 
 
 void Qtree::add(const Rock& r) {
+    if (r.points.size() < 3) return;
+
+    // Регистрация многоугольника.
+    obstacles.push_back(r);
+    ObstID obst = &obstacles.back();
+
     // Массив рёбер.
     std::vector<Segment> segs(r.points.size());
     std::copy(r.edges().begin(), r.edges().end(), segs.begin());
 
     // Растеризируем рёбра.
-    for (auto& s : segs) {
-        rasterize(s);
+    for (int32_t idx{ 0 }; auto& s : segs) {
+        rasterize(s, idx++, obst);
     }
 
     // Массив для определения текущих рёбер для нахождения пересечения с горизонтальной линией.
@@ -102,6 +108,7 @@ void Qtree::add(const Rock& r) {
                 b = locate({x,y});
                 if (b == nullptr) break;
                 b->type = b->type == Type::Mix ? Type::Mix : Type::Busy;
+                if (!b->collisions.contains(obst)) b->collisions[obst].insert({});
             }
         }
     }

@@ -11,8 +11,10 @@ bool Qtree::collision(const Point& p) {
     if (b->type == Type::Free) return false;
     if (b->type == Type::Busy) return true;
     // Иначе b->type == Type::Mix.
-    for (const auto& s : b->segments) {
-        if (geometry::on_segment(p,*s)) return true;
+    for (const auto& [obst, seg_idxs] : b->collisions) {
+        for (const auto& idx : seg_idxs) {
+            if (geometry::on_segment(p, (*obst).edges().begin()[idx])) return true;
+        }
     }
     return false;
 }

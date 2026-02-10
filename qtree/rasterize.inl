@@ -18,7 +18,7 @@
 
 
 // Метод для растеризации квадрантов вдоль отрезка. Предусмотрена обрезка отрезков, выходящих за пределы области дерева.
-void Qtree::rasterize(const Segment& s) {
+void Qtree::rasterize(const Segment& s, SegIdx idx, ObstID obst) {
     auto [clipped, is_success] = geometry::clip(s, min, max);
     if (!is_success) return; // Отрезок вне области дерева.
 
@@ -33,10 +33,12 @@ void Qtree::rasterize(const Segment& s) {
     if (b1 != nullptr) {
         b1 = upscale(b1, p1);
         b1->type = b1->type == Type::Busy ? Type::Busy : Type::Mix; 
+        b1->collisions[obst].insert(idx);
     }
     if (b2 != nullptr) {
         b2 = upscale(b2, p2);
         b2->type = b2->type == Type::Busy ? Type::Busy : Type::Mix;
+        b2->collisions[obst].insert(idx);
     }
     
     if (b1 == b2) return; // Отрезок-точка или отрезок, вмещающийся в одну клетку.
@@ -48,6 +50,7 @@ void Qtree::rasterize(const Segment& s) {
             if (b == nullptr) continue;
             b = upscale(b, p);
             b->type = b->type == Type::Busy ? Type::Busy : Type::Mix;
+            b->collisions[obst].insert(idx);
         }
         return;
     }
@@ -59,6 +62,7 @@ void Qtree::rasterize(const Segment& s) {
             if (b == nullptr) continue;
             b = upscale(b, p);
             b->type = b->type == Type::Busy ? Type::Busy : Type::Mix;
+            b->collisions[obst].insert(idx);
         }
         return;
     }
@@ -108,6 +112,7 @@ void Qtree::rasterize(const Segment& s) {
         if (bq == nullptr) break;
         bq = upscale(bq, q);
         bq->type = bq->type == Type::Busy ? Type::Busy : Type::Mix;
+        bq->collisions[obst].insert(idx);
 
         b = bq;
     }
