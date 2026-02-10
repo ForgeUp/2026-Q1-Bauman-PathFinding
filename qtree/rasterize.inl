@@ -27,14 +27,8 @@ void Qtree::rasterize(const Segment& s) {
 
     const double step = min_box_size_point * 0.5;
 
-    Box* b1 = locate(p1); if (b1 == nullptr) {
-        std::cout << "Wtf whata fa" << '\n';
-        return;
-    }
-    Box* b2 = locate(p2); if (b2 == nullptr) {
-        std::cout << "Wtf whata fa" << '\n';
-        return;
-    }
+    Box* b1 = locate(p1); if (b1 == nullptr) return;
+    Box* b2 = locate(p2); if (b2 == nullptr) return;
 
     if (b1 != nullptr) {
         b1 = upscale(b1, p1);
