@@ -29,7 +29,7 @@ void Qtree::add(const Rock& r) {
 
     // Растеризируем рёбра.
     for (int32_t idx{ 0 }; auto& s : segs) {
-        rasterize(s, idx++, obst);
+        add(s, idx++, obst);
     }
 
     // Массив для определения текущих рёбер для нахождения пересечения с горизонтальной линией.

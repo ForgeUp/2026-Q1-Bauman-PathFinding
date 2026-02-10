@@ -18,7 +18,7 @@
 
 
 // Метод для растеризации квадрантов вдоль отрезка. Предусмотрена обрезка отрезков, выходящих за пределы области дерева.
-void Qtree::rasterize(const Segment& s, SegIdx idx, ObstID obst) {
+void Qtree::add(const Segment& s, SegIdx idx, ObstID obst) {
     auto [clipped, is_success] = geometry::clip(s, min, max);
     if (!is_success) return; // Отрезок вне области дерева.
 

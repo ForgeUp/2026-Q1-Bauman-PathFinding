@@ -77,7 +77,7 @@ private:
     void expand(Box* box);
     Box* upscale(Box* b, const Point& p);
 
-    void rasterize(const Segment& s, SegIdx idx, ObstID r);
+    void add(const Segment& s, SegIdx idx, ObstID r);
 
 public:
     friend std::ostream& operator<<(std::ostream& os, const Qtree& qtree);
@@ -100,6 +100,7 @@ public:
 
 
 #include "add_rock.inl"
+#include "add_segment.inl"
 #include "box.inl"
 #include "collision.inl"
 #include "expand.inl"
@@ -107,6 +108,5 @@ public:
 #include "is_nearby.inl"
 #include "locate.inl"
 #include "ostream.inl"
-#include "rasterize.inl"
 #include "qtree.inl"
 #include "upscale.inl"
