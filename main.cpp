@@ -1,6 +1,8 @@
 
+#include <chrono>
+
 #include "taskgen/task.hpp"
-#include "solver/Solver/Qtree.hpp"
+#include "solver/Solver/ClusterOffset.hpp"
 
 
 int main() {
@@ -27,14 +29,24 @@ int main() {
     
     SolverSettings stgs = {
         .initial_nodes_count = 100,
-        .connection_radius = 20,
+        .connection_radius = 10,
         .enhance_rand_nodes_count = 100,
         .enhance_seed_nodes_count = 0,
         .enhance_attempts_limit = 10
     };
-    auto solver = solver::Qtree(task, stgs);
-
-    auto sln = solver.run();
+    
+    
+    for (int32_t i = 0; i < 10; ++i) {
+        auto start = std::chrono::steady_clock::now();
+        
+        auto solver = solver::ClusterOffset(task, stgs);
+        auto sln = solver.run();
+        
+        auto end = std::chrono::steady_clock::now();
+        auto duration_ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    
+        std::cout << "Time consume: " << duration_ms << '\n';
+    }
 
     return 0;
 }
