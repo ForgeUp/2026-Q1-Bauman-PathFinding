@@ -1,7 +1,6 @@
 
 #include "taskgen/task.hpp"
-#include "solver/Solver/Article2001.hpp"
-#include "draw.hpp"
+#include "solver/Solver/Qtree.hpp"
 
 
 int main() {
@@ -25,16 +24,14 @@ int main() {
     
     SolverSettings stgs = {
         .initial_nodes_count = 100,
-        .connection_radius = 10,
+        .connection_radius = 20,
         .enhance_rand_nodes_count = 100,
         .enhance_seed_nodes_count = 0,
         .enhance_attempts_limit = 10
     };
-    auto solver = solver::Article2001(task, stgs);
+    auto solver = solver::Qtree(task, stgs);
 
     auto sln = solver.run();
-
-    draw(task, sln, "result");
 
     return 0;
 }
