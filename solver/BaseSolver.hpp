@@ -84,8 +84,6 @@ Solution BaseSolver<Impl>::run() {
 
     visual.picture({task, {.invalid_all = invalid_all}, "invalid_all"});
     visual.picture({task, sln, "result"});
-    
-    std::cout << "Ready" << '\n';
 
     return sln;
 }
