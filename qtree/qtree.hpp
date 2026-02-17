@@ -111,6 +111,7 @@ public:
 #include "box.inl"
 #include "collision.inl"
 #include "expand.inl"
+#include "get_segment_by_idx.inl"
 #include "is_inside.inl"
 #include "is_nearby.inl"
 #include "locate.inl"
