@@ -79,6 +79,9 @@ private:
 
     void add(const Segment& s, SegIdx idx, ObstID r);
 
+private:
+    Segment get_segment_by_idx(ObstID obst, SegIdx idx);
+
 public:
     friend std::ostream& operator<<(std::ostream& os, const Qtree& qtree);
     friend std::ostream& operator<<(std::ostream& os, const Colors& colors);
