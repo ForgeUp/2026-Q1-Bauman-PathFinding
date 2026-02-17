@@ -7,6 +7,8 @@
 #include "types/Solution.hpp"
 #include "types/SolverSettings.hpp"
 
+#include "draw/Visualizer.hpp"
+
 
 class VarsBase {
 public:
@@ -39,4 +41,7 @@ protected:
     // Левый нижний и правый верхний углы арены.
     Point corner_min = Point(task.area.x_min, task.area.y_min);
     Point corner_max = Point(task.area.x_max, task.area.y_max);
+
+protected:
+    Visualizer visual;
 };

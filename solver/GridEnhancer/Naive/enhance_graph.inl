@@ -38,7 +38,7 @@ bool GridEnhancer::Naive::enhance_graph() {
     // Уменьшение радиуса связывания, так как узлы ближе.
     connection_radius = 2 * std::max(dx,dy);
 
-    draw(task, sln, "point_enhancement");
+    visual.picture({task, sln, "point_enhancement"});
 
     attempts++;
     return true;

@@ -6,8 +6,6 @@
 #include "types/Solution.hpp"
 #include "types/SolverSettings.hpp"
 
-#include "draw.hpp"
-
 
 template <typename... Bases>
 class Compose :
@@ -54,7 +52,7 @@ protected:
 
 template <typename Impl>
 Solution BaseSolver<Impl>::run() {
-    draw(task, sln, "initial");
+    visual.picture({task, sln, "initial"});
 
     generate_initial_grid();
     
@@ -83,9 +81,11 @@ Solution BaseSolver<Impl>::run() {
     }
 
     sln.is_fail = !is_found;
-    // draw(task, sln, "final");
 
-    draw(task, {.invalid_all = invalid_all}, "invalid_all");
+    visual.picture({task, {.invalid_all = invalid_all}, "invalid_all"});
+    visual.picture({task, sln, "result"});
+    
+    std::cout << "Ready" << '\n';
 
     return sln;
 }

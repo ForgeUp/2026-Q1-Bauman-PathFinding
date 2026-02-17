@@ -9,8 +9,6 @@
 #include "gridgen/lazy_roads.hpp"
 #include "gridgen/lazy_offset_grid_smooth.hpp"
 
-#include "draw.hpp"
-
 
 // Генерация маршрутной сети без проверки коллизии с препятствиями.
 void InitialGrider::ObstacleOffset::generate_initial_grid() {
@@ -37,5 +35,5 @@ void InitialGrider::ObstacleOffset::generate_initial_grid() {
     double dy = (corner_max.y - corner_min.y) / cells_per_side;
     connection_radius = 2 * std::max(dx,dy);
     
-    draw(task, sln, "initial_grid");
+    visual.picture({task, sln, "initial_grid"});
 }

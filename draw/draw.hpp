@@ -34,6 +34,6 @@ void draw(const Task& task, const Solution& sln, const std::string& name = "") {
     to_file("data/qtree_mix.txt",  sln.qtree.colors(Qtree::Type::Mix ));
     to_file("data/qtree_busy.txt", sln.qtree.colors(Qtree::Type::Busy));
     
-    std::string cmd = std::format("gnuplot -e \"filename='{}/{}_{}.png'\" draw.gp", foldername, i++, name);
+    std::string cmd = std::format("gnuplot -e \"filename='{}/{}_{}.png'\" draw/draw.gp", foldername, i++, name);
     system(cmd.c_str());
 }

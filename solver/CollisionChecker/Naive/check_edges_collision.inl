@@ -34,7 +34,7 @@ bool CollisionChecker::Naive::check_edges_collision() {
         grid.remove(e);
     }
 
-    // draw(task, sln, "edge_collision");
+    // visual.picture({task, sln, "edge_collision"});
 
     // Путь ищется заново.
     return true;

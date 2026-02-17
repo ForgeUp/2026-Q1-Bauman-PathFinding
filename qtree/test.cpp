@@ -3,7 +3,7 @@
 #include "types/Point.hpp"
 
 #include "taskgen/task.hpp"
-#include "draw.hpp"
+#include "draw/draw.hpp"
 
 
 void test1() {

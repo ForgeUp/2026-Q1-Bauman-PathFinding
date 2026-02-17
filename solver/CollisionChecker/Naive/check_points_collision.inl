@@ -42,7 +42,7 @@ bool CollisionChecker::Naive::check_points_collision() {
         grid.remove(p);
     }
 
-    // draw(task, sln, "point_collision");
+    // visual.picture({task, sln, "point_collision"});
     
     return true;
 }

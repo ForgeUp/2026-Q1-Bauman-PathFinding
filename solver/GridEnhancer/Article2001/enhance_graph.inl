@@ -87,7 +87,7 @@ bool GridEnhancer::Article2001::enhance_graph() {
     //     }
     // }
 
-    // draw(task, sln, "point_enhancement");
+    // visual.picture({task, sln, "point_enhancement"});
 
     attempts++;
     return true;

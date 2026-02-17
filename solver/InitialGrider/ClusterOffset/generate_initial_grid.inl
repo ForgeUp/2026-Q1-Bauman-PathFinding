@@ -12,8 +12,6 @@
 #include "gridgen/lazy_roads.hpp"
 #include "gridgen/lazy_offset_grid_sharp.hpp"
 
-#include "draw.hpp"
-
 
 // Генерация маршрутной сети без проверки коллизии с препятствиями.
 void InitialGrider::ClusterOffset::generate_initial_grid() {
@@ -30,7 +28,7 @@ void InitialGrider::ClusterOffset::generate_initial_grid() {
     // Генерация окаймляющих маршрутных компонент вокруг кластеров препятствий.
     Graph offset_grid = gridgen::lazy_offset_grid_sharp(cluster_area, corner_min, corner_max);
 
-    draw(task, {.grid = offset_grid}, "offset_grid");
+    visual.picture({task, {.grid = offset_grid}, "offset_grid"});
 
     // Генерация случайной маршрутной сети.
     Graph rand_points = gridgen::lazy_points(stgs.initial_nodes_count, corner_min, corner_max);
@@ -52,6 +50,6 @@ void InitialGrider::ClusterOffset::generate_initial_grid() {
     double dy = (corner_max.y - corner_min.y) / cells_per_side;
     connection_radius = 2 * std::max(dx,dy);
     
-    draw(task, sln, "initial_grid");
+    visual.picture({task, sln, "initial_grid"});
 }
 
