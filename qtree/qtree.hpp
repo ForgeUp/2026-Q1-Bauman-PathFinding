@@ -25,7 +25,7 @@ private:
     struct Box {
         double x_min{0}, x_mid{0}, x_max{0}, y_min{0}, y_mid{0}, y_max{0};
         bool is_leaf{true};
-        Type type{Type::Undefined};
+        Type type{Type::Free};
         Box *q1{nullptr}, *q2{nullptr}, *q3{nullptr}, *q4{nullptr};
 
         std::map<ObstID,std::set<SegIdx>> collisions;

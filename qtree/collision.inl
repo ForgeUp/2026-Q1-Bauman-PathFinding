@@ -10,9 +10,9 @@
 
 
 bool Qtree::collision(const Point& p) {
-    Box* b = locate(p);
-    if (b == nullptr) return false;
-    if (b->type == Type::Free) return false;
+    Box* b = locate(p); if (b == nullptr) return false;
+
+    if (b->type == Type::Free || b->type == Type::Undefined) return false;
     if (b->type == Type::Busy) return true;
     // Иначе b->type == Type::Mix.
     for (const auto& [obst, seg_idxs] : b->collisions) {
