@@ -1,0 +1,54 @@
+#pragma once
+
+#include <set>
+
+#include "Qtree.hpp"
+
+#include "types/Point.hpp"
+#include "types/Graph.hpp"
+
+#include "geometry/is_inside.hpp"
+
+
+bool CollisionChecker::Qtree::check_points_collision() {
+    if (!qtree_ready) {
+        for (const auto& r : task.area.rocks) {
+            qtree.add(r);
+        }
+        qtree_ready = true;
+        visual.picture({task, {.qtree = qtree}, "qtree"});
+    }
+
+    bool has_collided_points = false;
+    std::set<Point> collided_points;
+
+    // Проверка, что нет коллизий между вершинами пути и препятствиями.
+    for (auto& p : path.verts) {
+        if (p.is_checked_collsn) continue; // Пропускаем вершины, для которых уже была проверена коллизия.
+        
+        p.is_checked_collsn = true;
+        if (!qtree.collision(p)) continue;
+
+        has_collided_points = true;
+        collided_points.insert(p);
+    }
+    
+    // Если коллизий не обнаружено, блок завершается.
+    if (!has_collided_points) return false;
+    // Иначе.
+    
+    // Невалидные вершины (вместе с инцидентными рёбрами) удаляются из маршрутной карты.
+    for (auto& p : collided_points) { // Запись удалённых вершин и рёбер.
+        for (auto& q : grid.adj[p]) {
+            Segment s(p,q);
+            invalid.add(s);
+            invalid_all.add(s);
+            if (s.is_vert_rand()) invalid_all_rand.add(s);
+        }
+        grid.remove(p);
+    }
+
+    // visual.picture({task, sln, "point_collision"});
+    
+    return true;
+}
