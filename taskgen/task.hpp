@@ -43,8 +43,8 @@ Rock polygon(const GeneratorConfig& cfg, std::mt19937& gen) {
 }
 
 Task task(GeneratorConfig& cfg) {
-    std::random_device rd;
-    std::mt19937 gen(rd());
+    if (cfg.generate_rand_seed) cfg.seed = std::random_device()();
+    std::mt19937 gen(cfg.seed);
 
     Task task;
 

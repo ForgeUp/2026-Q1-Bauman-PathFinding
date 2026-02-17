@@ -1,5 +1,7 @@
 #pragma once
 
+#include <random>
+
 #include "types/Point.hpp"
 
 
@@ -8,6 +10,9 @@ struct GeneratorConfig {
     double x_max{100};
     double y_min{0};
     double y_max{100};
+
+    bool generate_rand_seed{true};
+    std::random_device::result_type seed{0};
 
     bool rand_home_points{false};
     Point start = Point(10.0, 10.0);

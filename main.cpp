@@ -10,6 +10,9 @@ int main() {
         .y_min = 0,
         .y_max = 100,
 
+        .generate_rand_seed = false,
+        .seed = 42,
+
         .rand_home_points = false,
         .start = Point(10.0, 10.0),
         .end   = Point(90.0, 90.0),
