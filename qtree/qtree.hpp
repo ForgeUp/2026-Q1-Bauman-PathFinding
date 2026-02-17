@@ -66,6 +66,7 @@ public:
 
 public:
     bool collision(const Point& p);
+    bool collision(const Segment& s);
     void add(const Rock& r);
 
 private:
