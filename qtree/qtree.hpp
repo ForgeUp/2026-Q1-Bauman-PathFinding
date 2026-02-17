@@ -79,6 +79,9 @@ private:
 
     void add(const Segment& s, SegIdx idx, ObstID r);
 
+    template<bool upscale_on>
+    std::vector<Qtree::Box*> trace(const Segment& s);
+
 private:
     Segment get_segment_by_idx(ObstID obst, SegIdx idx);
 
@@ -112,4 +115,5 @@ public:
 #include "locate.inl"
 #include "ostream.inl"
 #include "qtree.inl"
+#include "trace.inl"
 #include "upscale.inl"
