@@ -30,7 +30,10 @@ bool CollisionChecker::Qtree::check_points_collision() {
     }
     
     // Если коллизий не обнаружено, блок завершается.
-    if (!has_collided_points) return false;
+    if (!has_collided_points) {
+        metric.time_out(__func__);
+        return false;
+    }
     // Иначе.
     
     // Невалидные вершины (вместе с инцидентными рёбрами) удаляются из маршрутной карты.

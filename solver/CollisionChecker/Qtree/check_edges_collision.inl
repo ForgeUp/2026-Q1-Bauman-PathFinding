@@ -27,7 +27,10 @@ bool CollisionChecker::Qtree::check_edges_collision() {
     }
 
     // Если коллизей не обнаружено, блок завершается.
-    if (!has_collided_edges) return false;
+    if (!has_collided_edges) {
+        metric.time_out(__func__);
+        return false;
+    }
     // Иначе.
 
     // Невалидные рёбра удаляются из маршрутной карты.

@@ -10,9 +10,9 @@
 
 // Усиление графа путём уплотнения сетки случайными точками с удвоения количества на каждом шаге.
 bool GridEnhancer::Naive::enhance_graph() {
-    metric.time_in(__func__);
-    
     if (!is_path_not_found) return false;
+    
+    metric.time_in(__func__);
 
     // Генерация случайных точек в пределах всей арены.
     Graph enhance_rand_points = gridgen::lazy_points(enhance_nodes_count, corner_min, corner_max);

@@ -14,9 +14,9 @@
 
 
 bool GridEnhancer::Article2001::enhance_graph() {
-    metric.time_in(__func__);
-
     if (!is_path_not_found) return false;
+    
+    metric.time_in(__func__);
     
     static thread_local std::mt19937 rng{std::random_device{}()};
 
