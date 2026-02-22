@@ -1,8 +1,10 @@
 
+#include <algorithm>
 #include <chrono>
+#include <format>
 
 #include "taskgen/task.hpp"
-#include "solver/Solver/ClusterOffset.hpp"
+#include "solver/Solver/Qtree.hpp"
 
 
 int main() {
@@ -39,15 +41,27 @@ int main() {
     for (int32_t i = 0; i < 10; ++i) {
         auto start = std::chrono::steady_clock::now();
         
-        auto solver = solver::ClusterOffset(task, stgs);
+        auto solver = solver::Qtree(task, stgs);
         auto sln = solver.run();
         
         auto end = std::chrono::steady_clock::now();
         auto duration_ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
         std::cout << "Total time consume: " << duration_ms << '\n';
 
+        std::vector<std::pair<std::string,Metric::Stamp>> metric;
         for (const auto& [name, stamp] : sln.metric) {
-            std::cout << '\t' << name << ' ' << std::chrono::duration_cast<std::chrono::milliseconds>(stamp.acc) << '\n';
+            metric.emplace_back(name, stamp);
+        }
+        std::sort(metric.begin(), metric.end(), [](auto& l, auto& r) {
+            return l.second.acc > r.second.acc;
+        });
+        for (const auto& [name, stamp] : metric) {
+            std::cout << std::format("\t{:<30} | {:6} | {:10} | {:6.2f}%", 
+                name,
+                stamp.counter,
+                std::chrono::duration_cast<std::chrono::milliseconds>(stamp.acc), 
+                100.0 * stamp.acc / duration_ms
+            ) << '\n';
         }
     }
 
