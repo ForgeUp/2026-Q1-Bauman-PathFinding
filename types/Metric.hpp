@@ -11,6 +11,7 @@ public:
         std::chrono::high_resolution_clock::duration acc;
         std::chrono::high_resolution_clock::time_point in;
         bool in_recorded{false};
+        int32_t counter{0};
     };
 
 private:
@@ -45,6 +46,7 @@ public:
         stamp.in_recorded = false;
 
         stamp.acc += out - stamp.in;
+        stamp.counter++;
     }
 
 };
