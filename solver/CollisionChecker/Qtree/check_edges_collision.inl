@@ -12,13 +12,9 @@
 
 
 bool CollisionChecker::Qtree::check_edges_collision() {
-    if (!qtree_ready) {
-        for (const auto& r : task.area.rocks) {
-            qtree.add(r);
-        }
-        qtree_ready = true;
-        visual.picture({task, {.qtree = qtree}, "qtree"});
-    }
+    if (!qtree_ready) build_qtree();
+
+    metric.time_in(__func__);
 
     bool has_collided_edges = false;
     std::set<Segment> collided_edges;
@@ -43,6 +39,8 @@ bool CollisionChecker::Qtree::check_edges_collision() {
     }
 
     // visual.picture({task, sln, "edge_collision"});
+
+    metric.time_out(__func__);
 
     // Путь ищется заново.
     return true;

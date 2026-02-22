@@ -11,13 +11,9 @@
 
 
 bool CollisionChecker::Qtree::check_points_collision() {
-    if (!qtree_ready) {
-        for (const auto& r : task.area.rocks) {
-            qtree.add(r);
-        }
-        qtree_ready = true;
-        visual.picture({task, {.qtree = qtree}, "qtree"});
-    }
+    if (!qtree_ready) build_qtree();
+
+    metric.time_in(__func__);
 
     bool has_collided_points = false;
     std::set<Point> collided_points;
@@ -50,5 +46,7 @@ bool CollisionChecker::Qtree::check_points_collision() {
 
     // visual.picture({task, sln, "point_collision"});
     
+    metric.time_out(__func__);
+
     return true;
 }

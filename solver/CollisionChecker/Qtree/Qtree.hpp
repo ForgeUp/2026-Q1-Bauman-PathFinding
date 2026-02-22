@@ -21,10 +21,14 @@ protected:
 
     QTreeDS qtree;
     bool qtree_ready{false};
+
+private:
+    void build_qtree();
 };
 
 };
 
 
+#include "build_qtree.inl"
 #include "check_points_collision.inl"
 #include "check_edges_collision.inl"
