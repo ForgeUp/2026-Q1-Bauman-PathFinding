@@ -44,4 +44,5 @@ protected:
 
 protected:
     Visualizer visual;
+    Metric& metric = sln.metric;
 };

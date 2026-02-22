@@ -44,8 +44,11 @@ int main() {
         
         auto end = std::chrono::steady_clock::now();
         auto duration_ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-    
-        std::cout << "Time consume: " << duration_ms << '\n';
+        std::cout << "Total time consume: " << duration_ms << '\n';
+
+        for (const auto& [name, stamp] : sln.metric) {
+            std::cout << '\t' << name << ' ' << std::chrono::duration_cast<std::chrono::milliseconds>(stamp.acc) << '\n';
+        }
     }
 
     return 0;

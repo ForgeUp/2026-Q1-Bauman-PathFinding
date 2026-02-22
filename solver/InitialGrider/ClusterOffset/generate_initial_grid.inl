@@ -15,6 +15,8 @@
 
 // Генерация маршрутной сети без проверки коллизии с препятствиями.
 void InitialGrider::ClusterOffset::generate_initial_grid() {
+    metric.time_in(__func__);
+
     // Выявление кластеров препятствий.
     auto clusters = cluster::compose(task.area.rocks);
 
@@ -51,5 +53,7 @@ void InitialGrider::ClusterOffset::generate_initial_grid() {
     connection_radius = 2 * std::max(dx,dy);
     
     visual.picture({task, sln, "initial_grid"});
+
+    metric.time_out(__func__);
 }
 

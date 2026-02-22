@@ -11,6 +11,8 @@
 
 
 bool CollisionChecker::Naive::check_points_collision() {
+    metric.time_in(__func__);
+
     bool has_collided_points = false;
     std::set<Point> collided_points;
 
@@ -43,6 +45,8 @@ bool CollisionChecker::Naive::check_points_collision() {
     }
 
     // visual.picture({task, sln, "point_collision"});
+
+    metric.time_out(__func__);
     
     return true;
 }

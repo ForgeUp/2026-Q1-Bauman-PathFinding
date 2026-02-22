@@ -12,6 +12,8 @@
 
 // Генерация маршрутной сети без проверки коллизии с препятствиями.
 void InitialGrider::ObstacleOffset::generate_initial_grid() {
+    metric.time_in(__func__);
+
     // Генерация окаймляющих маршрутных компонент вокруг препятствий.
     Graph offset_grid = gridgen::lazy_offset_grid_smooth(task.area, corner_min, corner_max);
 
@@ -36,4 +38,6 @@ void InitialGrider::ObstacleOffset::generate_initial_grid() {
     connection_radius = 2 * std::max(dx,dy);
     
     visual.picture({task, sln, "initial_grid"});
+
+    metric.time_out(__func__);
 }

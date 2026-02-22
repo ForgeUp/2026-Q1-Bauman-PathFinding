@@ -10,6 +10,8 @@
 
 // Усиление графа путём уплотнения сетки случайными точками с удвоения количества на каждом шаге.
 bool GridEnhancer::Naive::enhance_graph() {
+    metric.time_in(__func__);
+    
     if (!is_path_not_found) return false;
 
     // Генерация случайных точек в пределах всей арены.
@@ -39,6 +41,8 @@ bool GridEnhancer::Naive::enhance_graph() {
     connection_radius = 2 * std::max(dx,dy);
 
     visual.picture({task, sln, "point_enhancement"});
+
+    metric.time_out(__func__);
 
     attempts++;
     return true;

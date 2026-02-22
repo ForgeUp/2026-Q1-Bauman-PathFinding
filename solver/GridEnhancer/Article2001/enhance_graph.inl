@@ -14,6 +14,8 @@
 
 
 bool GridEnhancer::Article2001::enhance_graph() {
+    metric.time_in(__func__);
+
     if (!is_path_not_found) return false;
     
     static thread_local std::mt19937 rng{std::random_device{}()};
@@ -88,6 +90,8 @@ bool GridEnhancer::Article2001::enhance_graph() {
     // }
 
     // visual.picture({task, sln, "point_enhancement"});
+
+    metric.time_out(__func__);
 
     attempts++;
     return true;

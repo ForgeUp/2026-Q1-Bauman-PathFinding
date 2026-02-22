@@ -12,6 +12,8 @@
 
 
 bool CollisionChecker::Naive::check_edges_collision() {
+    metric.time_in(__func__);
+
     bool has_collided_edges = false;
     std::set<Segment> collided_edges;
 
@@ -35,6 +37,8 @@ bool CollisionChecker::Naive::check_edges_collision() {
     }
 
     // visual.picture({task, sln, "edge_collision"});
+
+    metric.time_out(__func__);
 
     // Путь ищется заново.
     return true;
