@@ -6,6 +6,8 @@
 #include "taskgen/task.hpp"
 #include "solver/Solver/Qtree.hpp"
 
+#include "timer/Timer.hpp"
+
 
 int main() {
     GeneratorConfig cfg = {
@@ -37,16 +39,14 @@ int main() {
         .enhance_attempts_limit = 10
     };
     
-    
     for (int32_t i = 0; i < 10; ++i) {
-        auto start = std::chrono::steady_clock::now();
+        Timer timer;
         
         auto solver = solver::Qtree(task, stgs);
         auto sln = solver.run();
         
-        auto end = std::chrono::steady_clock::now();
-        auto duration_ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-        std::cout << "Total time consume: " << duration_ms << '\n';
+        auto total = timer.tick();
+        std::cout << "Total time consume: " << total << '\n';
 
         std::vector<std::pair<std::string,Metric::Stamp>> metric;
         for (const auto& [name, stamp] : sln.metric) {
@@ -60,7 +60,7 @@ int main() {
                 name,
                 stamp.counter,
                 std::chrono::duration_cast<std::chrono::milliseconds>(stamp.acc), 
-                100.0 * stamp.acc / duration_ms
+                100.0 * stamp.acc / total
             ) << '\n';
         }
     }
