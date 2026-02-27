@@ -58,7 +58,7 @@ public:
     Qtree() = default;
     Qtree(const Point& min_, const Point& max_) : root{create_box(min_, max_)}, min{min_}, max{max_} {}
 
-    Qtree(const Qtree& other) : root(copy_box(other.root)), min_box_size_point(other.min_box_size_point), min{other.min}, max{other.max} {}
+    Qtree(const Qtree& other) : root(copy_box(other.root)), min_box_size_point(other.min_box_size_point), min{other.min}, max{other.max}, obstacles(other.obstacles) {}
 
     Qtree& operator=(const Qtree& other);
 
