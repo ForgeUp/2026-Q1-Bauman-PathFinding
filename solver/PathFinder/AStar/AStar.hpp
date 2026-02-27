@@ -1,18 +1,13 @@
 #pragma once
 
-#include "solver/VarsBase.hpp"
-
-#include "types/Task.hpp"
-#include "types/SolverSettings.hpp"
-
 
 namespace PathFinder {
 
-class AStar : virtual public VarsBase {
-public:
-    AStar(const Task& task_, const SolverSettings& stgs_) : VarsBase(task_, stgs_) {}
-    
+template <typename Derived>
+class AStar {
 protected:
+    Derived& self() { return static_cast<Derived&>(*this); }
+
     void find_path();
 };
 

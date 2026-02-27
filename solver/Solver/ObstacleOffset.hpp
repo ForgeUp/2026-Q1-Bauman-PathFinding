@@ -1,20 +1,20 @@
 #pragma once
 
-#include "../BaseSolver.hpp"
+#include "../Solver.hpp"
 
 #include "../InitialGrider/ObstacleOffset/ObstacleOffset.hpp"
-#include "../GridEnhancer/Naive/Naive.hpp"
-#include "../CollisionChecker/Naive/Naive.hpp"
+#include "../GridEnhancer/Nearest/Nearest.hpp"
+#include "../CollisionChecker/Qtree/Qtree.hpp"
 #include "../PathFinder/AStar/AStar.hpp"
 
 
 namespace solver {
 
-using ObstacleOffset = BaseSolver<Compose<
+using ObstacleOffset = Solver<
     InitialGrider::ObstacleOffset,
-    GridEnhancer::Naive,
-    CollisionChecker::Naive,
+    GridEnhancer::Nearest,
+    CollisionChecker::Qtree,
     PathFinder::AStar
->>;
+>;
 
 }

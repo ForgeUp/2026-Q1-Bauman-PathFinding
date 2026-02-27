@@ -5,17 +5,20 @@
 #include "pathfind/lazy.hpp"
 
 
-void PathFinder::AStar::find_path() {
-    metric.time_in(__func__);
+template <typename Derived>
+void PathFinder::AStar<Derived>::find_path() {
+    auto& S = self();
 
-    auto res = pathfind::lazy(task, grid);
+    S.metric.time_in(__func__);
 
-    path     = res.path;
-    enhance  = Graph();
-    examined = res.examined;
-    invalid  = Graph();
+    auto res = pathfind::lazy(S.task, S.grid);
 
-    is_path_not_found = res.is_unreachable;
+    S.path     = res.path;
+    S.enhance  = Graph();
+    S.examined = res.examined;
+    S.invalid  = Graph();
 
-    metric.time_out(__func__);
+    S.is_path_not_found = res.is_unreachable;
+
+    S.metric.time_out(__func__);
 }

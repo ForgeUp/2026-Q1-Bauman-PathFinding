@@ -1,20 +1,20 @@
 #pragma once
 
-#include "../BaseSolver.hpp"
+#include "../Solver.hpp"
 
 #include "../InitialGrider/ClusterOffset/ClusterOffset.hpp"
-#include "../GridEnhancer/Naive/Naive.hpp"
+#include "../GridEnhancer/Nearest/Nearest.hpp"
 #include "../CollisionChecker/Qtree/Qtree.hpp"
 #include "../PathFinder/AStar/AStar.hpp"
 
 
 namespace solver {
 
-using ClusterOffset = BaseSolver<Compose<
+using ClusterOffset = Solver<
     InitialGrider::ClusterOffset,
-    GridEnhancer::Naive,
+    GridEnhancer::Nearest,
     CollisionChecker::Qtree,
     PathFinder::AStar
->>;
+>;
 
 }

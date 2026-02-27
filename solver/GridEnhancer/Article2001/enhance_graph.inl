@@ -13,28 +13,31 @@
 #include "gridgen/lazy_roads.hpp"
 
 
-bool GridEnhancer::Article2001::enhance_graph() {
-    if (!is_path_not_found) return false;
+template <typename Derived>
+bool GridEnhancer::Article2001<Derived>::enhance_graph() {
+    auto& S = self();
+
+    if (!S.is_path_not_found) return false;
     
-    metric.time_in(__func__);
+    S.metric.time_in(__func__);
     
     static thread_local std::mt19937 rng{std::random_device{}()};
 
     // Генерация случайных точек в пределах всей арены.
-    Graph enhance_rand_points = gridgen::lazy_points(stgs.enhance_rand_nodes_count, corner_min, corner_max);
-    grid.join(enhance_rand_points);
-    enhance.join(enhance_rand_points);
+    Graph enhance_rand_points = gridgen::lazy_points(S.stgs.enhance_rand_nodes_count, S.corner_min, S.corner_max);
+    S.grid.join(enhance_rand_points);
+    S.enhance.join(enhance_rand_points);
 
     // Генерация случайных точек вокруг отброшенных рёбер.
 
-    std::vector<int32_t> idxs(invalid_all_rand.edges_count);
+    std::vector<int32_t> idxs(S.invalid_all_rand.edges_count);
     std::iota(idxs.begin(), idxs.end(), 0);
-    if (invalid_all_rand.edges_count >= stgs.enhance_seed_nodes_count) {
+    if (S.invalid_all_rand.edges_count >= S.stgs.enhance_seed_nodes_count) {
         std::shuffle(idxs.begin(), idxs.end(), rng);
-        idxs.resize(stgs.enhance_seed_nodes_count);
+        idxs.resize(S.stgs.enhance_seed_nodes_count);
         std::sort(idxs.begin(), idxs.end());
     }
-    for (int32_t i{0}, j{0}; const auto& s : invalid_all_rand.edges()) {
+    for (int32_t i{0}, j{0}; const auto& s : S.invalid_all_rand.edges()) {
         if (j >= idxs.size()) break;
         if (i++ != idxs[j]) continue;
         j++;
@@ -70,16 +73,16 @@ bool GridEnhancer::Article2001::enhance_graph() {
         );
         q.is_rand = false;
 
-        grid.add(q);
-        enhance.add(q);
+        S.grid.add(q);
+        S.enhance.add(q);
     }
 
     // Соединение рёбрами новых точек с уже имеющимися.
-    grid = gridgen::lazy_roads(grid, stgs.connection_radius);
+    S.grid = gridgen::lazy_roads(S.grid, S.stgs.connection_radius);
     
     // Удаление рёбер, коллизия с которыми уже была установлена.
-    for (const auto& s : invalid_all.edges()) {
-        grid.remove(s);
+    for (const auto& s : S.invalid_all.edges()) {
+        S.grid.remove(s);
     }
 
     // Запись дополнительных рёбер.
@@ -89,10 +92,10 @@ bool GridEnhancer::Article2001::enhance_graph() {
     //     }
     // }
 
-    // visual.picture({task, sln, "point_enhancement"});
+    // S.visual.picture({S.task, S.sln, "point_enhancement"});
 
-    metric.time_out(__func__);
+    S.metric.time_out(__func__);
 
-    attempts++;
+    S.attempts++;
     return true;
 }

@@ -10,16 +10,19 @@
 
 
 // Генерация маршрутной сети без проверки коллизии с препятствиями.
-void InitialGrider::Nearest::generate_initial_grid() {
-    metric.time_in(__func__);
+template <typename Derived>
+void InitialGrider::Nearest<Derived>::generate_initial_grid() {
+    auto& S = self();
 
-    Graph points = gridgen::lazy_points(stgs.initial_nodes_count, corner_min, corner_max);
-    points.add(task.start);
-    points.add(task.end);
-    
-    grid = gridgen::lazy_roads_Knearest(grid, points, stgs.nearest_count);
-    
-    visual.picture({task, sln, "initial_grid"});
+    S.metric.time_in(__func__);
 
-    metric.time_out(__func__);
+    Graph points = gridgen::lazy_points(S.stgs.initial_nodes_count, S.corner_min, S.corner_max);
+    points.add(S.task.start);
+    points.add(S.task.end);
+    
+    S.grid = gridgen::lazy_roads_Knearest(S.grid, points, S.stgs.nearest_count);
+    
+    S.visual.picture({S.task, S.sln, "initial_grid"});
+
+    S.metric.time_out(__func__);
 }

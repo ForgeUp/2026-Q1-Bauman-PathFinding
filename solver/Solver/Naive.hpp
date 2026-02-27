@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../BaseSolver.hpp"
+#include "../Solver.hpp"
 
 #include "../InitialGrider/Naive/Naive.hpp"
 #include "../GridEnhancer/Naive/Naive.hpp"
@@ -10,11 +10,11 @@
 
 namespace solver {
 
-using Naive = BaseSolver<Compose<
+using Naive = Solver<
     InitialGrider::Naive,
     GridEnhancer::Naive,
     CollisionChecker::Naive,
     PathFinder::AStar
->>;
+>;
 
 }

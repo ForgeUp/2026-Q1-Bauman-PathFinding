@@ -8,15 +8,21 @@
 #include "types/Graph.hpp"
 
 
-void CollisionChecker::Qtree::build_qtree() {
-    metric.time_in(__func__);
+template <typename Derived>
+void CollisionChecker::Qtree<Derived>::build_qtree() {
+    auto& S = self();
 
-    for (const auto& r : task.area.rocks) {
+    S.metric.time_in(__func__);
+
+    decltype(qtree) temp(S.corner_min, S.corner_max);
+    qtree = std::move(temp);
+
+    for (const auto& r : S.task.area.rocks) {
         qtree.add(r);
     }
-    qtree_ready = true;
+    is_init = true;
 
-    visual.picture({task, {.qtree = qtree}, "qtree"});
+    S.visual.picture({S.task, {.qtree = qtree}, "qtree"});
     
-    metric.time_out(__func__);
+    S.metric.time_out(__func__);
 }

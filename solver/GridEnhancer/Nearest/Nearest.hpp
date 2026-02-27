@@ -1,25 +1,21 @@
 #pragma once
 
-#include "solver/VarsBase.hpp"
-
-#include "types/Task.hpp"
-#include "types/SolverSettings.hpp"
-
 
 namespace GridEnhancer {
 
-class Nearest : virtual public VarsBase {
-public:
-    Nearest(const Task& task_, const SolverSettings& stgs_) : VarsBase(task_, stgs_) {}
-    
+template <typename Derived>
+class Nearest {
 protected:
+    Derived& self() { return static_cast<Derived&>(*this); }
+
     bool enhance_graph();
 
 protected:
-    int64_t enhance_nodes_count = stgs.enhance_rand_nodes_count;
+    bool is_init{0};
+    int64_t enhance_nodes_count{0};
 };
 
-};
+}
 
 
 #include "enhance_graph.inl"

@@ -1,22 +1,19 @@
 #pragma once
 
-#include "solver/VarsBase.hpp"
-
-#include "types/Task.hpp"
-#include "types/SolverSettings.hpp"
-
 
 namespace InitialGrider {
 
-class ClusterOffset : virtual public VarsBase {
-public:
-    ClusterOffset(const Task& task_, const SolverSettings& stgs_) : VarsBase(task_, stgs_) {}
-    
+template <typename Derived>
+class ClusterOffset {
 protected:
+    Derived& self() { return static_cast<Derived&>(*this); }
+
     void generate_initial_grid();
 
-    int64_t enhance_nodes_count = stgs.enhance_rand_nodes_count;
-    double  connection_radius   = stgs.connection_radius;
+protected:
+    bool is_init{false};
+    int64_t enhance_nodes_count{0};
+    double  connection_radius  {0};
 };
 
 }

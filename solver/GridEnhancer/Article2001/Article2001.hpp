@@ -1,22 +1,17 @@
 #pragma once
 
-#include "solver/VarsBase.hpp"
-
-#include "types/Task.hpp"
-#include "types/SolverSettings.hpp"
-
 
 namespace GridEnhancer {
 
-class Article2001 : virtual public VarsBase {
-public:
-    Article2001(const Task& task_, const SolverSettings& stgs_) : VarsBase(task_, stgs_) {}
-    
+template <typename Derived>
+class Article2001 { 
 protected:
+    Derived& self() { return static_cast<Derived&>(*this); }
+
     bool enhance_graph();
 };
 
-};
+}
 
 
 #include "enhance_graph.inl"

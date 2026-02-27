@@ -11,33 +11,42 @@
 
 
 // Генерация маршрутной сети без проверки коллизии с препятствиями.
-void InitialGrider::ObstacleOffset::generate_initial_grid() {
-    metric.time_in(__func__);
+template <typename Derived>
+void InitialGrider::ObstacleOffset<Derived>::generate_initial_grid() {
+    auto& S = self();
+
+    S.metric.time_in(__func__);
+
+    if (!is_init) {
+        enhance_nodes_count = S.stgs.enhance_rand_nodes_count;
+        connection_radius   = S.stgs.connection_radius;
+        is_init = true;
+    }
 
     // Генерация окаймляющих маршрутных компонент вокруг препятствий.
-    Graph offset_grid = gridgen::lazy_offset_grid_smooth(task.area, corner_min, corner_max);
+    Graph offset_grid = gridgen::lazy_offset_grid_smooth(S.task.area, S.corner_min, S.corner_max);
 
     // Генерация случайной маршрутной сети.
-    Graph rand_points = gridgen::lazy_points(stgs.initial_nodes_count, corner_min, corner_max);
-    rand_points.add(task.start);
-    rand_points.add(task.end);
-    Graph rand_grid   = gridgen::lazy_roads(rand_points, stgs.connection_radius);
+    Graph rand_points = gridgen::lazy_points(S.stgs.initial_nodes_count, S.corner_min, S.corner_max);
+    rand_points.add(S.task.start);
+    rand_points.add(S.task.end);
+    Graph rand_grid   = gridgen::lazy_roads(rand_points, S.stgs.connection_radius);
     
     // Объединений случайной и окаймляющей сетей.
-    grid = offset_grid;
+    S.grid = offset_grid;
     for (const auto& p : offset_grid.verts) {
         for (const auto& q: rand_points.verts) {
-            if (geometry::dist(p, q) < stgs.connection_radius) grid.add(p, q);
+            if (geometry::dist(p, q) < S.stgs.connection_radius) S.grid.add(p, q);
         }
     }
 
     enhance_nodes_count = offset_grid.verts.size();
     int32_t cells_per_side = std::sqrt(enhance_nodes_count);
-    double dx = (corner_max.x - corner_min.x) / cells_per_side;
-    double dy = (corner_max.y - corner_min.y) / cells_per_side;
+    double dx = (S.corner_max.x - S.corner_min.x) / cells_per_side;
+    double dy = (S.corner_max.y - S.corner_min.y) / cells_per_side;
     connection_radius = 2 * std::max(dx,dy);
     
-    visual.picture({task, sln, "initial_grid"});
+    S.visual.picture({S.task, S.sln, "initial_grid"});
 
-    metric.time_out(__func__);
+    S.metric.time_out(__func__);
 }

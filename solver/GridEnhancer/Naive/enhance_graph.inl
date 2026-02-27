@@ -9,23 +9,32 @@
 
 
 // Усиление графа путём уплотнения сетки случайными точками с удвоения количества на каждом шаге.
-bool GridEnhancer::Naive::enhance_graph() {
-    if (!is_path_not_found) return false;
+template <typename Derived>
+bool GridEnhancer::Naive<Derived>::enhance_graph() {
+    auto& S = self();
+
+    if (!S.is_path_not_found) return false;
     
-    metric.time_in(__func__);
+    S.metric.time_in(__func__);
+
+    if (!is_init) {
+        enhance_nodes_count = S.stgs.enhance_rand_nodes_count;
+        connection_radius   = S.stgs.connection_radius;
+        is_init = true;
+    }
 
     // Генерация случайных точек в пределах всей арены.
-    Graph enhance_rand_points = gridgen::lazy_points(enhance_nodes_count, corner_min, corner_max);
+    Graph enhance_rand_points = gridgen::lazy_points(enhance_nodes_count, S.corner_min, S.corner_max);
 
-    grid.join(enhance_rand_points);
-    enhance.join(enhance_rand_points);
+    S.grid.join(enhance_rand_points);
+    S.enhance.join(enhance_rand_points);
 
     // Соединение рёбрами новых точек с уже имеющимися.
-    grid = gridgen::lazy_roads(grid, connection_radius);
+    S.grid = gridgen::lazy_roads(S.grid, connection_radius);
     
     // Удаление рёбер, коллизия с которыми уже была установлена.
-    for (const auto& s : invalid_all.edges()) {
-        grid.remove(s);
+    for (const auto& s : S.invalid_all.edges()) {
+        S.grid.remove(s);
     }
 
     // Увеличение количества точек для следующей итерации.
@@ -34,16 +43,16 @@ bool GridEnhancer::Naive::enhance_graph() {
     // Количество прямоугольников вдоль осей для размещения точек.
     int32_t cells_per_side = std::sqrt(enhance_nodes_count);
     // Размеры ячейки.
-    double dx = (corner_max.x - corner_min.x) / cells_per_side;
-    double dy = (corner_max.y - corner_min.y) / cells_per_side;
+    double dx = (S.corner_max.x - S.corner_min.x) / cells_per_side;
+    double dy = (S.corner_max.y - S.corner_min.y) / cells_per_side;
 
     // Уменьшение радиуса связывания, так как узлы ближе.
     connection_radius = 2 * std::max(dx,dy);
 
-    visual.picture({task, sln, "point_enhancement"});
+    S.visual.picture({S.task, S.sln, "point_enhancement"});
 
-    metric.time_out(__func__);
+    S.metric.time_out(__func__);
 
-    attempts++;
+    S.attempts++;
     return true;
 }

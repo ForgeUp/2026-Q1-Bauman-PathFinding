@@ -1,32 +1,28 @@
 #pragma once
 
-#include "solver/VarsBase.hpp"
-
-#include "types/Task.hpp"
-#include "types/SolverSettings.hpp"
-
 #include "qtree/Qtree.hpp"
 using QTreeDS = Qtree;
 
 
 namespace CollisionChecker {
 
-class Qtree : virtual public VarsBase {
-public:
-    Qtree(const Task& task_, const SolverSettings& stgs_) : VarsBase(task_, stgs_), qtree(corner_min, corner_max) {}
-    
+template <typename Derived>
+class Qtree {
 protected:
+    Derived& self() { return static_cast<Derived&>(*this); }
+
     bool check_points_collision();
     bool check_edges_collision();
 
+protected:
+    bool is_init{false};
     QTreeDS qtree;
-    bool qtree_ready{false};
 
 private:
     void build_qtree();
 };
 
-};
+}
 
 
 #include "build_qtree.inl"

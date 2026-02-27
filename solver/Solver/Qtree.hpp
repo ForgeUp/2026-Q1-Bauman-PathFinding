@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../BaseSolver.hpp"
+#include "../Solver.hpp"
 
 #include "../InitialGrider/Nearest/Nearest.hpp"
 #include "../GridEnhancer/Nearest/Nearest.hpp"
@@ -10,11 +10,11 @@
 
 namespace solver {
 
-using Qtree = BaseSolver<Compose<
+using Qtree = Solver<
     InitialGrider::Nearest,
     GridEnhancer::Nearest,
     CollisionChecker::Qtree,
     PathFinder::AStar
->>;
+>;
 
 }
