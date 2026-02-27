@@ -34,6 +34,7 @@ int main() {
     SolverSettings stgs = {
         .initial_nodes_count = 100,
         .connection_radius = 10,
+        .nearest_count = 9,
         .enhance_rand_nodes_count = 100,
         .enhance_seed_nodes_count = 0,
         .enhance_attempts_limit = 10
