@@ -88,6 +88,7 @@ public:
 
 // Межграфовое взаимодействие.
     void join(const Graph& other) {
+        if (this == &other) return;
         auto& ths = *this;
         for (const auto& p : other.verts) {
             ths.add(p);
@@ -99,6 +100,14 @@ public:
                 ths.adj[q].insert(p);
                 edges_count++;
             }
+        }
+    }
+
+    void join_points(const Graph& other) {
+        if (this == &other) return;
+        auto& ths = *this;
+        for (const auto& p : other.verts) {
+            ths.add(p);
         }
     }
 
