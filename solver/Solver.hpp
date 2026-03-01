@@ -10,22 +10,15 @@
 #include "draw/Visualizer.hpp"
 
 
-template <typename Derived, template<typename> class... Modules>
-class SolverBase: public Modules<Derived>... {
-protected:
-    Derived& self() {
-        return static_cast<Derived&>(*this);
-    }
-
-public:
-    Solution run();
-};
-
-
 template <template<typename> class... Modules>
-class Solver : public SolverBase<Solver<Modules...>, Modules...> {
+class SolverBase: public Modules<SolverBase<Modules...>>... {
+protected:
+    SolverBase<Modules...>& self() { return *this; }
+
 public:
-    Solver(const Task& task_, const SolverSettings& stgs_) : task(task_), stgs(stgs_) {}
+    SolverBase(const Task& task_, const SolverSettings& stgs_) : task(task_), stgs(stgs_) {}
+
+    Solution run();
 
 public:
     const Task& task;
@@ -64,8 +57,22 @@ public:
 };
 
 
-template <typename Derived, template<typename> class... Modules>
-Solution SolverBase<Derived, Modules...>::run() {
+template <template<typename> class... Modules>
+class Solver {
+private:
+    SolverBase<Modules...> base;
+
+public:
+    Solver(const Task& task_, const SolverSettings& stgs_) : base(task_, stgs_) {}
+
+    Solution run() {
+        return base.run();
+    }
+};
+
+
+template <template<typename> class... Modules>
+Solution SolverBase<Modules...>::run() {
     auto& S = self();
 
     S.visual.picture({S.task, S.sln, "initial"});
@@ -106,7 +113,7 @@ Solution SolverBase<Derived, Modules...>::run() {
 
 
 template <template<typename> class... Modules>
-bool Solver<Modules...>::check_enchancement_limit() {
+bool SolverBase<Modules...>::check_enchancement_limit() {
     if (!is_path_not_found) return false;
     if (attempts < stgs.enhance_attempts_limit) return false;
 
