@@ -3,18 +3,22 @@
 #include "qtree/Qtree.hpp"
 using QTreeDS = Qtree;
 
+#include "types/Point.hpp"
+
 
 namespace CollisionChecker {
 
 template <typename Derived>
 class Qtree {
-protected:
+public:
     Derived& self() { return static_cast<Derived&>(*this); }
 
     bool check_points_collision();
     bool check_edges_collision();
 
-protected:
+    bool collision(const Point& p);
+
+private:
     bool is_init{false};
     QTreeDS qtree;
 
@@ -28,3 +32,4 @@ private:
 #include "build_qtree.inl"
 #include "check_points_collision.inl"
 #include "check_edges_collision.inl"
+#include "collision.inl"
