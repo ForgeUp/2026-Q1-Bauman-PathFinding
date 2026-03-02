@@ -1,28 +1,29 @@
 
-# Настройки.
-load "data/area.gp"
-
-# Особы пунктир
-set dashtype 8 (2,10) 
-
-# Место для вывода.
-if (exists("filename")) {
-    set terminal pngcairo size 2000,1500 enhanced font "Arial,12"
-    set output filename
+if (!exists("filename") || !exists("output_dir") || !exists("data_dir")) {
+    exit
 }
 
+set terminal pngcairo size 2000,1500 enhanced font "Arial,12"
+set output output_dir.'/'.filename
+
+# Настройки.
+load data_dir.'/'.'area.gp'
+
+# Особый пунктир
+set dashtype 8 (2,10) 
+
 # Входные файлы.
-polygons     = 'data/polygons.txt'
-grids        = 'data/grid.txt'
-enhance      = 'data/enhance.txt'
-examined     = 'data/examined.txt'
-invalid      = 'data/invalid.txt'
-invalid_all  = 'data/invalid_all.txt'
-path         = 'data/path.txt'
-qtree        = 'data/qtree.txt'
-qtree_free   = 'data/qtree_free.txt'
-qtree_mix    = 'data/qtree_mix.txt'
-qtree_busy   = 'data/qtree_busy.txt'
+polygons     = data_dir.'/'.'polygons.txt'
+grids        = data_dir.'/'.'grid.txt'
+enhance      = data_dir.'/'.'enhance.txt'
+examined     = data_dir.'/'.'examined.txt'
+invalid      = data_dir.'/'.'invalid.txt'
+invalid_all  = data_dir.'/'.'invalid_all.txt'
+path         = data_dir.'/'.'path.txt'
+qtree        = data_dir.'/'.'qtree.txt'
+qtree_free   = data_dir.'/'.'qtree_free.txt'
+qtree_mix    = data_dir.'/'.'qtree_mix.txt'
+qtree_busy   = data_dir.'/'.'qtree_busy.txt'
 
 # Размеры поля.
 set xrange [x_min-5:x_max+5]
