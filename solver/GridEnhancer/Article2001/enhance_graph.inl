@@ -10,7 +10,7 @@
 #include "random/from_norm.hpp"
 
 #include "gridgen/lazy_points.hpp"
-#include "gridgen/lazy_roads.hpp"
+#include "gridgen/lazy_roads_Knearest.hpp"
 
 
 template <typename Derived>
@@ -24,9 +24,7 @@ bool GridEnhancer::Article2001<Derived>::enhance_graph() {
     static thread_local std::mt19937 rng{std::random_device{}()};
 
     // Генерация случайных точек в пределах всей арены.
-    Graph enhance_rand_points = gridgen::lazy_points(S.stgs.enhance_rand_nodes_count, S.corner_min, S.corner_max);
-    S.grid.join(enhance_rand_points);
-    S.enhance.join(enhance_rand_points);
+    Graph enhance = gridgen::lazy_points(S.stgs.enhance_rand_nodes_count, S.corner_min, S.corner_max);
 
     // Генерация случайных точек вокруг отброшенных рёбер.
 
@@ -73,26 +71,12 @@ bool GridEnhancer::Article2001<Derived>::enhance_graph() {
         );
         q.is_rand = false;
 
-        S.grid.add(q);
-        S.enhance.add(q);
+        enhance.add(q);
     }
 
     // Соединение рёбрами новых точек с уже имеющимися.
-    S.grid = gridgen::lazy_roads(S.grid, S.stgs.connection_radius);
-    
-    // Удаление рёбер, коллизия с которыми уже была установлена.
-    for (const auto& s : S.invalid_all.edges()) {
-        S.grid.remove(s);
-    }
-
-    // Запись дополнительных рёбер.
-    // for (const auto& p : enhance.verts) {
-    //     for (const auto& q : grid.adj[p]) {
-    //         enhance.add(p, q);
-    //     }
-    // }
-
-    // S.visual.picture({S.task, S.sln, "point_enhancement"});
+    enhance = gridgen::lazy_roads_Knearest(S.grid, enhance, S.stgs.nearest_count);
+    S.grid.join(enhance);
 
     S.metric.time_out(__func__);
 

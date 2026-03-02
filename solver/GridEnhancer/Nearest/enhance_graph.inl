@@ -23,22 +23,18 @@ bool GridEnhancer::Nearest<Derived>::enhance_graph() {
     }
 
     // Генерация случайных точек в пределах всей арены.
-    Graph enhance_rand = gridgen::lazy_points(enhance_nodes_count, S.corner_min, S.corner_max);
+    Graph enhance = gridgen::lazy_points(enhance_nodes_count, S.corner_min, S.corner_max);
 
-    S.enhance.join(enhance_rand);
+    S.enhance.join(enhance);
 
     // Соединение рёбрами новых точек с уже имеющимися.
-    S.grid = gridgen::lazy_roads_Knearest(S.grid, enhance_rand, S.stgs.nearest_count);
-    
-    // Удаление рёбер, коллизия с которыми уже была установлена.
-    for (const auto& s : S.invalid_all.edges()) {
-        S.grid.remove(s);
-    }
+    enhance = gridgen::lazy_roads_Knearest(S.grid, enhance, S.stgs.nearest_count);
+    S.grid.join(enhance);
 
     // Увеличение количества точек для следующей итерации.
     enhance_nodes_count *= 2;
-
-    S.visual.picture({S.task, S.sln, "point_enhancement"});
+    
+    S.visual.picture({S.task, {.enhance = enhance}, "point_enhancement"});
 
     S.metric.time_out(__func__);
 
