@@ -3,13 +3,19 @@
 #include <chrono>
 #include <format>
 
+#include "types/Services.hpp"
+
 #include "taskgen/task.hpp"
-#include "solver/Solver/Qtree.hpp"
+#include "solver/Solver/Article2001.hpp"
+
+#include "draw/VisualizerService.hpp"
 
 #include "timer/Timer.hpp"
 
 
 int main() {
+    VisualizerService srv_visual("result");
+
     GeneratorConfig cfg = {
         .x_min = 0,
         .x_max = 100,
@@ -34,20 +40,26 @@ int main() {
     SolverSettings stgs = {
         .initial_nodes_count = 100,
         .connection_radius = 10,
-        .nearest_count = 9,
+        .nearest_count = 6,
         .enhance_rand_nodes_count = 100,
         .enhance_seed_nodes_count = 0,
+        .bridge_standard_deviation = 2,
         .enhance_attempts_limit = 10
     };
     
-    for (int32_t i = 0; i < 10; ++i) {
+    int32_t runs_count = 10;
+    for (int32_t i = 0; i < runs_count; ++i) {
+        std::string output_folder = std::format("{:%Y-%m-%d %H-%M-%S} [{:2}]", std::chrono::floor<std::chrono::seconds>(std::chrono::system_clock::now()), i+1);
+        Services srvs = {
+            .visual = VisualizerAdapter(srv_visual, output_folder) 
+        };
         Timer timer;
         
-        auto solver = solver::Qtree(task, stgs);
+        auto solver = solver::Article2001(task, stgs, srvs);
         auto sln = solver.run();
         
         auto total = timer.tick();
-        std::cout << "Total time consume: " << total << '\n';
+        std::cout << std::format("[{:2}/{}] Total time consume: {}", i+1, runs_count, total) << '\n';
 
         std::vector<std::pair<std::string,Metric::Stamp>> metric;
         for (const auto& [name, stamp] : sln.metric) {

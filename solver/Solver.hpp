@@ -6,8 +6,9 @@
 #include "types/Task.hpp"
 #include "types/Solution.hpp"
 #include "types/SolverSettings.hpp"
+#include "types/Services.hpp"
 
-#include "draw/Visualizer.hpp"
+#include "draw/VisualizerAdapter.hpp"
 
 
 template <template<typename> class... Modules>
@@ -16,7 +17,7 @@ protected:
     SolverBase<Modules...>& self() { return *this; }
 
 public:
-    SolverBase(const Task& task_, const SolverSettings& stgs_) : task(task_), stgs(stgs_) {}
+    SolverBase(const Task& task_, const SolverSettings& stgs_, const Services& srvs_) : task(task_), stgs(stgs_), srvs(srvs_) {}
 
     Solution run();
 
@@ -49,7 +50,9 @@ public:
     Point corner_max = Point(task.area.x_max, task.area.y_max);
 
 public:
-    Visualizer visual;
+    Services srvs;
+    VisualizerAdapter& visual = srvs.visual;
+    
     Metric& metric = sln.metric;
 
 public:
@@ -63,7 +66,7 @@ private:
     SolverBase<Modules...> base;
 
 public:
-    Solver(const Task& task_, const SolverSettings& stgs_) : base(task_, stgs_) {}
+    Solver(const Task& task_, const SolverSettings& stgs_, const Services& srvs_) : base(task_, stgs_, srvs_) {}
 
     Solution run() {
         return base.run();
