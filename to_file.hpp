@@ -10,8 +10,8 @@ void to_file(std::ofstream& fs, T& val) {
     fs << val;
 }
 
-template <typename T>
-void to_file(std::string filename, const T& val) {
+template <typename T, typename Path>
+void to_file(Path filename, const T& val) {
     std::ofstream fs(filename);
     to_file(fs, val);
 }
@@ -23,8 +23,8 @@ void to_file(std::ofstream& fs, const std::vector<T>& vec) {
     }
 }
 
-template <typename T>
-void to_file(std::string filename, const std::vector<T>& vec) {
+template <typename T, typename Path>
+void to_file(Path filename, const std::vector<T>& vec) {
     std::ofstream fs(filename);
     to_file(fs, vec);
 }
@@ -36,8 +36,8 @@ void to_file(std::ofstream& fs, const std::set<T>& vec) {
     }
 }
 
-template <typename T>
-void to_file(std::string filename, const std::set<T>& vec) {
+template <typename T, typename Path>
+void to_file(Path filename, const std::set<T>& vec) {
     std::ofstream fs(filename);
     to_file(fs, vec);
 }
