@@ -16,7 +16,10 @@ bool GridEnhancer::Nearest<Derived>::enhance_graph() {
     if (!S.is_path_not_found) return false;
     
     S.metric.time_in(__func__);
-    
+
+    S.visual.picture({S.task, {.invalid = S.invalid}, "invalid"});
+    S.invalid.clear();
+
     if (!is_init) {
         enhance_nodes_count = S.stgs.enhance_rand_nodes_count;
         is_init = true;

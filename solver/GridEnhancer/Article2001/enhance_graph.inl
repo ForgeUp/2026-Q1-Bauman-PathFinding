@@ -20,6 +20,9 @@ bool GridEnhancer::Article2001<Derived>::enhance_graph() {
     if (!S.is_path_not_found) return false;
     
     S.metric.time_in(__func__);
+
+    S.visual.picture({S.task, {.invalid = S.invalid}, "invalid"});
+    S.invalid.clear();
     
     static thread_local std::mt19937 rng{std::random_device{}()};
 
@@ -77,6 +80,8 @@ bool GridEnhancer::Article2001<Derived>::enhance_graph() {
     // Соединение рёбрами новых точек с уже имеющимися.
     enhance = gridgen::lazy_roads_Knearest(S.grid, enhance, S.stgs.nearest_count);
     S.grid.join(enhance);
+    
+    S.visual.picture({S.task, {.enhance = enhance}, "point_enhancement"});
 
     S.metric.time_out(__func__);
 

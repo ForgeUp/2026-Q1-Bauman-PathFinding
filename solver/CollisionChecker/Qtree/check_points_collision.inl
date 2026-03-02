@@ -49,8 +49,6 @@ bool CollisionChecker::Qtree<Derived>::check_points_collision() {
         }
         S.grid.remove(p);
     }
-
-    // S.visual.picture({S.task, S.sln, "point_collision"});
     
     S.metric.time_out(__func__);
 

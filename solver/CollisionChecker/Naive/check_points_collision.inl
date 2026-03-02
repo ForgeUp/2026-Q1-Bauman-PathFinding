@@ -50,8 +50,6 @@ bool CollisionChecker::Naive<Derived>::check_points_collision() {
         S.grid.remove(p);
     }
 
-    // visual.picture({task, sln, "point_collision"});
-
     S.metric.time_out(__func__);
     
     return true;

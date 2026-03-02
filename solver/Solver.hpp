@@ -104,7 +104,8 @@ Solution SolverBase<Modules...>::run() {
     }
 
     S.sln.is_fail = !S.is_found;
-
+    
+    S.invalid.clear();
     S.visual.picture({S.task, {.invalid_all = S.invalid_all}, "invalid_all"});
     S.visual.picture({S.task, S.sln, "result"});
 

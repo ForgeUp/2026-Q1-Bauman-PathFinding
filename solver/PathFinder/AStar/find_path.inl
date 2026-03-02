@@ -16,7 +16,6 @@ void PathFinder::AStar<Derived>::find_path() {
     S.path     = res.path;
     S.enhance  = Graph();
     S.examined = res.examined;
-    S.invalid  = Graph();
 
     S.is_path_not_found = res.is_unreachable;
 

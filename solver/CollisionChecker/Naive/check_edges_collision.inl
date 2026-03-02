@@ -42,8 +42,6 @@ bool CollisionChecker::Naive<Derived>::check_edges_collision() {
         S.grid.remove(e);
     }
 
-    // visual.picture({task, sln, "edge_collision"});
-
     S.metric.time_out(__func__);
 
     // Путь ищется заново.

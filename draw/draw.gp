@@ -46,10 +46,10 @@ plot \
     grids          using 1:2   with linespoints lw 1 ps 0.5 pt 7 lc "purple"     title "Grid", \
     polygons       using 1:2   with filledcurves                 fc "royalblue"  notitle, \
     examined       using 1:2   with lines       lw 2             lc "gold"       title "Examined roads", \
-    enhance        using 1:2   with points      lw 2 dt 8   pt 7 lc "dark-pink"  title "Enhancement", \
+    enhance        using 1:2   with linespoints lw 2        pt 7 lc "dark-pink"  title "Enhancement", \
     path           using 1:2   with linespoints lw 2        pt 7 lc "green"      title "Path", \
-    invalid        using 1:2   with lines       lw 2 dt 8        lc "red"        title "Invalid roads", \
-    invalid_all    using 1:2   with lines       lw 2             lc "red"        title "All invalid roads", \
+    invalid        using 1:2   with linespoints lw 2             lc "red"        title "Invalid roads", \
+    invalid_all    using 1:2   with linespoints lw 2             lc "red"        title "All invalid roads", \
     qtree_free     using 1:2   with filledcurves fs transparent solid 0.8 lc rgb "green"  notitle, \
     qtree_mix      using 1:2   with filledcurves fs transparent solid 0.8 lc rgb "red"    notitle, \
     qtree_busy     using 1:2   with filledcurves fs transparent solid 0.8 lc rgb "yellow" notitle, \

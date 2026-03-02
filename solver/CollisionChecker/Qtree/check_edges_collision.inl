@@ -44,8 +44,6 @@ bool CollisionChecker::Qtree<Derived>::check_edges_collision() {
         S.grid.remove(e);
     }
 
-    // S.visual.picture({S.task, S.sln, "edge_collision"});
-
     S.metric.time_out(__func__);
 
     // Путь ищется заново.

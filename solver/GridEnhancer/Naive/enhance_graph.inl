@@ -14,6 +14,9 @@ bool GridEnhancer::Naive<Derived>::enhance_graph() {
     auto& S = self();
 
     if (!S.is_path_not_found) return false;
+
+    S.visual.picture({S.task, {.invalid = S.invalid}, "invalid"});
+    S.invalid.clear();
     
     S.metric.time_in(__func__);
 
