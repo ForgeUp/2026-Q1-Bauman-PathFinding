@@ -111,6 +111,12 @@ public:
         }
     }
 
+// Утилиты.
+    void clear() {
+        verts.clear();
+        adj.clear();
+    }
+
 public:
 // Итератор для перебора рёбер графа.
     class EdgeIterator {
