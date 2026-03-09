@@ -9,9 +9,6 @@
 #include "types/Point.hpp"
 #include "types/Graph.hpp"
 
-#include "random/from_range.hpp"
-#include "random/from_norm.hpp"
-
 #include "geometry/mid.hpp"
 
 #include "gridgen/lazy_roads_Knearest.hpp"
@@ -47,7 +44,7 @@ void InitialGrider::Bridge<Derived>::generate_initial_grid() {
 
         Point m = geometry::mid(p, q); // Определяем центральную точку.
 
-        if (!S.collision(m)) continue; // Пропускаем центральную точку, если она находится в свободной области.
+        if (S.collision(m)) continue; // Пропускаем центральную точку, если она находится в свободной области.
         // Иначе найдена точка из узкого прохода.
 
         S.grid.add(m);
