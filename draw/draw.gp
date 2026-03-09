@@ -44,8 +44,8 @@ do for [i=1:4] {
 
 # Отрисовка карты.
 plot \
-    grids          using 1:2   with linespoints lw 1 ps 0.5 pt 7 lc "purple"     title "Grid", \
     polygons       using 1:2   with filledcurves                 fc "royalblue"  notitle, \
+    grids          using 1:2   with linespoints lw 1 ps 0.5 pt 7 lc "purple"     title "Grid", \
     examined       using 1:2   with lines       lw 2             lc "gold"       title "Examined roads", \
     enhance        using 1:2   with linespoints lw 2        pt 7 lc "dark-pink"  title "Enhancement", \
     path           using 1:2   with linespoints lw 2        pt 7 lc "green"      title "Path", \
