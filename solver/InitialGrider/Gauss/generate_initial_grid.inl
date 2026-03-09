@@ -9,9 +9,6 @@
 #include "types/Point.hpp"
 #include "types/Graph.hpp"
 
-#include "random/from_range.hpp"
-#include "random/from_norm.hpp"
-
 #include "geometry/mid.hpp"
 
 #include "gridgen/lazy_roads_Knearest.hpp"
@@ -30,13 +27,13 @@ void InitialGrider::Gauss<Derived>::generate_initial_grid() {
     int32_t generated_count = 0;
     while (generated_count < S.stgs.initial_nodes_count) {
         Point p (
-            random::from_range(S.corner_min.x, S.corner_max.x, gen),
-            random::from_range(S.corner_min.y, S.corner_max.y, gen)
+            std::uniform_real_distribution(S.corner_min.x, S.corner_max.x)(gen),
+            std::uniform_real_distribution(S.corner_min.y, S.corner_max.y)(gen)
         );
 
         Point q ( // Генерируем 2-ую точку в пределах заданного нормального распределения.
-            random::from_norm(p.x, S.stgs.gauss_standard_deviation, gen),
-            random::from_norm(p.y, S.stgs.gauss_standard_deviation, gen)
+            std::normal_distribution(p.x, S.stgs.gauss_standard_deviation)(gen),
+            std::normal_distribution(p.y, S.stgs.gauss_standard_deviation)(gen)
         );
 
         // Проверяем, что одна из точек лежит в свободной области, а другая - в области препятствий.

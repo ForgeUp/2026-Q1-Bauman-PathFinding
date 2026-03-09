@@ -11,8 +11,6 @@
 
 #include "math/in_range.hpp"
 
-#include "random/from_range.hpp"
-
 #include "geometry/is_inside.hpp"
 
 
@@ -54,8 +52,8 @@ auto valid_points(const Task& task, const SolverSettings& stgs) {
                 math::in_range(task.start.x, x_l, x_r) && math::in_range(task.start.y, y_l, y_r) ? task.start :
                 math::in_range(task.end.x  , x_l, x_r) && math::in_range(task.end.y  , y_l, y_r) ? task.end :
                 Point {
-                    random::from_range(x_l, x_r, gen),
-                    random::from_range(y_l, y_r, gen)
+                    std::uniform_real_distribution(x_l, x_r)(gen),
+                    std::uniform_real_distribution(y_l, y_r)(gen)
                 }
             );
 

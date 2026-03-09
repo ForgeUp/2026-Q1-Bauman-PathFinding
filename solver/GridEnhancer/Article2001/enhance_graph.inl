@@ -6,9 +6,6 @@
 
 #include "Article2001.hpp"
 
-#include "random/from_range.hpp"
-#include "random/from_norm.hpp"
-
 #include "gridgen/lazy_points.hpp"
 #include "gridgen/lazy_roads_Knearest.hpp"
 
@@ -64,8 +61,8 @@ bool GridEnhancer::Article2001<Derived>::enhance_graph() {
         double sigma_parallel = 0.5 * len;
         double sigma_perp     = 0.15 * sigma_parallel;
         
-        double xi_par  = random::from_norm(0.0, sigma_parallel, rng);
-        double xi_perp = random::from_norm(0.0, sigma_perp, rng);
+        double xi_par  = std::normal_distribution(0.0, sigma_parallel)(rng);
+        double xi_perp = std::normal_distribution(0.0, sigma_perp)(rng);
 
         // Перенос в глобальные координаты.
         Point q (

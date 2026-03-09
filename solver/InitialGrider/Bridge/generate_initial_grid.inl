@@ -30,16 +30,16 @@ void InitialGrider::Bridge<Derived>::generate_initial_grid() {
     int32_t generated_count = 0;
     while (generated_count < S.stgs.initial_nodes_count) {
         Point p (
-            random::from_range(S.corner_min.x, S.corner_max.x, gen),
-            random::from_range(S.corner_min.y, S.corner_max.y, gen)
+            std::uniform_real_distribution(S.corner_min.x, S.corner_max.x)(gen),
+            std::uniform_real_distribution(S.corner_min.y, S.corner_max.y)(gen)
         );
 
         if (!S.collision(p)) continue; // Пропускаем точку из свободной области.
         // Иначе точка находится в области препятствий.
 
         Point q ( // Генерируем 2-ую точку в пределах заданного нормального распределения.
-            random::from_norm(p.x, S.stgs.bridge_standard_deviation, gen),
-            random::from_norm(p.y, S.stgs.bridge_standard_deviation, gen)
+            std::normal_distribution(p.x, S.stgs.bridge_standard_deviation)(gen),
+            std::normal_distribution(p.y, S.stgs.bridge_standard_deviation)(gen)
         );
 
         if (!S.collision(q)) continue; // Пропускаем 2-ую точку из свободной области.

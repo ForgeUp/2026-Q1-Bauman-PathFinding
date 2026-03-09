@@ -6,8 +6,6 @@
 #include "types/Point.hpp"
 #include "types/Graph.hpp"
 
-#include "random/from_range.hpp"
-
 
 namespace gridgen {
 
@@ -40,8 +38,8 @@ Graph lazy_points(int32_t nodes_count, const Point& min, const Point& max) {
             x_l += dx; x_r += dx;
 
             Point p (
-                random::from_range(x_l, x_r, gen),
-                random::from_range(y_l, y_r, gen)
+                std::uniform_real_distribution(x_l, x_r)(gen),
+                std::uniform_real_distribution(y_l, y_r)(gen)
             );
 
             points.add(p);
@@ -51,8 +49,8 @@ Graph lazy_points(int32_t nodes_count, const Point& min, const Point& max) {
     // Распределение оставшихся точек.
     for (int32_t i = 0; i < remain_points_count; ++i) {
         Point p (
-            random::from_range(min.x, max.x, gen),
-            random::from_range(min.y, max.y, gen)
+            std::uniform_real_distribution(min.x, max.x)(gen),
+            std::uniform_real_distribution(min.y, max.y)(gen)
         );
 
         points.add(p);

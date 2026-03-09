@@ -12,8 +12,6 @@ using std::numbers::pi;
 #include "types/Task.hpp"
 #include "types/GeneratorConfig.hpp"
 
-#include "random/from_range.hpp"
-
 #include "geometry/is_inside.hpp"
 
 
@@ -22,18 +20,18 @@ namespace taskgen {
 Rock polygon(const GeneratorConfig& cfg, std::mt19937& gen) {
     Rock rock;
 
-    int vertices  = random::from_range(3, cfg.polygon_max_vertices, gen);
-    double radius = random::from_range(cfg.polygon_min_radius, cfg.polygon_max_radius, gen);
+    int vertices  = std::uniform_int_distribution(3, cfg.polygon_max_vertices)(gen);
+    double radius = std::uniform_real_distribution(cfg.polygon_min_radius, cfg.polygon_max_radius)(gen);
 
     Point center{
-        random::from_range(cfg.x_min, cfg.x_max, gen),
-        random::from_range(cfg.y_min, cfg.y_max, gen)
+        std::uniform_real_distribution(cfg.x_min, cfg.x_max)(gen),
+        std::uniform_real_distribution(cfg.y_min, cfg.y_max)(gen)
     };
 
     double angleStep = 2 * pi / vertices;
 
     for (int i = 0; i < vertices; ++i) {
-        double angle = i * angleStep + random::from_range(-0.3, 0.3, gen);
+        double angle = i * angleStep + std::uniform_real_distribution(-0.3, 0.3)(gen);
         rock.points.push_back({
             center.x + radius * std::cos(angle),
             center.y + radius * std::sin(angle)
@@ -60,17 +58,21 @@ Task task(GeneratorConfig& cfg) {
     int polygonCount = static_cast<int>(areaSize * cfg.polygon_density);
 
     if (cfg.rand_home_points) cfg.start = {
-        random::from_range(cfg.x_min + cfg.border_margin,
-                           cfg.x_max - cfg.border_margin, gen),
-        random::from_range(cfg.y_min + cfg.border_margin,
-                           cfg.y_max - cfg.border_margin, gen)
+        std::uniform_real_distribution(
+            cfg.x_min + cfg.border_margin,
+            cfg.x_max - cfg.border_margin)(gen),
+        std::uniform_real_distribution(
+            cfg.y_min + cfg.border_margin,
+            cfg.y_max - cfg.border_margin)(gen)
     };
 
     if (cfg.rand_home_points) cfg.end = {
-        random::from_range(cfg.x_min + cfg.border_margin,
-                           cfg.x_max - cfg.border_margin, gen),
-        random::from_range(cfg.y_min + cfg.border_margin,
-                           cfg.y_max - cfg.border_margin, gen)
+        std::uniform_real_distribution(
+            cfg.x_min + cfg.border_margin,
+            cfg.x_max - cfg.border_margin)(gen),
+        std::uniform_real_distribution(
+            cfg.y_min + cfg.border_margin,
+            cfg.y_max - cfg.border_margin)(gen)
     };
 
     task.start = cfg.start;
