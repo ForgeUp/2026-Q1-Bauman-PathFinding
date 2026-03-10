@@ -9,8 +9,6 @@
 
 #include "types/Services.hpp"
 
-#include "solver/Solver/ClusterOffset.hpp"
-
 #include "draw/VisualizerService.hpp"
 
 #include "timer/Timer.hpp"
