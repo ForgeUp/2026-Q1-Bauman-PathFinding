@@ -1,21 +1,23 @@
 #pragma once
 
 
-namespace GridEnhancer {
+namespace Grider {
 
 template <typename Derived>
-class Nearest {
+class AdaptiveRaise {
 protected:
     Derived& self() { return static_cast<Derived&>(*this); }
 
+    void generate_initial_grid();
     bool enhance_graph();
 
 protected:
-    bool is_init{0};
-    int64_t enhance_nodes_count{0};
+    double multiplier{1};
+    double rate{2};
 };
 
 }
 
 
+#include "generate_initial_grid.inl"
 #include "enhance_graph.inl"

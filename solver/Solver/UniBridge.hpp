@@ -5,18 +5,18 @@
 #include "../Grider/AdaptiveRaise/AdaptiveRaise.hpp"
 #include "../GridGenerator/Mix/Mix.hpp"
 #include "../GridGenerator/Uniform/Uniform.hpp"
-#include "../GridGenerator/Article2001/Article2001.hpp"
+#include "../GridGenerator/Bridge/Bridge.hpp"
 #include "../CollisionChecker/Qtree/Qtree.hpp"
 #include "../PathFinder/AStar/AStar.hpp"
 
 
 namespace solver {
 
-using Article2001 = Solver<
+using UniBridge = Solver<
     Grider::AdaptiveRaise,
     GridGenerator::Mix<
         GridGenerator::Uniform,
-        GridGenerator::Article2001>::type,
+        GridGenerator::Bridge>::type,
     CollisionChecker::Qtree,
     PathFinder::AStar
 >;

@@ -2,8 +2,10 @@
 
 #include "../Solver.hpp"
 
-#include "../InitialGrider/ClusterOffset/ClusterOffset.hpp"
-#include "../GridEnhancer/Nearest/Nearest.hpp"
+#include "../Grider/AdaptiveRaise/AdaptiveRaise.hpp"
+#include "../GridGenerator/Mix/Mix.hpp"
+#include "../GridGenerator/Uniform/Uniform.hpp"
+#include "../GridGenerator/ClusterOffset/ClusterOffset.hpp"
 #include "../CollisionChecker/Qtree/Qtree.hpp"
 #include "../PathFinder/AStar/AStar.hpp"
 
@@ -11,8 +13,10 @@
 namespace solver {
 
 using ClusterOffset = Solver<
-    InitialGrider::ClusterOffset,
-    GridEnhancer::Nearest,
+    Grider::AdaptiveRaise,
+    GridGenerator::Mix<
+        GridGenerator::Uniform,
+        GridGenerator::ClusterOffset>::type,
     CollisionChecker::Qtree,
     PathFinder::AStar
 >;

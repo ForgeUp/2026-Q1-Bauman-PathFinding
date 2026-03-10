@@ -2,17 +2,17 @@
 
 #include "../Solver.hpp"
 
-#include "../InitialGrider/Nearest/Nearest.hpp"
-#include "../GridEnhancer/Nearest/Nearest.hpp"
+#include "../Grider/AdaptiveRaise/AdaptiveRaise.hpp"
+#include "../GridGenerator/Uniform/Uniform.hpp"
 #include "../CollisionChecker/Qtree/Qtree.hpp"
 #include "../PathFinder/AStar/AStar.hpp"
 
 
 namespace solver {
 
-using Qtree = Solver<
-    InitialGrider::Nearest,
-    GridEnhancer::Nearest,
+using Uniform = Solver<
+    Grider::AdaptiveRaise,
+    GridGenerator::Uniform, 
     CollisionChecker::Qtree,
     PathFinder::AStar
 >;

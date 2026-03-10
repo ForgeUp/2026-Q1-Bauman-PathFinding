@@ -4,8 +4,6 @@
 
 #include "Bridge.hpp"
 
-#include "solver/Solver.hpp"
-
 #include "types/Point.hpp"
 #include "types/Graph.hpp"
 
@@ -16,7 +14,7 @@
 
 // Генерация маршрутной сети по методу BridgeTest.
 template <typename Derived>
-void InitialGrider::Bridge<Derived>::generate_initial_grid() {
+Graph GridGenerator::Bridge<Derived>::generate_grid(Options& opts) {
     auto& S = self();
 
     S.metric.time_in(__func__);
@@ -24,8 +22,10 @@ void InitialGrider::Bridge<Derived>::generate_initial_grid() {
     std::random_device rd;
     std::mt19937 gen(rd());
 
+    Graph result;
+
     int32_t generated_count = 0;
-    while (generated_count < S.stgs.initial_nodes_count) {
+    while (generated_count < opts.nodes_count) {
         Point p (
             std::uniform_real_distribution(S.corner_min.x, S.corner_max.x)(gen),
             std::uniform_real_distribution(S.corner_min.y, S.corner_max.y)(gen)
@@ -47,15 +47,19 @@ void InitialGrider::Bridge<Derived>::generate_initial_grid() {
         if (S.collision(m)) continue; // Пропускаем центральную точку, если она находится в свободной области.
         // Иначе найдена точка из узкого прохода.
 
-        S.grid.add(m);
+        result.add(m);
         generated_count++;
     }
     
-    S.grid.add(S.task.start);
-    S.grid.add(S.task.end);
-    S.grid = gridgen::lazy_roads_Knearest({}, S.grid, S.stgs.nearest_count);
+    if (opts.connect && opts.lazy) {
+        result = gridgen::lazy_roads_Knearest({}, result, S.stgs.nearest_count);
+    } else if (opts.connect && !opts.lazy) {
+        result = gridgen::lazy_roads_Knearest({}, result, S.stgs.nearest_count); // [TODO] Заменить на вариант с проверкой коллизии.
+    }
 
-    S.visual.picture({S.task, S.sln, "initial_grid"});
+    S.visual.picture({S.task, {.enhance = result}, "bridge_grid"});
 
     S.metric.time_out(__func__);
+
+    return result;
 }

@@ -8,12 +8,12 @@
 int main() {
     VisualizerService srv_visual("result");
     
-    using Solver = solver::Bridge;
+    using Solver = solver::ObstacleOffset;
 
     SolverSettings stgs = {
         .initial_nodes_count = 500,
         .connection_radius = 10,
-        .nearest_count = 5,
+        .nearest_count = 6,
         .enhance_rand_nodes_count = 100,
         .enhance_seed_nodes_count = 0,
         .bridge_standard_deviation = 4,

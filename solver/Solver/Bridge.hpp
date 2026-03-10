@@ -2,8 +2,8 @@
 
 #include "../Solver.hpp"
 
-#include "../InitialGrider/Bridge/Bridge.hpp"
-#include "../GridEnhancer/Nearest/Nearest.hpp"
+#include "../Grider/AdaptiveRaise/AdaptiveRaise.hpp"
+#include "../GridGenerator/Bridge/Bridge.hpp"
 #include "../CollisionChecker/Qtree/Qtree.hpp"
 #include "../PathFinder/AStar/AStar.hpp"
 
@@ -11,8 +11,8 @@
 namespace solver {
 
 using Bridge = Solver<
-    InitialGrider::Bridge,
-    GridEnhancer::Nearest,
+    Grider::AdaptiveRaise,
+    GridGenerator::Bridge, 
     CollisionChecker::Qtree,
     PathFinder::AStar
 >;
