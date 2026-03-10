@@ -32,7 +32,8 @@ void draw(const Task& task, const Solution& sln, const std::string& dir, const s
 
     to_file(data_dir / "polygons.txt",    task.area.rocks);
     to_file(data_dir / "grid.txt",        sln.grid);
-    to_file(data_dir / "enhance.txt",     sln.enhance);
+    to_file(data_dir / "enhance_p.txt",   sln.enhance.verts);
+    to_file(data_dir / "enhance_e.txt",   sln.enhance);
     to_file(data_dir / "examined.txt",    sln.examined);
     to_file(data_dir / "invalid.txt",     sln.invalid);
     to_file(data_dir / "invalid_all.txt", sln.invalid_all);

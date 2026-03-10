@@ -15,7 +15,8 @@ set dashtype 8 (2,10)
 # Входные файлы.
 polygons     = data_dir.'/'.'polygons.txt'
 grids        = data_dir.'/'.'grid.txt'
-enhance      = data_dir.'/'.'enhance.txt'
+enhance_p    = data_dir.'/'.'enhance_p.txt'
+enhance_e    = data_dir.'/'.'enhance_e.txt'
 examined     = data_dir.'/'.'examined.txt'
 invalid      = data_dir.'/'.'invalid.txt'
 invalid_all  = data_dir.'/'.'invalid_all.txt'
@@ -47,7 +48,8 @@ plot \
     polygons       using 1:2   with filledcurves                 fc "royalblue"  notitle, \
     grids          using 1:2   with linespoints lw 1 ps 0.5 pt 7 lc "purple"     title "Grid", \
     examined       using 1:2   with lines       lw 2             lc "gold"       title "Examined roads", \
-    enhance        using 1:2   with linespoints lw 2        pt 7 lc "dark-pink"  title "Enhancement", \
+    enhance_p      using 1:2   with points                  pt 7 lc "dark-pink"  title "Enhancement", \
+    enhance_e      using 1:2   with lines       lw 2             lc "dark-pink"  title "Enhancement", \
     path           using 1:2   with linespoints lw 2        pt 7 lc "green"      title "Path", \
     invalid        using 1:2   with linespoints lw 2             lc "red"        title "Invalid roads", \
     invalid_all    using 1:2   with linespoints lw 2             lc "red"        title "All invalid roads", \
