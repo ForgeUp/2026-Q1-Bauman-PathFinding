@@ -8,6 +8,7 @@
 #include "geometry/shift.hpp"
 #include "geometry/clip.hpp"
 #include "geometry/line_intersection.hpp"
+#include "geometry/is_inside.hpp"
 
 
 namespace gridgen {
@@ -27,6 +28,11 @@ Graph lazy_offset_grid_sharp(const Area& area, const Point& min, const Point& ma
 
     for (const auto& r : area.rocks) { // Рассмотрение всех препятствий.
         auto& ps = r.points;
+
+        // Определяем направление смещения.
+        Segment dir = geometry::shift({ps[0], ps[1]}, delta * 0.001);
+        Point d = geometry::mid(dir.p1, dir.p2);
+        if (geometry::is_inside(d, r)) delta *= -1;
 
         // Изначально смещение строится для первого и последнего сегмента многоугольника.
         Segment first = shift({ps[0],     ps[1]}, delta);
