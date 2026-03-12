@@ -34,6 +34,9 @@ Graph GridGenerator::Gauss<Derived>::generate_grid(Options& opts) {
             std::normal_distribution(p.y, S.stgs.gauss_standard_deviation)(gen)
         );
 
+        if (q.x < S.corner_min.x || q.x > S.corner_max.x || 
+            q.y < S.corner_min.y || q.y > S.corner_max.y) continue; // Пропускаем точку вне рассматриваемой области.
+
         // Проверяем, что одна из точек лежит в свободной области, а другая - в области препятствий.
         bool p_collision = S.collision(p);
         bool q_collision = S.collision(q);
