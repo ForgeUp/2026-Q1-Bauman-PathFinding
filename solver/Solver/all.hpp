@@ -4,6 +4,7 @@
 #include "solver/Solver/Bridge.hpp"
 #include "solver/Solver/ClusterOffset.hpp"
 #include "solver/Solver/Gauss.hpp"
+#include "solver/Solver/ObstacleBased.hpp"
 #include "solver/Solver/ObstacleOffset.hpp"
 #include "solver/Solver/UniBridge.hpp"
 #include "solver/Solver/Uniform.hpp"
