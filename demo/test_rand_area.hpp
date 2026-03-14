@@ -34,6 +34,7 @@ void test_rand_area(Data& data) {
     };
     data.task = taskgen::task(cfg);
     
+    data.folder_mark = "random";
     demo::tester<Solver>(data);
 }
 
