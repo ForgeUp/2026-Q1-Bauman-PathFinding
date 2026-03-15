@@ -30,9 +30,9 @@ Graph GridGenerator::Article2001<Derived>::generate_grid(Options& opts) {
 
     std::vector<int32_t> idxs(S.invalid_all_rand.edges_count);
     std::iota(idxs.begin(), idxs.end(), 0);
-    if (S.invalid_all_rand.edges_count >= S.stgs.enhance_seed_nodes_count) {
+    if (S.invalid_all_rand.edges_count >= opts.nodes_count) {
         std::shuffle(idxs.begin(), idxs.end(), gen);
-        idxs.resize(S.stgs.enhance_seed_nodes_count);
+        idxs.resize(opts.nodes_count);
         std::sort(idxs.begin(), idxs.end());
     }
     for (int32_t i{0}, j{0}; const auto& s : S.invalid_all_rand.edges()) {
