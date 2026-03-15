@@ -78,28 +78,42 @@ template <template<typename> class... Modules>
 Solution SolverBase<Modules...>::run() {
     auto& S = self();
 
+    auto metric_time = [&](const char* name, auto&& func) -> decltype(auto) {
+        S.metric.time_in(name);
+
+        if constexpr (std::is_void_v<std::invoke_result_t<decltype(func)>>) {
+            func();
+            S.metric.time_out(name);
+        } else{
+            auto result = func();
+            S.metric.time_out(name);
+            return result;
+        }
+    };
+    #define METRIC_CALL(expr) metric_time(#expr, [&]{ return (expr); })
+
     S.visual.picture({S.task, S.sln, "initial"});
 
-    S.generate_initial_grid();
+    METRIC_CALL(S.generate_initial_grid());
     
     while (S.repeat && !S.is_found) {
 
-        S.find_path();
+        METRIC_CALL(S.find_path());
 
         // Завершение алгоритма, если в очередной раз не удалось найти путь и иссякло число попыток для поиска.
-        S.terminate = S.check_enchancement_limit();
+        S.terminate = METRIC_CALL(S.check_enchancement_limit());
         if (S.terminate) break;
 
         // Дополнение графа узлами и дорогами, если путь не удалось найти.
-        S.repeat = S.enhance_graph();
+        S.repeat = METRIC_CALL(S.enhance_graph());
         if (S.repeat) continue;
         
         // Выявление и удаление коллидирующих точек.
-        S.repeat = S.check_points_collision();
+        S.repeat = METRIC_CALL(S.check_points_collision());
         if (S.repeat) continue;
 
         // Выявление и удаление коллидирующих рёбер.
-        S.repeat = S.check_edges_collision();
+        S.repeat = METRIC_CALL(S.check_edges_collision());
         if (S.repeat) continue;
 
         // Иначе путь валиден и алгоритм заканчивают свою работу.
