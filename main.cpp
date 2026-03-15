@@ -24,8 +24,10 @@ int main() {
         .runs_per_area = 3
     };
 
-    demo::test_standard_area<Solver>(data);
-    // demo::test_rand_area<Solver>(stgs);
-    
+    // demo::test_standard_area<Solver>(data);
+    // demo::test_rand_area<Solver>(data);
+
+    demo::test_classic_and_lazy_PRM(srv_visual);
+
     return 0;
 }
