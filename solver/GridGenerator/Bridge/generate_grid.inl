@@ -17,8 +17,6 @@ template <typename Derived>
 Graph GridGenerator::Bridge<Derived>::generate_grid(Options& opts) {
     auto& S = self();
 
-    S.metric.time_in(__func__);
-
     std::random_device rd;
     std::mt19937 gen(rd());
 
@@ -58,8 +56,6 @@ Graph GridGenerator::Bridge<Derived>::generate_grid(Options& opts) {
     }
 
     S.visual.picture({S.task, {.enhance = result}, "bridge_grid"});
-
-    S.metric.time_out(__func__);
 
     return result;
 }

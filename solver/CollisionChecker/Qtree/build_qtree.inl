@@ -12,8 +12,6 @@ template <typename Derived>
 void CollisionChecker::Qtree<Derived>::build_qtree() {
     auto& S = self();
 
-    S.metric.time_in(__func__);
-
     decltype(qtree) temp(S.corner_min, S.corner_max);
     qtree = std::move(temp);
 
@@ -23,6 +21,4 @@ void CollisionChecker::Qtree<Derived>::build_qtree() {
     is_init = true;
 
     S.visual.picture({S.task, {.qtree = qtree}, "qtree"});
-    
-    S.metric.time_out(__func__);
 }

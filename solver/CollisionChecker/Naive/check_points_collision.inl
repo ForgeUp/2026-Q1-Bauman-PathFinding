@@ -14,8 +14,6 @@ template <typename Derived>
 bool CollisionChecker::Naive<Derived>::check_points_collision() {
     auto& S = self();
 
-    S.metric.time_in(__func__);
-
     bool has_collided_points = false;
     std::set<Point> collided_points;
 
@@ -34,7 +32,6 @@ bool CollisionChecker::Naive<Derived>::check_points_collision() {
     
     // Если коллизий не обнаружено, блок завершается.
     if (!has_collided_points) {
-        S.metric.time_out(__func__);
         return false;
     }
     // Иначе.
@@ -49,8 +46,6 @@ bool CollisionChecker::Naive<Derived>::check_points_collision() {
         }
         S.grid.remove(p);
     }
-
-    S.metric.time_out(__func__);
     
     return true;
 }

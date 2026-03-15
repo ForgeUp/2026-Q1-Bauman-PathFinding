@@ -18,8 +18,6 @@ template <typename Derived>
 Graph GridGenerator::ObstacleBased<Derived>::generate_grid(Options& opts) {
     auto& S = self();
 
-    S.metric.time_in(__func__);
-
     auto is_inside = [&S](const Point& p){
         using math::le;
         return le(S.corner_min.x, p.x) && le(p.x, S.corner_max.x) && le(S.corner_min.y, p.y) && le(p.y, S.corner_max.y);
@@ -90,8 +88,6 @@ Graph GridGenerator::ObstacleBased<Derived>::generate_grid(Options& opts) {
     }
 
     S.visual.picture({S.task, {.enhance = result}, "obstacle_based_grid"});
-
-    S.metric.time_out(__func__);
 
     return result;
 }

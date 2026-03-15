@@ -15,8 +15,6 @@ template <typename Derived>
 void Grider::AdaptiveRaise<Derived>::generate_initial_grid() {
     auto& S = self();
 
-    S.metric.time_in(__func__);
-
     GridGenerator::Options opts = {
         .lazy = S.stgs.lazy,
         .connect = true,
@@ -32,6 +30,4 @@ void Grider::AdaptiveRaise<Derived>::generate_initial_grid() {
     S.grid.join(enhance);
 
     S.visual.picture({S.task, S.sln, "initial_grid"});
-
-    S.metric.time_out(__func__);
 }

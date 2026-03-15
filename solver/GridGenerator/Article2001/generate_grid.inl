@@ -17,8 +17,6 @@
 template <typename Derived>
 Graph GridGenerator::Article2001<Derived>::generate_grid(Options& opts) {
     auto& S = self();
-    
-    S.metric.time_in(__func__);
 
     S.visual.picture({S.task, {.invalid = S.invalid}, "invalid"});
     S.invalid.clear();
@@ -81,8 +79,6 @@ Graph GridGenerator::Article2001<Derived>::generate_grid(Options& opts) {
     }
 
     S.visual.picture({S.task, {.enhance = result}, "article2001_grid"});
-
-    S.metric.time_out(__func__);
 
     S.attempts++;
     return result;

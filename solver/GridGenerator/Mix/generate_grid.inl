@@ -15,8 +15,6 @@ template <template<typename> class... Modules>
 template <typename Derived>
 Graph GridGenerator::Mix<Modules...>::type<Derived>::generate_grid(Options& opts) {
     auto& S = self();
-
-    S.metric.time_in(__func__);
     
     Graph mix;
 
@@ -35,8 +33,6 @@ Graph GridGenerator::Mix<Modules...>::type<Derived>::generate_grid(Options& opts
     } else if (opts.connect && !opts.lazy) {
         mix = gridgen::lazy_roads_Knearest({}, mix, S.stgs.nearest_count); // [TODO] Заменить на вариант с проверкой коллизии.
     }
-
-    S.metric.time_out(__func__);
 
     return mix;
 }

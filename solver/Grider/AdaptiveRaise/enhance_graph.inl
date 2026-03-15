@@ -18,8 +18,6 @@ bool Grider::AdaptiveRaise<Derived>::enhance_graph() {
 
     S.visual.picture({S.task, {.invalid = S.invalid}, "invalid"});
     S.invalid.clear();
-    
-    S.metric.time_in(__func__);
 
     GridGenerator::Options opts = {
         .lazy = S.stgs.lazy,
@@ -35,8 +33,6 @@ bool Grider::AdaptiveRaise<Derived>::enhance_graph() {
     multiplier *= rate;
 
     S.visual.picture({S.task, {.grid = S.grid,.enhance = enhance}, "enhanced_grid"});
-
-    S.metric.time_out(__func__);
 
     S.attempts++;
     return true;

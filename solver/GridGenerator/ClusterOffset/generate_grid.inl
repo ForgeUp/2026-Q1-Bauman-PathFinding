@@ -16,8 +16,6 @@ template <typename Derived>
 Graph GridGenerator::ClusterOffset<Derived>::generate_grid(Options& opts) {
     auto& S = self();
 
-    S.metric.time_in(__func__);
-
     // Выявление кластеров препятствий.
     auto clusters = cluster::compose(S.task.area.rocks);
 
@@ -34,8 +32,6 @@ Graph GridGenerator::ClusterOffset<Derived>::generate_grid(Options& opts) {
     if (!opts.lazy) {} // [TODO] Удаление коллидирующих вершин и рёбер.
     
     S.visual.picture({S.task, {.enhance = result}, "cluster_grid"});
-
-    S.metric.time_out(__func__);
 
     return result;
 }

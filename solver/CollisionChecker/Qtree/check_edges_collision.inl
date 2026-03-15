@@ -17,8 +17,6 @@ bool CollisionChecker::Qtree<Derived>::check_edges_collision() {
 
     if (!is_init) build_qtree();
 
-    S.metric.time_in(__func__);
-
     bool has_collided_edges = false;
     std::set<Segment> collided_edges;
 
@@ -31,7 +29,6 @@ bool CollisionChecker::Qtree<Derived>::check_edges_collision() {
 
     // Если коллизей не обнаружено, блок завершается.
     if (!has_collided_edges) {
-        S.metric.time_out(__func__);
         return false;
     }
     // Иначе.
@@ -43,8 +40,6 @@ bool CollisionChecker::Qtree<Derived>::check_edges_collision() {
         if (e.is_vert_rand()) S.invalid_all_rand.add(e);
         S.grid.remove(e);
     }
-
-    S.metric.time_out(__func__);
 
     // Путь ищется заново.
     return true;

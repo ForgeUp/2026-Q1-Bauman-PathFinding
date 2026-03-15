@@ -14,11 +14,7 @@ bool CollisionChecker::Qtree<Derived>::collision(const Point& p) {
 
     if (!is_init) build_qtree();
 
-    S.metric.time_in(__func__);
-
     bool result = qtree.collision(p);
-    
-    S.metric.time_out(__func__);
 
     return result;
 }
