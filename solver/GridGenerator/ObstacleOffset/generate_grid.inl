@@ -5,8 +5,6 @@
 #include "types/Point.hpp"
 #include "types/Graph.hpp"
 
-#include "gridgen/lazy_points.hpp"
-#include "gridgen/lazy_roads.hpp"
 #include "gridgen/lazy_offset_grid_sharp.hpp"
 
 
