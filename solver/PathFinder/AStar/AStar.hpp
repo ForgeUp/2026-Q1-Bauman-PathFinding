@@ -8,7 +8,7 @@ class AStar {
 protected:
     Derived& self() { return static_cast<Derived&>(*this); }
 
-    void find_path();
+    bool find_path();
 };
 
 }

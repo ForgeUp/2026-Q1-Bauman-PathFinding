@@ -9,12 +9,10 @@
 #include "gridgen/lazy_roads_Knearest.hpp"
 
 
-// Усиление графа путём уплотнения сетки случайными точками с удвоения количества на каждом шаге.
+// Усиление графа путём уплотнения сетки случайными точками с удвоением количества на каждом шаге.
 template <typename Derived>
-bool Grider::AdaptiveRaise<Derived>::enhance_graph() {
+void Grider::AdaptiveRaise<Derived>::enhance_graph() {
     auto& S = self();
-
-    if (!S.is_path_not_found) return false;
 
     S.visual.picture({S.task, {.invalid = S.invalid}, "invalid"});
     S.invalid.clear();
@@ -33,7 +31,4 @@ bool Grider::AdaptiveRaise<Derived>::enhance_graph() {
     multiplier *= rate;
 
     S.visual.picture({S.task, {.grid = S.grid,.enhance = enhance}, "enhanced_grid"});
-
-    S.attempts++;
-    return true;
 }

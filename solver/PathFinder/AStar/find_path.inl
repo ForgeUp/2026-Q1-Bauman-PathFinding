@@ -6,14 +6,13 @@
 
 
 template <typename Derived>
-void PathFinder::AStar<Derived>::find_path() {
+bool PathFinder::AStar<Derived>::find_path() {
     auto& S = self();
 
     auto res = pathfind::lazy(S.task, S.grid);
 
     S.path     = res.path;
-    S.enhance  = Graph();
     S.examined = res.examined;
 
-    S.is_path_not_found = res.is_unreachable;
+    return !res.is_unreachable;
 }

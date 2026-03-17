@@ -32,21 +32,13 @@ public:
 
     Graph& path     = sln.path;
     Graph& grid     = sln.grid;     // Граф, в котором выполняется поиск пути.
-    Graph& enhance  = sln.enhance;  // Подграф добавленных вершин и ребёр.
     Graph& examined = sln.examined; // Подграф рассмотренных в процессе поиска пути дорог и вершин.
     Graph& invalid  = sln.invalid;  // Подграф, отброшенный из-за коллизии.
 
     Graph invalid_all;              // Подграф невалидных рёбер за все итерации основного цикла.
     Graph invalid_all_rand;         // Подграф невалидных рёбер за все итерации основного цикла, построенных на точках, сгенерированных случайно в пределах всей арены.
 
-    int32_t attempts = 0;
-
-    // Флаги.
-    bool repeat    = true;
-    bool terminate = false;
-    bool is_found  = false;
-
-    bool is_path_not_found = false;
+    int32_t attempts{0};            // Счётчик выполненных усилений графа. 
 
     // Левый нижний и правый верхний углы арены.
     Point corner_min = Point(task.area.x_min, task.area.y_min);
@@ -58,8 +50,8 @@ public:
     
     Metric& metric = sln.metric;
 
-public:
-    bool check_enchancement_limit();
+private:
+    void init();
 };
 
 
@@ -76,8 +68,6 @@ public:
     }
 };
 
-template <typename T>
-concept HasInit = requires(T t) { t.init(); };
 
 template <template<typename> class... Modules>
 Solution SolverBase<Modules...>::run() {
@@ -96,43 +86,33 @@ Solution SolverBase<Modules...>::run() {
         }
     };
     #define METRIC_CALL(expr) metric_time(#expr, [&]{ return (expr); })
-
+    
     S.visual.picture({S.task, S.sln, "initial"});
     
-    S.metric.time_in("S.init()");
-    ([&]{
-        using M = Modules<Self>;
-        if constexpr (HasInit<M>) static_cast<M&>(S).init();
-    }(), ...);
-    S.metric.time_out("S.init()");
+    bool is_found_unchecked = false;
+    bool is_valid_found     = false;
+    bool is_invalid         = false;
 
-    METRIC_CALL(S.generate_initial_grid());
-    
-    while (S.repeat && !S.is_found) {
+    METRIC_CALL(S.init());                                        // Инициализация модулей.
+    METRIC_CALL(S.generate_initial_grid());                       // Генерация изначальной маршрутной сети.
 
-        METRIC_CALL(S.find_path());
-
-        // Завершение алгоритма, если в очередной раз не удалось найти путь и иссякло число попыток для поиска.
-        S.terminate = METRIC_CALL(S.check_enchancement_limit());
-        if (S.terminate) break;
-
-        // Дополнение графа узлами и дорогами, если путь не удалось найти.
-        S.repeat = METRIC_CALL(S.enhance_graph());
-        if (S.repeat) continue;
+    while (!is_valid_found) {                                     // Основной цикл алгоритма.
+        is_found_unchecked = METRIC_CALL(S.find_path());          // Поиск пути в маршрутной сети.
         
-        // Выявление и удаление коллидирующих точек.
-        S.repeat = METRIC_CALL(S.check_points_collision());
-        if (S.repeat) continue;
-
-        // Выявление и удаление коллидирующих рёбер.
-        S.repeat = METRIC_CALL(S.check_edges_collision());
-        if (S.repeat) continue;
-
-        // Иначе путь валиден и алгоритм заканчивают свою работу.
-        S.is_found = true;
+        if (is_found_unchecked) {                                 // Путь удалось найти.
+            is_invalid = METRIC_CALL(S.check_path_collision());   // - Проверка найденного пути на коллизию.
+            if (is_invalid) continue;                             // - Путь невалиден -> Путь ищется заново.
+            is_valid_found = true; break;                         // - Путь валиден -> Алгоритм заканчивает свою работу.
+        } else {                                                  // Иначе путь найти не удалось.
+            if (attempts >= stgs.enhance_attempts_limit) {        // - Завершение алгоритма, если иссякло число попыток для усиления.
+                is_valid_found = false; break; 
+            }
+            METRIC_CALL(S.enhance_graph());                       // - Дополнение графа узлами и дорогами.
+            attempts++;
+        }
     }
 
-    S.sln.is_fail = !S.is_found;
+    S.sln.is_fail = !is_valid_found;
     
     S.invalid.clear();
     S.visual.picture({S.task, {.invalid_all = S.invalid_all}, "invalid_all"});
@@ -142,10 +122,15 @@ Solution SolverBase<Modules...>::run() {
 }
 
 
-template <template<typename> class... Modules>
-bool SolverBase<Modules...>::check_enchancement_limit() {
-    if (!is_path_not_found) return false;
-    if (attempts < stgs.enhance_attempts_limit) return false;
+template <typename T>
+concept HasInit = requires(T t) { t.init(); };
 
-    return true;
+template <template<typename> class... Modules>
+void SolverBase<Modules...>::init() {
+    auto& S = self();
+
+    ([&]{
+        using M = Modules<Self>;
+        if constexpr (HasInit<M>) static_cast<M&>(S).init();
+    }(), ...);
 }
