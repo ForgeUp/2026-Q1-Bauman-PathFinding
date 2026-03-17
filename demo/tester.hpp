@@ -48,6 +48,11 @@ void tester(Data& data) {
             100.0 * stamp.acc / total
         ) << '\n';
     }
+
+    std::cout << "Collision checks: " << '\n';
+    for (const auto& [name, count] : sln.metric.counter) {
+        std::cout << std::format("\t{:<30} | {:8}", name, count) << '\n';
+    }
 }
 
 }
