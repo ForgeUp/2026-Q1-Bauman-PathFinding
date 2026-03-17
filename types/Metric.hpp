@@ -14,8 +14,9 @@ public:
         int32_t counter{0};
     };
 
-private:
+public:
     std::map<std::string,Stamp> journal;
+    std::map<std::string,int32_t> counter;
 
 public:
     using const_iterator =
@@ -47,6 +48,10 @@ public:
 
         stamp.acc += out - stamp.in;
         stamp.counter++;
+    }
+
+    void count(const std::string& name) {
+        counter[name]++;
     }
 
 };
