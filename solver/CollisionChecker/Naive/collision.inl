@@ -7,16 +7,27 @@
 #include "types/Point.hpp"
 #include "types/Graph.hpp"
 
+#include "geometry/is_inside.hpp"
+
 
 template <typename Derived>
 bool CollisionChecker::Naive<Derived>::collision(const Point& p) {
     auto& S = self();
 
-    // [TODO] Добавить отметку о проверки коллизии.
+    S.metric.count("point_collision_check_total");
+
+    if (p.is_checked_collsn) p.is_collision;
+
+    S.metric.count("point_collision_check_unique");
+
+    p.is_collision = false;
+    p.is_checked_collsn = true;
+
     for (auto& r : S.task.area.rocks) {
         if (!geometry::is_inside(p, r)) continue;
-        return true;
+        p.is_collision = true;
+        break;
     }
 
-    return false;
+    return p.is_collision;
 }
