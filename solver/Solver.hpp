@@ -13,8 +13,11 @@
 
 template <template<typename> class... Modules>
 class SolverBase: public Modules<SolverBase<Modules...>>... {
+public:
+    using Self = SolverBase<Modules...>;
+
 protected:
-    SolverBase<Modules...>& self() { return *this; }
+    Self& self() { return *this; }
 
 public:
     SolverBase(const Task& task_, const SolverSettings& stgs_, const Services& srvs_) : task(task_), stgs(stgs_), srvs(srvs_) {}
@@ -73,6 +76,8 @@ public:
     }
 };
 
+template <typename T>
+concept HasInit = requires(T t) { t.init(); };
 
 template <template<typename> class... Modules>
 Solution SolverBase<Modules...>::run() {
@@ -93,6 +98,13 @@ Solution SolverBase<Modules...>::run() {
     #define METRIC_CALL(expr) metric_time(#expr, [&]{ return (expr); })
 
     S.visual.picture({S.task, S.sln, "initial"});
+    
+    S.metric.time_in("S.init()");
+    ([&]{
+        using M = Modules<Self>;
+        if constexpr (HasInit<M>) static_cast<M&>(S).init();
+    }(), ...);
+    S.metric.time_out("S.init()");
 
     METRIC_CALL(S.generate_initial_grid());
     
