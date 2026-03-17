@@ -23,9 +23,6 @@ public:
 private:
     bool is_init{false};
     QTreeDS qtree;
-
-private:
-    void build_qtree();
 };
 
 }
