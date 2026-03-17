@@ -5,9 +5,11 @@
 #include "Naive.hpp"
 
 #include "types/Point.hpp"
+#include "types/Segment.hpp"
 #include "types/Graph.hpp"
 
 #include "geometry/is_inside.hpp"
+#include "geometry/intersect.hpp"
 
 
 template <typename Derived>
@@ -30,4 +32,23 @@ bool CollisionChecker::Naive<Derived>::collision(const Point& p) {
     }
 
     return p.is_collision;
+}
+
+template <typename Derived>
+bool CollisionChecker::Naive<Derived>::collision(const Segment& s) {
+    auto& S = self();
+
+    S.metric.count("edge_collision_check_total");
+
+    auto& p1 = s.p1 < s.p2 ? s.p1 : s.p2; 
+    auto& p2 = s.p1 < s.p2 ? s.p2 : s.p1;
+    Segment e{p1, p2};
+
+    if (edge_cache.contains(e)) return edge_cache[e];
+
+    S.metric.count("edge_collision_check_unique");
+    
+    edge_cache[e] = geometry::intersect(e, S.task.area);
+
+    return edge_cache[e];
 }
