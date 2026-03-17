@@ -1,9 +1,12 @@
 #pragma once
 
+#include <map>
+
 #include "qtree/Qtree.hpp"
 using QTreeDS = Qtree;
 
 #include "types/Point.hpp"
+#include "types/Segment.hpp"
 
 
 namespace CollisionChecker {
@@ -19,10 +22,13 @@ public:
     bool check_edges_collision();
 
     bool collision(const Point& p);
+    bool collision(const Segment& s);
 
 private:
     bool is_init{false};
     QTreeDS qtree;
+
+    std::map<Segment,bool> edge_cache;
 };
 
 }
