@@ -13,9 +13,7 @@
 template <typename Derived>
 bool CollisionChecker::Qtree<Derived>::check_points_collision() {
     auto& S = self();
-
-    if (!is_init) build_qtree();
-
+    
     bool has_collided_points = false;
     std::set<Point> collided_points;
 

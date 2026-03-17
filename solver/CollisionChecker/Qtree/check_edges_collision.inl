@@ -15,8 +15,6 @@ template <typename Derived>
 bool CollisionChecker::Qtree<Derived>::check_edges_collision() {
     auto& S = self();
 
-    if (!is_init) build_qtree();
-
     bool has_collided_edges = false;
     std::set<Segment> collided_edges;
 

@@ -9,8 +9,10 @@
 
 
 template <typename Derived>
-void CollisionChecker::Qtree<Derived>::build_qtree() {
+void CollisionChecker::Qtree<Derived>::init() {
     auto& S = self();
+
+    if (is_init) return;
 
     decltype(qtree) temp(S.corner_min, S.corner_max);
     qtree = std::move(temp);
