@@ -2,6 +2,8 @@
 
 #include <map>
 
+#include "solver/CollisionChecker/Base/Base.hpp"
+
 #include "types/Point.hpp"
 #include "types/Segment.hpp"
 
@@ -9,12 +11,9 @@
 namespace CollisionChecker {
 
 template <typename Derived>
-class Naive {
+class Naive : public CollisionChecker::Base<Derived> {
 public:
     Derived& self() { return static_cast<Derived&>(*this); }
-
-    bool check_points_collision();
-    bool check_edges_collision();
 
     bool collision(const Point& p);
     bool collision(const Segment& s);
@@ -26,6 +25,4 @@ private:
 }
 
 
-#include "check_points_collision.inl"
-#include "check_edges_collision.inl"
 #include "collision.inl"

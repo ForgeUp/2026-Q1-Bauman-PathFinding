@@ -2,6 +2,8 @@
 
 #include <map>
 
+#include "solver/CollisionChecker/Base/Base.hpp"
+
 #include "qtree/Qtree.hpp"
 using QTreeDS = Qtree;
 
@@ -12,14 +14,11 @@ using QTreeDS = Qtree;
 namespace CollisionChecker {
 
 template <typename Derived>
-class Qtree {
+class Qtree : public CollisionChecker::Base<Derived> {
 public:
     Derived& self() { return static_cast<Derived&>(*this); }
 
     void init();
-
-    bool check_points_collision();
-    bool check_edges_collision();
 
     bool collision(const Point& p);
     bool collision(const Segment& s);
@@ -35,6 +34,4 @@ private:
 
 
 #include "init.inl"
-#include "check_points_collision.inl"
-#include "check_edges_collision.inl"
 #include "collision.inl"
