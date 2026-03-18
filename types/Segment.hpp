@@ -5,9 +5,9 @@
 #include "types/Point.hpp"
 
 
-    struct Segment {
-        Point p1{};
-        Point p2{};
+struct Segment {
+    Point p1{};
+    Point p2{};
 
     double size() const {
         return std::hypot(p2.x - p1.x, p2.y - p1.y);
@@ -34,4 +34,4 @@
         return l2 < r2;
     }
 
-    };
+};
