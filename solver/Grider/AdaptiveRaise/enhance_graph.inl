@@ -18,7 +18,7 @@ void Grider::AdaptiveRaise<Derived>::enhance_graph() {
     S.invalid.clear();
 
     GridGenerator::Options opts = {
-        .lazy = S.stgs.lazy,
+        .check_collision = !S.stgs.lazy,
         .connect = false,
         .nodes_count = static_cast<int32_t>(S.stgs.initial_nodes_count * multiplier)
     };

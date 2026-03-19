@@ -4,7 +4,7 @@
 namespace GridGenerator {
 
 struct Options {
-    bool lazy{true};
+    bool check_collision{true};
     bool connect{false};
     int32_t nodes_count{0};
 };

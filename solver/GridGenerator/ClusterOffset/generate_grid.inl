@@ -29,7 +29,7 @@ Graph GridGenerator::ClusterOffset<Derived>::generate_grid(Options& opts) {
     // Генерация окаймляющих маршрутных компонент вокруг кластеров препятствий.
     Graph result = gridgen::lazy_offset_grid_sharp(cluster_area, S.corner_min, S.corner_max);
 
-    if (!opts.lazy) {} // [TODO] Удаление коллидирующих вершин и рёбер.
+    if (opts.check_collision) {} // [TODO] Удаление коллидирующих вершин и рёбер.
     
     S.visual.picture({S.task, {.enhance = result}, "cluster_grid"});
 

@@ -16,7 +16,7 @@ void Grider::AdaptiveRaise<Derived>::generate_initial_grid() {
     auto& S = self();
 
     GridGenerator::Options opts = {
-        .lazy = S.stgs.lazy,
+        .check_collision = !S.stgs.lazy,
         .connect = true,
         .nodes_count = S.stgs.initial_nodes_count
     };

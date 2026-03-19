@@ -23,7 +23,7 @@ Graph GridGenerator::Uniform<Derived>::generate_grid(Options& opts) {
     double attempts_count = 5; // Количество попыток разместить точку внутри квадрата без коллизии, если включена проверка коллизии.
 
     // Функция для генерации точки внутри заданной области с проверкой коллизии по необходимости.
-    auto generate_point = [&S, &gen, &attempts_count, check_collision = !opts.lazy](const Point& min, const Point& max) {
+    auto generate_point = [&S, &gen, &attempts_count, check_collision = opts.check_collision](const Point& min, const Point& max) {
         struct Result {
             Point p;
             bool is_generated{false};

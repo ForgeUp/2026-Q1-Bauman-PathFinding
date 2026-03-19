@@ -19,7 +19,7 @@ Graph GridGenerator::Mix<Modules...>::type<Derived>::generate_grid(Options& opts
     Graph mix;
 
     GridGenerator::Options subopts {
-        .lazy = opts.lazy,
+        .check_collision = opts.check_collision,
         .connect = false,
         .nodes_count = static_cast<int32_t>(opts.nodes_count * 0.5)
     };
