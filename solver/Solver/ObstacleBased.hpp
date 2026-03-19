@@ -6,6 +6,7 @@
 #include "../GridGenerator/Mix/Mix.hpp"
 #include "../GridGenerator/Uniform/Uniform.hpp"
 #include "../GridGenerator/ObstacleBased/ObstacleBased.hpp"
+#include "../GridLinker/Knearest/Knearest.hpp"
 #include "../CollisionChecker/Qtree/Qtree.hpp"
 #include "../PathFinder/AStar/AStar.hpp"
 
@@ -17,6 +18,7 @@ using ObstacleBased = Solver<
     GridGenerator::Mix<
         GridGenerator::Uniform,
         GridGenerator::ObstacleBased>::type,
+    GridLinker::Knearest,
     CollisionChecker::Qtree,
     PathFinder::AStar
 >;

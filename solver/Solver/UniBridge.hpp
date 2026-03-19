@@ -6,6 +6,7 @@
 #include "../GridGenerator/Mix/Mix.hpp"
 #include "../GridGenerator/Uniform/Uniform.hpp"
 #include "../GridGenerator/Bridge/Bridge.hpp"
+#include "../GridLinker/Knearest/Knearest.hpp"
 #include "../CollisionChecker/Qtree/Qtree.hpp"
 #include "../PathFinder/AStar/AStar.hpp"
 
@@ -17,6 +18,7 @@ using UniBridge = Solver<
     GridGenerator::Mix<
         GridGenerator::Uniform,
         GridGenerator::Bridge>::type,
+    GridLinker::Knearest,
     CollisionChecker::Qtree,
     PathFinder::AStar
 >;
