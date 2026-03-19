@@ -6,8 +6,6 @@
 
 #include "solver/GridGenerator/Options.hpp"
 
-#include "gridgen/lazy_roads_Knearest.hpp"
-
 
 // Усиление графа путём уплотнения сетки случайными точками с удвоением количества на каждом шаге.
 template <typename Derived>
@@ -24,7 +22,7 @@ void Grider::AdaptiveRaise<Derived>::enhance_graph() {
     };
     Graph points = S.generate_grid(opts);
 
-    Graph enhance = gridgen::lazy_roads_Knearest(S.grid, points, S.stgs.nearest_count);
+    Graph enhance = S.link_grid(S.grid, points, S.stgs.nearest_count, opts.check_collision);
     S.grid.join(enhance);
 
     // Увеличение количества точек для следующей итерации.

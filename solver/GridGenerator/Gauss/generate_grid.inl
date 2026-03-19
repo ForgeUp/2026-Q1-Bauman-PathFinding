@@ -7,8 +7,6 @@
 #include "types/Point.hpp"
 #include "types/Graph.hpp"
 
-#include "gridgen/lazy_roads_Knearest.hpp"
-
 
 // Генерация маршрутной сети вблизи препятствий по методу нормального распределения. 
 template <typename Derived>
@@ -45,10 +43,8 @@ Graph GridGenerator::Gauss<Derived>::generate_grid(Options& opts) {
         generated_count++;
     }
     
-    if (opts.connect && opts.lazy) {
-        result = gridgen::lazy_roads_Knearest({}, result, S.stgs.nearest_count);
-    } else if (opts.connect && !opts.lazy) {
-        result = gridgen::lazy_roads_Knearest({}, result, S.stgs.nearest_count); // [TODO] Заменить на вариант с проверкой коллизии.
+    if (opts.connect) {
+        result = S.link_grid({}, result, S.stgs.nearest_count, opts.check_collision);
     }
 
     S.visual.picture({S.task, {.enhance = result}, "gauss_grid"});

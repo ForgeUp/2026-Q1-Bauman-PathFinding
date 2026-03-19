@@ -11,8 +11,6 @@
 
 #include "math/eq.hpp"
 
-#include "gridgen/lazy_roads_Knearest.hpp"
-
 
 template <typename Derived>
 Graph GridGenerator::ObstacleBased<Derived>::generate_grid(Options& opts) {
@@ -81,10 +79,8 @@ Graph GridGenerator::ObstacleBased<Derived>::generate_grid(Options& opts) {
         }
     }
     
-    if (opts.connect && opts.lazy) {
-        result = gridgen::lazy_roads_Knearest({}, result, S.stgs.nearest_count);
-    } else if (opts.connect && !opts.lazy) {
-        result = gridgen::lazy_roads_Knearest({}, result, S.stgs.nearest_count); // [TODO] Заменить на вариант с проверкой коллизии.
+    if (opts.connect) {
+        result = S.link_grid({}, result, S.stgs.nearest_count, opts.check_collision);
     }
 
     S.visual.picture({S.task, {.enhance = result}, "obstacle_based_grid"});

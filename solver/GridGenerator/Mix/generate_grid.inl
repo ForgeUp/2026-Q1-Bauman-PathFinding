@@ -7,8 +7,6 @@
 #include "types/Point.hpp"
 #include "types/Graph.hpp"
 
-#include "gridgen/lazy_roads_Knearest.hpp"
-
 
 // Генерация маршрутной сети без проверки коллизии с препятствиями.
 template <template<typename> class... Modules>
@@ -26,13 +24,7 @@ Graph GridGenerator::Mix<Modules...>::type<Derived>::generate_grid(Options& opts
 
     (mix.join(static_cast<Modules<Derived>&>(S).generate_grid(subopts)), ...);
 
-    mix = gridgen::lazy_roads_Knearest({}, mix, S.stgs.nearest_count);
-
-    if (opts.connect && opts.lazy) {
-        mix = gridgen::lazy_roads_Knearest({}, mix, S.stgs.nearest_count);
-    } else if (opts.connect && !opts.lazy) {
-        mix = gridgen::lazy_roads_Knearest({}, mix, S.stgs.nearest_count); // [TODO] Заменить на вариант с проверкой коллизии.
-    }
+    mix = S.link_grid({}, mix, S.stgs.nearest_count, opts.check_collision);
 
     return mix;
 }

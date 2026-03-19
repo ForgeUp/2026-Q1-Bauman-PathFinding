@@ -10,8 +10,6 @@
 #include "types/Point.hpp"
 #include "types/Graph.hpp"
 
-#include "gridgen/lazy_roads_Knearest.hpp"
-
 
 // Генерация случайных точек вокруг отброшенных рёбер.
 template <typename Derived>
@@ -72,10 +70,8 @@ Graph GridGenerator::Article2001<Derived>::generate_grid(Options& opts) {
         result.add(q);
     }
 
-    if (opts.connect && opts.lazy) {
-        result = gridgen::lazy_roads_Knearest({}, result, S.stgs.nearest_count);
-    } else if (opts.connect && !opts.lazy) {
-        result = gridgen::lazy_roads_Knearest({}, result, S.stgs.nearest_count); // [TODO] Заменить на вариант с проверкой коллизии.
+    if (opts.connect) {
+        result = S.link_grid({}, result, S.stgs.nearest_count, opts.check_collision);
     }
 
     S.visual.picture({S.task, {.enhance = result}, "article2001_grid"});

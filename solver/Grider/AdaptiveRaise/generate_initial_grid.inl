@@ -7,8 +7,6 @@
 
 #include "solver/GridGenerator/Options.hpp"
 
-#include "gridgen/lazy_roads_Knearest.hpp"
-
 
 // Генерация изначальной маршрутной сети без проверки коллизии с препятствиями.
 template <typename Derived>
@@ -26,7 +24,7 @@ void Grider::AdaptiveRaise<Derived>::generate_initial_grid() {
     points.add(S.task.start);
     points.add(S.task.end);
     
-    Graph enhance = gridgen::lazy_roads_Knearest(S.grid, points, S.stgs.nearest_count);
+    Graph enhance = S.link_grid(S.grid, points, S.stgs.nearest_count, opts.check_collision);
     S.grid.join(enhance);
 
     S.visual.picture({S.task, S.sln, "initial_grid"});
