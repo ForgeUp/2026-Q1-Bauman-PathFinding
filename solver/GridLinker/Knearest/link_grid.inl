@@ -1,15 +1,12 @@
 #pragma once
 
-#include <map>
-#include <numeric>
-
 #include "Knearest.hpp"
 
 #include "types/Point.hpp"
 #include "types/Segment.hpp"
 #include "types/Graph.hpp"
 
-#include "geometry/dist.hpp"
+#include "kdtree/KDTree.hpp"
 
 
 /**
@@ -33,59 +30,33 @@ template <typename Derived>
 Graph GridLinker::Knearest<Derived>::link_grid(const Graph& base, const Graph& connect, int32_t K, bool check_collision) {
     auto& S = self();
 
-    int32_t limitK = 2 * K; // Предел количества соседей для рассмотрения. // [TODO] Перенести в сущность настроек.
-
-    // Общий граф из вершин базового класса и вершин расширяющего класса.
-    Graph all;
+    Graph all; // Общий граф из вершин базового класса и вершин расширяющего класса.
     all.join_points(base);
     all.join_points(connect);
 
-    // Итоговый граф.
-    Graph result(connect);
-    
+    Graph result(connect); // Итоговый граф.
+
     if (K < 1) return result; // Вырожденный случай: точки не соединяются.
 
-    for (auto it = connect.verts.begin(); it != connect.verts.end(); ++it) { // Цикл по вершинам дополняющего графа.
-        auto& p{*it};
-        
-        std::multimap<double,Point> dists;
+    KDTree tree(all.verts); // KD-дерево для быстрого выявления ближайших соседей.
+    
+    int32_t limitK = 2 * K; // Предел количества соседей для рассмотрения. // [TODO] Перенести в сущность настроек.
+    
+    for (const auto& p : connect.verts) { // Цикл по вершинам дополняющего графа.
 
-        std::vector<decltype(all.verts)::iterator> idxs(all.verts.size()); // Массив индексов вершин общего графа для сортировки относительно рассматриваемой вершины.
-        int32_t pos = 0;
-        for (auto it = all.verts.begin(); it != all.verts.end(); ++it) {
-            idxs[pos++] = it;
-        }
-        std::sort(idxs.begin(), idxs.end(), [&all,&p](auto& l, auto& r){
-            return geometry::dist(p, *l) < geometry::dist(p, *r); 
-        });
+        std::vector<Point> neighbours; // Ближайшие соседи точки для связывания.
+        neighbours = tree.nearest_k(p, check_collision ? limitK + 1 : K + 1); // +1 так как в графе гарантированно содержится точка для связывания. 
 
-        for (int32_t cntr{0}; const auto& idx : idxs) { // Цикл по всем вершинам в порядке удаления от рассматриваемой вершины.
-            auto& q = *idx;
-            
-            if (p == q) continue; // Расстояние от точки до самой себя.
+        for (int32_t collectK{0}; const auto& q : neighbours) { // Цикл по всем вершинам в порядке удаления от рассматриваемой вершины.
+            if (p == q) continue; // Пропускаем точку, если она является собой.
 
-            if (dists.size() >= K || cntr++ >= limitK) break; // Остановка рассмотрения, если найдено необходимое число соседей или число попыток иссякло.
+            if (check_collision && S.collision({p,q})) continue; // Если включена проверка коллизии -> Пропускаем ребро, если оно не проходит на проверку на коллизию.
+            // Иначе найдено подходящее ребро.
 
-            if (check_collision && S.collision({p,q})) continue; // Проверка на коллизию по требованию.
-
-            double dist_pq = geometry::dist(p, q);
-
-            if (dists.size() < K) {
-                dists.emplace(dist_pq, q);
-                continue;
-            }
-
-            auto furthest_it = std::prev(dists.end());
-            auto& [dist_furthest, furthest_point] = *furthest_it;
-
-            if (dist_pq < dist_furthest) {
-                dists.erase(furthest_it);
-                dists.emplace(dist_pq, q);
-            }
-        }
-
-        for (auto& [dist, q] : dists) {
             result.add(p, q);
+            collectK++;
+
+            if (collectK >= K) break; // Остановка рассмотрения, если найдено необходимое число соседей.
         }
     }
 
