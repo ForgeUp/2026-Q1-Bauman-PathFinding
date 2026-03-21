@@ -4,6 +4,7 @@
 #include <numeric>
 #include <random>
 #include <vector>
+#include <ranges>
 
 #include "Article2001.hpp"
 
@@ -23,14 +24,24 @@ Graph GridGenerator::Article2001<Derived>::generate_grid(Options& opts) {
     std::mt19937 gen(rd());
 
     Graph result;
+    
+    std::vector<int32_t> idxs; // Набор уникальных случайных индексов рёбер, отброшенных за все итерации алгоритма, рёбер в порядке возрастания.
+    int32_t samples_count = std::min(opts.nodes_count, S.invalid_all_rand.edges_count);
+    
+    idxs = std::invoke([&](int32_t start, int32_t end, int32_t count) {
+        std::vector<int32_t> result(count);
+        
+        std::sample(
+            std::views::iota(start, end).begin(),
+            std::views::iota(start, end).end(),
+            result.begin(), count, gen
+        );
 
-    std::vector<int32_t> idxs(S.invalid_all_rand.edges_count);
-    std::iota(idxs.begin(), idxs.end(), 0);
-    if (S.invalid_all_rand.edges_count >= opts.nodes_count) {
-        std::shuffle(idxs.begin(), idxs.end(), gen);
-        idxs.resize(opts.nodes_count);
-        std::sort(idxs.begin(), idxs.end());
-    }
+        std::sort(result.begin(), result.end());
+
+        return result;
+    }, 0, S.invalid_all_rand.edges_count, samples_count);
+
     for (int32_t i{0}, j{0}; const auto& s : S.invalid_all_rand.edges()) {
         if (j >= idxs.size()) break;
         if (i++ != idxs[j]) continue;
@@ -76,6 +87,5 @@ Graph GridGenerator::Article2001<Derived>::generate_grid(Options& opts) {
 
     S.visual.picture({S.task, {.enhance = result}, "article2001_grid"});
 
-    S.attempts++;
     return result;
 }
