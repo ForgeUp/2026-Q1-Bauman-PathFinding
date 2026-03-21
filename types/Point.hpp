@@ -19,6 +19,11 @@ struct Point {
     Point() = default;
     Point(double x_, double y_) : x{math::trunc(x_)}, y{math::trunc(y_)} {}
 
+    const double& operator[](int64_t idx) const {
+        if (idx == 0) return x;
+        return y;
+    }
+
     friend bool operator==(const Point& a, const Point& b) {
         return math::eq(a.x, b.x) && math::eq(a.y, b.y);
     }
