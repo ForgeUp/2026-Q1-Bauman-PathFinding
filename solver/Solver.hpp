@@ -118,6 +118,8 @@ Solution SolverBase<Modules...>::run() {
     S.visual.picture({S.task, {.invalid_all = S.invalid_all}, "invalid_all"});
     S.visual.picture({S.task, S.sln, "result"});
 
+    #undef METRIC_CALL
+
     return S.sln;
 }
 
