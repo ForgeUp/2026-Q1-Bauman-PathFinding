@@ -12,12 +12,17 @@
 #include "draw/VisualizerService.hpp"
 
 #include "utils/Timer.hpp"
+#include "utils/logger.hpp"
 
 
 namespace demo {
 
 template <typename Solver>
 void tester(Data& data) {
+    Logger::buff_on();
+    Logger::log("Run {}", data.folder_mark);
+    Logger::in();
+    
     std::string output_folder = std::format("{:%Y-%m-%d %H-%M-%S} [{}]", 
         std::chrono::floor<std::chrono::seconds>(std::chrono::system_clock::now()), 
         data.folder_mark
@@ -31,7 +36,6 @@ void tester(Data& data) {
     auto sln = solver.run();
     
     auto total = timer.tick();
-    std::cout << std::format("Total time consume: {}", total) << '\n';
 
     std::vector<std::pair<std::string,Metric::Stamp>> metric;
     for (const auto& [name, stamp] : sln.metric) {
@@ -40,19 +44,28 @@ void tester(Data& data) {
     std::sort(metric.begin(), metric.end(), [](auto& l, auto& r) {
         return l.second.acc > r.second.acc;
     });
+
+    Logger::log("Total time consume: {}", total);
+    Logger::in();
     for (const auto& [name, stamp] : metric) {
-        std::cout << std::format("\t{:<30} | {:6} | {:10} | {:6.2f}%", 
+        Logger::log("{:<30} | {:6} | {:10} | {:6.2f}%", 
             name,
             stamp.counter,
             std::chrono::duration_cast<std::chrono::milliseconds>(stamp.acc), 
             100.0 * stamp.acc / total
-        ) << '\n';
+        );
     }
+    Logger::out();
 
-    std::cout << "Collision checks: " << '\n';
+    Logger::log("Collision checks:");
+    Logger::in();
     for (const auto& [name, count] : sln.metric.counter) {
-        std::cout << std::format("\t{:<30} | {:8}", name, count) << '\n';
+        Logger::log("{:<30} | {:8}", name, count);
     }
+    Logger::out();
+
+    Logger::out();
+    Logger::buff_off();
 }
 
 }

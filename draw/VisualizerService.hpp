@@ -11,6 +11,8 @@
 
 #include "draw/draw.hpp"
 
+#include "utils/logger.hpp"
+
 
 class VisualizerBase {
 public:
@@ -60,7 +62,8 @@ public:
                     sc = std::move(scenes.front());
                     scenes.pop();
                 }
-
+                
+                DrawLogger::log("Draw pic: {}", sc.name);
                 draw(sc.task, sc.sln, base_dir + '/' + sc.dir, sc.name);
             }
         });

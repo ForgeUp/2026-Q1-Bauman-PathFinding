@@ -4,8 +4,12 @@
 #include "demo/demo.hpp"
 #include "solver/Solver/all.hpp"
 
+#include "utils/logger.hpp"
+
 
 int main() {
+    Logger::set_stream_to_file("result/log_solve.txt");
+    DrawLogger::set_stream_to_file("result/log_draw.txt");
     VisualizerService srv_visual("result");
     
     using Solver = solver::ObstacleOffset;
@@ -26,7 +30,6 @@ int main() {
 
     // demo::test_standard_area<Solver>(data);
     // demo::test_rand_area<Solver>(data);
-
     demo::test_classic_and_lazy_PRM(srv_visual);
 
     return 0;
