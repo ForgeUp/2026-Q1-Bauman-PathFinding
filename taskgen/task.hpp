@@ -40,6 +40,21 @@ Rock polygon(const GeneratorConfig& cfg, std::mt19937& gen) {
     return rock;
 }
 
+// Функция для создания n точек вокруг заданной точки m на расстоянии r.
+std::vector<Point> circle_points(const Point& m, double r, int32_t n) {
+    if (n < 1) return {};
+    std::vector<Point> result;
+    double angleStep = 2 * pi / n;
+    for (int32_t i = 0; i < n; ++i) {
+        double angle = i * angleStep;
+        result.push_back({
+            m.x + r * std::cos(angle),
+            m.y + r * std::sin(angle)
+        });
+    }
+    return result;
+}
+
 Task task(GeneratorConfig& cfg) {
     if (cfg.generate_rand_seed) cfg.seed = std::random_device()();
     std::mt19937 gen(cfg.seed);
@@ -78,12 +93,19 @@ Task task(GeneratorConfig& cfg) {
     task.start = cfg.start;
     task.end   = cfg.end;
 
+    std::vector<Point> start_circle = circle_points(task.start, 0.5, 8);
+    std::vector<Point> end_circle   = circle_points(task.end,   0.5, 8);
+
+    auto valid_rock = [](const Point& p, const std::vector<Point>& circle, const Rock& r) {
+        return !geometry::is_inside(p, r) && !geometry::is_inside(circle, r);
+    };
+
     // Генерация препятствий.
     for (int i = 0; i < polygonCount; ++i) {
         auto r = polygon(cfg, gen);
 
         // Проверка, что начальная и конечная точки НЕ находятся внутри многоугольника.
-        if (geometry::is_inside(task.start, r) || geometry::is_inside(task.end, r)) {
+        if (!valid_rock(task.start, start_circle, r) || !valid_rock(task.end, end_circle, r)) {
             i--;
             continue;
         }
