@@ -5,6 +5,7 @@
 #include "Qtree.hpp"
 
 #include "types/Point.hpp"
+#include "types/Task.hpp"
 #include "types/Graph.hpp"
 
 
@@ -22,5 +23,5 @@ void CollisionChecker::Qtree<Derived>::init() {
     }
     is_init = true;
 
-    S.visual.picture({S.task, {.qtree = qtree}, "qtree"});
+    S.visual.picture({no_rocks(S.task), {.qtree = qtree}, "qtree"});
 }
