@@ -6,7 +6,7 @@
 #include "types/Segment.hpp"
 
 #include "geometry/intersect.hpp"
-#include "geometry/on_segment.hpp"
+#include "geometry/is_inside.hpp"
 
 
 bool Qtree::collision(const Point& p) {
@@ -17,7 +17,7 @@ bool Qtree::collision(const Point& p) {
     // Иначе b->type == Type::Mix.
     for (const auto& [obst, seg_idxs] : b->collisions) {
         for (const auto& idx : seg_idxs) {
-            if (geometry::on_segment(p, get_segment_by_idx(obst, idx))) return true;
+            if (geometry::is_inside(p, *obst)) return true;
         }
     }
     return false;
