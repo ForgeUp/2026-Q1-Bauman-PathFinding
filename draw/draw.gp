@@ -3,7 +3,7 @@ if (!exists("filename") || !exists("output_dir") || !exists("data_dir")) {
     exit
 }
 
-set terminal pngcairo size 2000,1500 enhanced font "Arial,12"
+set terminal pngcairo size 2000,2000 enhanced font "Arial,12"
 set output output_dir.'/'.filename
 
 # Настройки.
@@ -30,18 +30,10 @@ qtree_busy   = data_dir.'/'.'qtree_busy.txt'
 set xrange [x_min-5:x_max+5]
 set yrange [y_min-5:y_max+5]
 
-# Легенда.
-set key outside
-
-# Отрисовка границ карты.
-array x1[4] = [x_min, x_min, x_min, x_max]
-array y1[4] = [y_min, y_max, y_min, y_min]
-array x2[4] = [x_max, x_max, x_min, x_max]
-array y2[4] = [y_min, y_max, y_max, y_max]
-
-do for [i=1:4] {
-    set arrow i from x1[i], y1[i] to x2[i], y2[i] nohead lw 2 lc rgb "black"
-}
+# Убрать оси, засечки и легенду.
+set border 0
+unset tics
+unset key
 
 # Отрисовка карты.
 plot \
@@ -57,8 +49,12 @@ plot \
     qtree_mix      using 1:2   with filledcurves fs transparent solid 0.8 lc rgb "red"    notitle, \
     qtree_busy     using 1:2   with filledcurves fs transparent solid 0.8 lc rgb "yellow" notitle, \
     qtree          using 1:2   with lines       lw 1             lc "grey"       title "Qtree Split", \
-    '+' using (x_start):(y_start) with points      ps 2   pt 7 lc "green"      title "Start point", \
-    '+' using (x_end)  :(y_end)   with points      ps 2   pt 7 lc "dark-green" title "End point", \
+    '+' using (x_start):(y_start) with points      ps 2   pt 7   lc "green"      title "Start point", \
+    '+' using (x_end)  :(y_end)   with points      ps 2   pt 7   lc "dark-green" title "End point", \
+    '+' using (x_min):(y_min):(x_max-x_min):(0) with vectors nohead lw 2 lc "grey" notitle, \
+    '+' using (x_min):(y_max):(x_max-x_min):(0) with vectors nohead lw 2 lc "grey" notitle, \
+    '+' using (x_min):(y_min):(0):(y_max-y_min) with vectors nohead lw 2 lc "grey" notitle, \
+    '+' using (x_max):(y_min):(0):(y_max-y_min) with vectors nohead lw 2 lc "grey" notitle, \
 
 if (!exists("filename")) {
     pause -1
