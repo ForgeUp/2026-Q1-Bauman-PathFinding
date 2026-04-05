@@ -7,10 +7,16 @@
 #include "types/Task.hpp"
 #include "types/Solution.hpp"
 
+#include "utils/Timer.hpp"
+#include "utils/logger.hpp"
+
 #include "to_file.hpp"
 
 
 void draw(const Task& task, const Solution& sln, const std::string& dir, const std::string& pic) {
+    DrawLogger::in();
+    Timer timer;
+
     std::filesystem::path data_dir = dir + '/' + "data";
 
     auto to_string = [&]<typename ...Args>(Args&&... args) -> std::string {
@@ -43,6 +49,8 @@ void draw(const Task& task, const Solution& sln, const std::string& dir, const s
     to_file(data_dir / "qtree_mix.txt",   sln.qtree.colors(Qtree::Type::Mix ));
     to_file(data_dir / "qtree_busy.txt",  sln.qtree.colors(Qtree::Type::Busy));
     
+    auto to_file_time = timer.tick();
+
     std::string cmd = to_string(
         "gnuplot -e ",
         "\"",
@@ -53,4 +61,11 @@ void draw(const Task& task, const Solution& sln, const std::string& dir, const s
         "draw/draw.gp > ", "\"", data_dir.string() + '/' + "log.txt", "\""
     );
     system(cmd.c_str());
+
+    auto gnuplot_time = timer.tick() - to_file_time;
+
+    DrawLogger::log("file io time consume: {}", to_file_time);
+    DrawLogger::log("gnuplot time consume: {}", gnuplot_time);
+
+    DrawLogger::out();
 }

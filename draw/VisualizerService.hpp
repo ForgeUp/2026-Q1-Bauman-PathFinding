@@ -63,7 +63,7 @@ public:
                     scenes.pop();
                 }
                 
-                DrawLogger::log("Draw pic: {}", sc.name);
+                DrawLogger::log("Draw pic: {}", base_dir + '/' + sc.dir + '/' + sc.name);
                 draw(sc.task, sc.sln, base_dir + '/' + sc.dir, sc.name);
             }
         });
