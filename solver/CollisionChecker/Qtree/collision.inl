@@ -15,7 +15,7 @@ bool CollisionChecker::Qtree<Derived>::collision(const Point& p) {
 
     S.metric.count("point_collision_check_total");
 
-    if (p.is_checked_collsn) p.is_collision;
+    if (p.is_checked_collsn) return p.is_collision;
     
     S.metric.count("point_collision_check_unique");
 
