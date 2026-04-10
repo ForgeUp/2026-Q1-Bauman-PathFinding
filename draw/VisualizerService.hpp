@@ -100,8 +100,9 @@ public:
                 valid_sub_dir = sub_dir + "_" + std::to_string(i++);
                 dirname = base_dir + '/' + valid_sub_dir;
             }
-            std::filesystem::create_directories(dirname);
-            std::filesystem::create_directories(dirname + '/' + "data");
+            std::filesystem::create_directories(
+                std::filesystem::path(base_dir) / valid_sub_dir / "data"
+            );
             return valid_sub_dir;
         }
     }
