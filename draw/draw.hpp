@@ -10,8 +10,9 @@
 #include "utils/Timer.hpp"
 #include "utils/logger.hpp"
 #include "utils/concat.hpp"
+#include "utils/to_file.hpp"
 
-#include "to_file.hpp"
+#include "gnuplot/exec.hpp"
 
 
 void draw(const Task& task, const Solution& sln, const std::string& dir, const std::string& pic) {
