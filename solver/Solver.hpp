@@ -10,6 +10,8 @@
 
 #include "draw/VisualizerAdapter.hpp"
 
+#include "utils/Timer.hpp"
+
 
 template <template<typename> class... Modules>
 class SolverBase: public Modules<SolverBase<Modules...>>... {
@@ -73,6 +75,8 @@ template <template<typename> class... Modules>
 Solution SolverBase<Modules...>::run() {
     auto& S = self();
 
+    Timer total;
+
     auto metric_time = [&](const char* name, auto&& func) -> decltype(auto) {
         S.metric.time_in(name);
 
@@ -119,6 +123,8 @@ Solution SolverBase<Modules...>::run() {
     S.visual.picture({S.task, S.sln, "result"});
 
     #undef METRIC_CALL
+
+    S.metric.total = total.tick();
 
     return S.sln;
 }
