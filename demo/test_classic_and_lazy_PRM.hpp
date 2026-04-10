@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Solver/Solver/Uniform.hpp"
+#include "solver/Solver/Uniform.hpp"
 
 #include "types/GeneratorConfig.hpp"
 #include "types/SolverSettings.hpp"

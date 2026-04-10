@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Astar.hpp"
+#include "AStar.hpp"
 
 #include "pathfind/lazy.hpp"
 

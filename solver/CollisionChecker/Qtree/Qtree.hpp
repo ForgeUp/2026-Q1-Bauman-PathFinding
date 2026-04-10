@@ -4,7 +4,7 @@
 
 #include "solver/CollisionChecker/Base/Base.hpp"
 
-#include "qtree/Qtree.hpp"
+#include "qtree/qtree.hpp"
 using QTreeDS = Qtree;
 
 #include "types/Point.hpp"
