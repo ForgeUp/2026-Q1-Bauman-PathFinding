@@ -17,6 +17,7 @@ public:
 public:
     std::map<std::string,Stamp> journal;
     std::map<std::string,int32_t> counter;
+    std::chrono::high_resolution_clock::duration total;
 
 public:
     using const_iterator =
