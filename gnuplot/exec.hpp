@@ -42,7 +42,8 @@ void exec(const Options& opts) {
         std::format("data_dir='{}'", opts.data_dir_path), 
         "\" ",
         script_path, 
-        " > ", "\"", opts.data_dir_path + '/' + "log.txt", "\""
+        " > ", "\"", opts.data_dir_path + '/' + "log.txt", "\" ",
+        "2>&1"
     );
     system(cmd.c_str());
 }
