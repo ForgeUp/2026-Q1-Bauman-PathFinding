@@ -1,6 +1,5 @@
 #pragma once
 
-#include <format>
 #include <string>
 #include <filesystem>
 
@@ -47,16 +46,13 @@ void draw(const Task& task, const Solution& sln, const std::string& dir, const s
     
     auto to_file_time = timer.tick();
 
-    std::string cmd = to_string(
-        "gnuplot -e ",
-        "\"",
-        std::format("filename='{}.png'", pic), "; ",
-        std::format("output_dir='{}'", dir),   "; ",
-        std::format("data_dir='{}'", data_dir.string()), 
-        "\" ",
-        "draw/draw.gp > ", "\"", data_dir.string() + '/' + "log.txt", "\""
-    );
-    system(cmd.c_str());
+    gnuplot::exec({
+        .script_name     = "draw.gp",
+        .script_dir_path = "draw",
+        .filename        = pic,
+        .output_dir_path = dir,
+        .data_dir_path   = data_dir.string()
+    });
 
     auto gnuplot_time = timer.tick() - to_file_time;
 
