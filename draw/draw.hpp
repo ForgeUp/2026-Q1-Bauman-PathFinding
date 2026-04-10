@@ -9,6 +9,7 @@
 
 #include "utils/Timer.hpp"
 #include "utils/logger.hpp"
+#include "utils/concat.hpp"
 
 #include "to_file.hpp"
 
@@ -19,13 +20,7 @@ void draw(const Task& task, const Solution& sln, const std::string& dir, const s
 
     std::filesystem::path data_dir = dir + '/' + "data";
 
-    auto to_string = [&]<typename ...Args>(Args&&... args) -> std::string {
-        std::ostringstream oss;
-        (oss << ... << args);
-        return oss.str();
-    };
-
-    to_file(data_dir / "area.gp", to_string(
+    to_file(data_dir / "area.gp", concat(
         "x_min="  , task.area.x_min, "\n",
         "x_max="  , task.area.x_max, "\n",
         "y_min="  , task.area.y_min, "\n",
