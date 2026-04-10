@@ -10,8 +10,9 @@
 
 
 class Qtree {
-private:
+public:
     class Colors;
+private:
     class Box;
 
 public:
