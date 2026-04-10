@@ -11,7 +11,6 @@
 
 #include "draw/VisualizerService.hpp"
 
-#include "utils/Timer.hpp"
 #include "utils/logger.hpp"
 
 
@@ -30,12 +29,9 @@ void tester(Data& data) {
     Services srvs = {
         .visual = VisualizerAdapter(data.srv_visual, output_folder) 
     };
-    Timer timer;
     
     auto solver = Solver(data.task, data.stgs, srvs);
     auto sln = solver.run();
-    
-    auto total = timer.tick();
 
     std::vector<std::pair<std::string,Metric::Stamp>> metric;
     for (const auto& [name, stamp] : sln.metric) {
@@ -45,14 +41,14 @@ void tester(Data& data) {
         return l.second.acc > r.second.acc;
     });
 
-    Logger::log("Total time consume: {}", total);
+    Logger::log("Total time consume: {}", std::chrono::duration_cast<std::chrono::milliseconds>(sln.metric.total));
     Logger::in();
     for (const auto& [name, stamp] : metric) {
         Logger::log("{:<30} | {:6} | {:10} | {:6.2f}%", 
             name,
             stamp.counter,
             std::chrono::duration_cast<std::chrono::milliseconds>(stamp.acc), 
-            100.0 * stamp.acc / total
+            100.0 * stamp.acc / sln.metric.total
         );
     }
     Logger::out();
