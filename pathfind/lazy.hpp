@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <set>
 #include <queue>
+#include <utility>
 
 #include "types/Point.hpp"
 #include "types/Segment.hpp"
