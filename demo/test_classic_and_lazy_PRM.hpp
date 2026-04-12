@@ -19,10 +19,10 @@ void test_classic_and_lazy_PRM(VisualizerService& srv_visual) {
     SolverSettings stgs = {
         .lazy = true,
         .initial_nodes_count = 500,
-        .nearest_count = 6,
+        .nearest_count = 5  ,
         .bridge_standard_deviation = 2,
         .gauss_standard_deviation = 1,
-        .enhance_attempts_limit = 10
+        .enhance_attempts_limit = 3
     };
 
     demo::Data data {
