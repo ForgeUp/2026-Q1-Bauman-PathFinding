@@ -8,8 +8,9 @@
 
 
 int main() {
-    Logger::set_stream_to_file("result/log_solve.txt");
-    DrawLogger::set_stream_to_file("result/log_draw.txt");
+    Logger       ::set_stream_to_file("result/log_solve.txt");
+    DrawLogger   ::set_stream_to_file("result/log_draw.txt");
+    GnuplotLogger::set_stream_to_file("result/log_gnuplot.txt"); GnuplotLogger::set_cout_limit(0);
     VisualizerService srv_visual("result");
     
     using Solver = solver::ObstacleOffset;
