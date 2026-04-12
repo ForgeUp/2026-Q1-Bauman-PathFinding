@@ -32,6 +32,10 @@ public:
     }
 
 public:
+    void time_reg(const std::string& name) {
+        auto& stamp = journal[name];
+    }
+
     void time_in(const std::string& name) {
         auto& stamp = journal[name];
 
