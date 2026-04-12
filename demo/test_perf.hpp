@@ -5,6 +5,9 @@
 #include "demo/Data.hpp"
 #include "demo/tester.hpp"
 
+#include "gnuplot/exec.hpp"
+#include "utils/to_file.hpp"
+
 
 namespace demo {
 
@@ -52,19 +55,35 @@ void test_perf(Data& data) {
         auto solver = Solver(data.task, data.stgs, srvs);
         auto sln = solver.run();
 
+        demo::stat_log(sln.metric, data.folder_mark);
+
         result.push_back({denst, sln.metric});
     }
-    
-    std::vector<std::pair<double,int64_t>> totals;
+
+    std::vector<std::string> head{"-"};
+    if (result.size() > 0) {
+        const auto& [denst, metric] = *result.begin();
+        for (const auto& [title, stamp] : metric.journal) {
+            head.push_back(title);
+        }
+    }
+
+    std::vector<io::Row> times;
     for (const auto& [denst, metric] : result) {
-        totals.push_back({
-            denst,
-            std::chrono::duration_cast<std::chrono::milliseconds>(metric.total).count()
-        });
+        std::vector<double> row;
+
+        row.push_back(denst);
+        for (const auto& [title, stamp] : metric.journal) {
+            row.push_back(static_cast<double>(
+                std::chrono::duration_cast<std::chrono::milliseconds>(stamp.acc).count()
+            ));
+        }
+
+        times.emplace_back(std::move(row));
     }
 
     std::filesystem::create_directories("result/tmp");
-    to_file("result/tmp/perf.txt", totals);
+    io::to_file("result/tmp/perf.txt", times, io::Options{std::move(head)});
 
     gnuplot::exec({
         .script_name     = "perf.gp",
