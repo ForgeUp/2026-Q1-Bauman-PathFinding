@@ -5,7 +5,8 @@
 #include <format>
 #include <filesystem>
 
-#include <utils/concat.hpp>
+#include "utils/logger.hpp"
+#include "utils/concat.hpp"
 
 
 namespace gnuplot {
@@ -45,6 +46,9 @@ void exec(const Options& opts) {
         " > ", "\"", opts.data_dir_path + '/' + "log.txt", "\" ",
         "2>&1"
     );
+
+    GnuplotLogger::log("Run cmd: {}", cmd);
+
     system(cmd.c_str());
 }
 
