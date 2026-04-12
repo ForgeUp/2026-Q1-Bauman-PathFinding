@@ -75,5 +75,6 @@ private:
     static inline std::unique_ptr<std::ofstream> file;
 };
 
-using Logger     = BaseLogger<true,1>;
-using DrawLogger = BaseLogger<true,2>;
+using Logger        = BaseLogger<true,1>;
+using DrawLogger    = BaseLogger<true,2>;
+using GnuplotLogger = BaseLogger<true,3>;
