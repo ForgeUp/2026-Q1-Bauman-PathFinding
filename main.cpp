@@ -13,13 +13,14 @@ int main() {
     GnuplotLogger::set_stream_to_file("result/log_gnuplot.txt"); GnuplotLogger::set_cout_limit(0);
     VisualizerService srv_visual("result");
     
-    using Solver = solver::ObstacleOffset;
+    using Solver = solver::Uniform;
 
     SolverSettings stgs = {
         .initial_nodes_count = 500,
+        .nearest_count = 5,
         .bridge_standard_deviation = 2,
         .gauss_standard_deviation = 1,
-        .enhance_attempts_limit = 10
+        .enhance_attempts_limit = 3
     };
 
     demo::Data data {
