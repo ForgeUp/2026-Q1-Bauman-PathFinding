@@ -77,7 +77,7 @@ Solution SolverBase<Modules...>::run() {
 
     Timer total;
 
-    auto metric_time = [&](const char* name, auto&& func) -> decltype(auto) {
+    auto metric_time = [&](const std::string& name, auto&& func) -> decltype(auto) {
         S.metric.time_in(name);
 
         if constexpr (std::is_void_v<std::invoke_result_t<decltype(func)>>) {
@@ -89,8 +89,21 @@ Solution SolverBase<Modules...>::run() {
             return result;
         }
     };
-    #define METRIC_CALL(expr) metric_time(#expr, [&]{ return (expr); })
+
+    std::map<std::string,std::string> names = {
+        {"S.init()", "Инициализация модулей"},
+        {"S.generate_initial_grid()", "Генерация изначальной PRM"},
+        {"S.find_path()", "Поиск пути"},
+        {"S.check_path_collision()", "Проверка пути на коллизию"},
+        {"S.enhance_graph()", "Усиление PRM"}
+    };
+
+    #define METRIC_CALL(expr) metric_time(names[#expr], [&]{ return (expr); })
     
+    for (const auto& [_, name] : names) {
+        S.metric.time_reg(name);
+    }
+
     S.visual.picture({S.task, S.sln, "initial"});
     
     bool is_found_unchecked = false;
