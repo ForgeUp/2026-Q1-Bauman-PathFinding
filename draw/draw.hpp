@@ -5,6 +5,7 @@
 
 #include "types/Task.hpp"
 #include "types/Solution.hpp"
+#include "types/Graph.hpp"
 
 #include "utils/Timer.hpp"
 #include "utils/logger.hpp"
@@ -20,7 +21,7 @@ void draw(const Task& task, const Solution& sln, const std::string& dir, const s
 
     std::filesystem::path data_dir = dir + '/' + "data";
 
-    to_file(data_dir / "area.gp", concat(
+    io::to_file(data_dir / "area.gp", concat(
         "x_min="  , task.area.x_min, "\n",
         "x_max="  , task.area.x_max, "\n",
         "y_min="  , task.area.y_min, "\n",
@@ -31,18 +32,18 @@ void draw(const Task& task, const Solution& sln, const std::string& dir, const s
         "y_end="  , task.end.y     , "\n"
     ));
 
-    to_file(data_dir / "polygons.txt",    task.area.rocks);
-    to_file(data_dir / "grid.txt",        sln.grid);
-    to_file(data_dir / "enhance_p.txt",   sln.enhance.verts);
-    to_file(data_dir / "enhance_e.txt",   sln.enhance);
-    to_file(data_dir / "examined.txt",    sln.examined);
-    to_file(data_dir / "invalid.txt",     sln.invalid);
-    to_file(data_dir / "invalid_all.txt", sln.invalid_all);
-    to_file(data_dir / "path.txt",        sln.path);
-    to_file(data_dir / "qtree.txt",       sln.qtree);
-    to_file(data_dir / "qtree_free.txt",  sln.qtree.colors(Qtree::Type::Free));
-    to_file(data_dir / "qtree_mix.txt",   sln.qtree.colors(Qtree::Type::Mix ));
-    to_file(data_dir / "qtree_busy.txt",  sln.qtree.colors(Qtree::Type::Busy));
+    io::to_file(data_dir / "polygons.txt",    task.area.rocks);
+    io::to_file(data_dir / "grid.txt",        sln.grid);
+    io::to_file(data_dir / "enhance_p.txt",   sln.enhance.verts);
+    io::to_file(data_dir / "enhance_e.txt",   sln.enhance);
+    io::to_file(data_dir / "examined.txt",    sln.examined);
+    io::to_file(data_dir / "invalid.txt",     sln.invalid);
+    io::to_file(data_dir / "invalid_all.txt", sln.invalid_all);
+    io::to_file(data_dir / "path.txt",        sln.path);
+    io::to_file(data_dir / "qtree.txt",       sln.qtree);
+    io::to_file(data_dir / "qtree_free.txt",  sln.qtree.colors(Qtree::Type::Free));
+    io::to_file(data_dir / "qtree_mix.txt",   sln.qtree.colors(Qtree::Type::Mix ));
+    io::to_file(data_dir / "qtree_busy.txt",  sln.qtree.colors(Qtree::Type::Busy));
     
     auto to_file_time = timer.tick();
 
