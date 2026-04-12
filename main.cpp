@@ -32,7 +32,8 @@ int main() {
 
     // demo::test_standard_area<Solver>(data);
     // demo::test_rand_area<Solver>(data);
-    demo::test_classic_and_lazy_PRM(srv_visual);
+    // demo::test_classic_and_lazy_PRM(srv_visual);
+    demo::test_perf<Solver>(data);
 
     return 0;
 }
