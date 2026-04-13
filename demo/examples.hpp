@@ -47,6 +47,23 @@ struct Examples {
                     }
                 }
             }
+        },
+        {
+            "triangle",
+            Task{
+                .start = Point(10, 10),
+                .end   = Point(90, 90),
+                .area  = Area{
+                    .x_min = 0,
+                    .x_max = 100,
+                    .y_min = 0,
+                    .y_max = 100,
+
+                    .rocks = std::vector<Rock>{
+                        Rock{{ {20, 20}, {80, 80}, {80, 20} }}
+                    }
+                }
+            }
         }
     };
 };
