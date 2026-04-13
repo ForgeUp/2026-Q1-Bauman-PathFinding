@@ -32,18 +32,19 @@ void draw(const Task& task, const Solution& sln, const std::string& dir, const s
         "y_end="  , task.end.y     , "\n"
     ));
 
-    io::to_file(data_dir / "polygons.txt",    task.area.rocks);
-    io::to_file(data_dir / "grid.txt",        sln.grid);
-    io::to_file(data_dir / "enhance_p.txt",   sln.enhance.verts);
-    io::to_file(data_dir / "enhance_e.txt",   sln.enhance);
-    io::to_file(data_dir / "examined.txt",    sln.examined);
-    io::to_file(data_dir / "invalid.txt",     sln.invalid);
-    io::to_file(data_dir / "invalid_all.txt", sln.invalid_all);
-    io::to_file(data_dir / "path.txt",        sln.path);
-    io::to_file(data_dir / "qtree.txt",       sln.qtree);
-    io::to_file(data_dir / "qtree_free.txt",  sln.qtree.colors(Qtree::Type::Free));
-    io::to_file(data_dir / "qtree_mix.txt",   sln.qtree.colors(Qtree::Type::Mix ));
-    io::to_file(data_dir / "qtree_busy.txt",  sln.qtree.colors(Qtree::Type::Busy));
+    io::to_file(data_dir / "polygons.txt",      task.area.rocks);
+    io::to_file(data_dir / "grid.txt",          sln.grid);
+    io::to_file(data_dir / "enhance_p.txt",     sln.enhance.verts);
+    io::to_file(data_dir / "enhance_e.txt",     sln.enhance);
+    io::to_file(data_dir / "examined.txt",      sln.examined);
+    io::to_file(data_dir / "invalid.txt",       sln.invalid);
+    io::to_file(data_dir / "invalid_all_p.txt", sln.invalid_all.verts);
+    io::to_file(data_dir / "invalid_all_e.txt", sln.invalid_all);
+    io::to_file(data_dir / "path.txt",          sln.path);
+    io::to_file(data_dir / "qtree.txt",         sln.qtree);
+    io::to_file(data_dir / "qtree_free.txt",    sln.qtree.colors(Qtree::Type::Free));
+    io::to_file(data_dir / "qtree_mix.txt",     sln.qtree.colors(Qtree::Type::Mix ));
+    io::to_file(data_dir / "qtree_busy.txt",    sln.qtree.colors(Qtree::Type::Busy));
     
     auto to_file_time = timer.tick();
 

@@ -13,18 +13,19 @@ load data_dir.'/'.'area.gp'
 set dashtype 8 (2,10) 
 
 # Входные файлы.
-polygons     = data_dir.'/'.'polygons.txt'
-grids        = data_dir.'/'.'grid.txt'
-enhance_p    = data_dir.'/'.'enhance_p.txt'
-enhance_e    = data_dir.'/'.'enhance_e.txt'
-examined     = data_dir.'/'.'examined.txt'
-invalid      = data_dir.'/'.'invalid.txt'
-invalid_all  = data_dir.'/'.'invalid_all.txt'
-path         = data_dir.'/'.'path.txt'
-qtree        = data_dir.'/'.'qtree.txt'
-qtree_free   = data_dir.'/'.'qtree_free.txt'
-qtree_mix    = data_dir.'/'.'qtree_mix.txt'
-qtree_busy   = data_dir.'/'.'qtree_busy.txt'
+polygons      = data_dir.'/'.'polygons.txt'
+grids         = data_dir.'/'.'grid.txt'
+enhance_p     = data_dir.'/'.'enhance_p.txt'
+enhance_e     = data_dir.'/'.'enhance_e.txt'
+examined      = data_dir.'/'.'examined.txt'
+invalid       = data_dir.'/'.'invalid.txt'
+invalid_all_p = data_dir.'/'.'invalid_all_p.txt'
+invalid_all_e = data_dir.'/'.'invalid_all_e.txt'
+path          = data_dir.'/'.'path.txt'
+qtree         = data_dir.'/'.'qtree.txt'
+qtree_free    = data_dir.'/'.'qtree_free.txt'
+qtree_mix     = data_dir.'/'.'qtree_mix.txt'
+qtree_busy    = data_dir.'/'.'qtree_busy.txt'
 
 # Размеры поля.
 set xrange [x_min-5:x_max+5]
@@ -44,7 +45,8 @@ plot \
     enhance_e      using 1:2   with lines       lw 2             lc "dark-pink"  title "Enhancement", \
     path           using 1:2   with linespoints lw 2        pt 7 lc "green"      title "Path", \
     invalid        using 1:2   with linespoints lw 2             lc "red"        title "Invalid roads", \
-    invalid_all    using 1:2   with linespoints lw 2             lc "red"        title "All invalid roads", \
+    invalid_all_p  using 1:2   with points                  pt 7 lc "red"        title "All invalid roads", \
+    invalid_all_e  using 1:2   with lines       lw 2             lc "red"        title "All invalid roads", \
     qtree_free     using 1:2   with filledcurves fs transparent solid 0.8 lc rgb "green"  notitle, \
     qtree_mix      using 1:2   with filledcurves fs transparent solid 0.8 lc rgb "red"    notitle, \
     qtree_busy     using 1:2   with filledcurves fs transparent solid 0.8 lc rgb "yellow" notitle, \
