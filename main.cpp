@@ -17,7 +17,7 @@ int main() {
 
     SolverSettings stgs = {
         .initial_nodes_count = 500,
-        .nearest_count = 5,
+        .nearest_count = 6,
         .bridge_standard_deviation = 2,
         .gauss_standard_deviation = 1,
         .enhance_attempts_limit = 3
@@ -27,12 +27,12 @@ int main() {
         .stgs = stgs,
         .srv_visual = srv_visual,
         
-        .runs_per_area = 3
+        .runs_per_area = 1
     };
 
     // demo::test_standard_area<Solver>(data);
     // demo::test_rand_area<Solver>(data);
-    // demo::test_classic_and_lazy_PRM(srv_visual);
+    // demo::test_classic_and_lazy_PRM<Solver>(data);
     demo::test_perf<Solver>(data);
 
     return 0;
