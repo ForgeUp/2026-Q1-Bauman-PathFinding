@@ -1,26 +1,27 @@
 #pragma once
 
 #include <algorithm>
+#include <ranges>
 
 #include "demo/Data.hpp"
 #include "demo/tester.hpp"
-
-#include "gnuplot/exec.hpp"
-#include "utils/to_file.hpp"
+#include "demo/mean_metric.hpp"
+#include "demo/plot_time.hpp"
+#include "demo/plot_collision.hpp"
 
 
 namespace demo {
 
 template <typename Solver>
-void test_perf(Data& data) {
+void test_perf(Data& data, std::string name = "") {
     GeneratorConfig cfg = {
         .x_min = 0,
         .x_max = 100,
         .y_min = 0,
         .y_max = 100,
 
-        .generate_rand_seed = false,
-        .seed = 42,
+        .generate_rand_seed = true,
+        // .seed = 42,
 
         .rand_home_points = false,
         .start = Point(10.0, 10.0),
@@ -37,61 +38,24 @@ void test_perf(Data& data) {
 
     for (auto denst : {0.01, 0.02, 0.03, 0.04, 0.05}) {
         cfg.polygon_density = denst;
-        data.task = taskgen::task(cfg);
+
+        std::vector<Metric> metrics; // Вектор метрик за все запуски.
+        for (int32_t r = 0; r < data.runs_per_area; ++r) {
+            data.task = taskgen::task(cfg);
         
-        data.folder_mark = std::to_string(cfg.polygon_density);
-        std::replace(data.folder_mark.begin(), data.folder_mark.end(), '.', '_');
-        
-        std::string output_folder = std::format("{:%Y-%m-%d %H-%M-%S} [{}]", 
-            std::chrono::floor<std::chrono::seconds>(std::chrono::system_clock::now()), 
-            data.folder_mark
-        );
-        Services srvs = {
-            .visual = VisualizerAdapter(data.srv_visual, output_folder) 
-        };
+            data.folder_mark = std::to_string(cfg.polygon_density) + " "+ std::to_string(r+1);
+            std::replace(data.folder_mark.begin(), data.folder_mark.end(), '.', '_');
+            
+            Metric metric = demo::tester<Solver>(data);
 
-        Logger::log("Run {}", data.folder_mark);
-
-        auto solver = Solver(data.task, data.stgs, srvs);
-        auto sln = solver.run();
-
-        demo::stat_log(sln.metric, data.folder_mark);
-
-        result.push_back({denst, sln.metric});
-    }
-
-    std::vector<std::string> head{"-"};
-    if (result.size() > 0) {
-        const auto& [denst, metric] = *result.begin();
-        for (const auto& [title, stamp] : metric.journal) {
-            head.push_back(title);
-        }
-    }
-
-    std::vector<io::Row> times;
-    for (const auto& [denst, metric] : result) {
-        std::vector<double> row;
-
-        row.push_back(denst);
-        for (const auto& [title, stamp] : metric.journal) {
-            row.push_back(static_cast<double>(
-                std::chrono::duration_cast<std::chrono::milliseconds>(stamp.acc).count()
-            ));
+            metrics.push_back(std::move(metric));
         }
 
-        times.emplace_back(std::move(row));
+        result.push_back({denst, demo::mean_metric(metrics)});
     }
 
-    std::filesystem::create_directories("result/tmp");
-    io::to_file("result/tmp/perf.txt", times, io::Options{std::move(head)});
-
-    gnuplot::exec({
-        .script_name     = "perf.gp",
-        .script_dir_path = "gnuplot",
-        .filename        = "perf",
-        .output_dir_path = "result",
-        .data_dir_path   = "result/tmp"
-    });
+    demo::plot_time(result, name);
+    demo::plot_collision(result, name);
 }
 
 }
