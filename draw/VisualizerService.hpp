@@ -26,7 +26,11 @@ public:
     };
 
 public:
+    VisualizerBase() {}
+    VisualizerBase(const std::string& base_dir_) {}
+
     void picture(const Scene& sc) {}
+    std::string regdir(const std::string& sub_dir) {}
 };
 
 
