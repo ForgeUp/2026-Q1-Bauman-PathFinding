@@ -6,7 +6,7 @@ if (!exists("filename") || !exists("output_dir") || !exists("data_dir")) {
 set terminal pngcairo size 1000,1000 enhanced font "Arial,12"
 set output output_dir.'/'.filename
 
-data = data_dir.'/'.'perf.txt'
+data = data_dir.'/'.'data.txt'
 
 set datafile columnheaders
 set datafile separator whitespace
@@ -20,5 +20,6 @@ set boxwidth 0.8
 
 set key autotitle columnhead
 set key outside right
+# unset key
 
 plot for [i=2:STATS_columns] data using i:xtic(1) title columnhead(i)
