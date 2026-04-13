@@ -41,7 +41,10 @@ Graph GridGenerator::Uniform<Derived>::generate_grid(Options& opts) {
                 std::uniform_real_distribution(min.x, max.x)(gen),
                 std::uniform_real_distribution(min.y, max.y)(gen)
             );
-            if (S.collision(p)) continue; // Пропускаем точку, если обнаружена коллизия.
+            if (S.collision(p)) { // Пропускаем точку, если обнаружена коллизия.
+                S.invalid_all.add(p);
+                continue; 
+            }
             
             p.is_checked_collsn = true;
             return Result{p, true};
